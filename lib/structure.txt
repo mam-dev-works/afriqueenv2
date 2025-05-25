@@ -1,0 +1,71 @@
+lib/
+├── main.dart
+├── app.dart                        # Root widget with routes, themes, localization
+│
+├── common/                         # Shared app-wide resources
+│   ├── constants/                  # App-wide constants like colors, sizes, strings
+│   ├── theme/                      # App light/dark themes
+│   ├── widgets/                    # Reusable UI components
+│   ├── localization/              # Localization support
+│   │   ├── translations.dart
+│   │   ├── en_US.dart
+│   │   └── np_NP.dart
+│   └── utils/                      # Utility/helper classes & functions
+│       ├── validators.dart
+│       ├── date_formatter.dart
+│       ├── string_utils.dart
+│       ├── device_utils.dart
+│       ├── debouncer.dart
+│       ├── logger.dart
+│       └── snackbar_util.dart
+│
+├── services/                       # App-wide service logic
+│   ├── storage/                    # Local storage layer
+│   │   ├── storage_service.dart
+│   │   ├── shared_prefs_storage.dart
+│   │   └── get_storage_service.dart
+│   ├── network/                    # API and HTTP services
+│   │   ├── api_service.dart
+│   │   ├── network_client.dart
+│   │   └── auth_interceptor.dart
+│   ├── auth/                       # Authentication/session services
+│   │   ├── auth_service.dart
+│   │   └── session_manager.dart
+│   ├── notifications/             # Push notifications
+│   │   ├── notification_service.dart
+│   │   └── firebase_messaging_handler.dart
+│   ├── analytics/                 # Event & screen analytics
+│   │   └── analytics_service.dart
+│   ├── logging/                   # Error/crash logging
+│   │   └── crashlytics_service.dart
+│   ├── connectivity/              # Internet check service
+│   │   └── connectivity_service.dart
+│   ├── file/                      # File reading/downloading
+│   │   └── file_service.dart
+│   ├── permissions/               # Runtime permission handling
+│   │   └── permission_service.dart
+│   └── location/                  # GPS/location
+│       └── location_service.dart
+│
+├── features/                      # Feature-first structure
+│   ├── home/
+│   │   ├── models/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   │   └── bloc.dart
+│   │   ├── screens/
+│   │   │   └── home_screen.dart
+│   │   └── widgets/
+│   │       └── home_card.dart
+│   ├── profile/
+│   │   ├── models/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screens/
+│   │   └── widgets/
+│
+├── routes/                        # App route config
+│   ├── app_routes.dart
+│   └── app_pages.dart
+
+
