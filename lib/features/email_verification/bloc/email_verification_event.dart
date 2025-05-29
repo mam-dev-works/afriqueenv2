@@ -12,3 +12,4 @@ final class OnButtonClicked extends EmailVerificationEvent {}
 final class OnClickedDeleteButton extends EmailVerificationEvent {}
 
 
+final class ResetEmailVerification extends EmailVerificationEvent {}

@@ -99,3 +99,6 @@ final class DiscriptionChanged extends CreateProfileEvent {
   @override
   List<Object> get props => [discription];
 }
+
+
+final class ResetCreateProfileEvent extends CreateProfileEvent {}

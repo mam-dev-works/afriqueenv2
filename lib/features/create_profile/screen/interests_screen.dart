@@ -9,7 +9,7 @@ class InterestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: true),
+      appBar: AppBar(automaticallyImplyLeading: false),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

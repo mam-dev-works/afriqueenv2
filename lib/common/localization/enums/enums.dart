@@ -121,10 +121,24 @@ enum EnumLocale {
   discriptionTitle,
   discriptionBody,
   discriptionLabelText,
-  home,
-  likes,
-  search,
-  profile,
+  joinedJustNow,
+  joined,
+  minutesAgo,
+  hoursAgo,
+  daysAgo,
+  ago,
+  joinedOn,
+ setting,
+ logout,
+ notifications,
+ privacySettings,
+ helpCenter,
+ changeLanguage,
+ favorites,
+ archieve,
+ block,
+ report,
+ more,
 }
 
 /*abstract class AppStrings {
@@ -326,4 +340,8 @@ If you have any questions or concerns about how we use your information, you can
       static const profileNotFound = "No profile found.";
       static const errorOccurMesssage = "An error occurred.";
 }
+// debug
 // keytool -list -v -keystore %USERPROFILE%\.android\debug.keystore -alias androiddebugkey -storepass android -keypass android*/
+
+// release
+//keytool -genkey -v -keystore my_release_key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my_key_alias

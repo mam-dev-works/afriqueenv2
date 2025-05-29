@@ -11,6 +11,7 @@ import 'package:afriqueen/features/create_profile/screen/upload_image_screen.dar
 import 'package:afriqueen/features/email_verification/screen/email_verification_screen.dart';
 import 'package:afriqueen/features/login/screen/login_screen.dart';
 import 'package:afriqueen/features/main/screen/main_screen.dart';
+
 import 'package:afriqueen/features/wellcome/screen/wellcome_screen.dart';
 import 'package:afriqueen/routes/app_pages.dart';
 import 'package:afriqueen/services/storage/get_storage.dart';
@@ -41,8 +42,9 @@ class _MyAppState extends State<MyApp> {
             title: 'Afriqueen',
             debugShowCheckedModeBanner: false,
             translations: AppTranslations(),
-            defaultTransition: Transition.downToUp,
+            // defaultTransition: Transition.downToUp,
             locale: Locale(app.getLanguageCode()),
+
             getPages: getPages,
             theme: lightTheme,
 

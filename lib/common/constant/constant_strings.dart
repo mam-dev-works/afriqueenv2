@@ -66,4 +66,6 @@ class AppStrings {
     EnumLocale.travel.name.tr,
     EnumLocale.fashion.name.tr,
   ];
+
+  static const List<String> language = ["English", "Français"];
 }

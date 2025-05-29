@@ -10,7 +10,7 @@ class EmailVerificationRepository {
     : _firebaseAuth = auth ?? FirebaseAuth.instance;
   //----------------------Sending link for email verification--------------------------
   Future<void> sendEmailVerificationLink() async {
-   await  _firebaseAuth.setLanguageCode(appGetStorage.getLanguageCode());
+    await _firebaseAuth.setLanguageCode(appGetStorage.getLanguageCode());
     final currentUser = _firebaseAuth.currentUser;
     try {
       if (!currentUser!.emailVerified) {

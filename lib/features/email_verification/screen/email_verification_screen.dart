@@ -2,6 +2,7 @@ import 'package:afriqueen/common/localization/enums/enums.dart';
 
 import 'package:afriqueen/common/widgets/snackbar_message.dart';
 import 'package:afriqueen/features/email_verification/bloc/email_verification_bloc.dart';
+import 'package:afriqueen/features/email_verification/bloc/email_verification_event.dart';
 import 'package:afriqueen/features/email_verification/bloc/email_verification_state.dart';
 import 'package:afriqueen/features/email_verification/widget/email_verification_widget.dart';
 import 'package:afriqueen/routes/app_routes.dart';
@@ -10,8 +11,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class EmailVerificationScreen extends StatelessWidget {
+class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
+
+  @override
+  State<EmailVerificationScreen> createState() =>
+      _EmailVerificationScreenState();
+}
+
+class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<EmailVerificationBloc>().add(ResetEmailVerification());
+  }
 
   @override
   Widget build(BuildContext context) {

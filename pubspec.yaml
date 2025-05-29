@@ -47,7 +47,6 @@ dependencies:
   equatable: ^2.0.7
   flutter_bloc: ^9.1.1
   firebase_app_check: ^0.3.2+5
-
   flutter_svg: ^2.1.0
   lottie: ^3.3.1
   cool_dropdown: ^2.1.1
@@ -55,23 +54,28 @@ dependencies:
   path_provider: ^2.1.5
   shared_preferences: ^2.5.3
   geolocator: ^14.0.0
-
   geocoding: ^3.0.0
   step_progress_indicator: ^1.0.2
   bottom_picker: ^3.2.0
   choice: ^2.3.2
   get_storage: ^2.1.1
   font_awesome_flutter: ^10.8.0
-
   image_picker: ^1.1.2
   google_nav_bar: ^5.0.7
   cloudinary_public: ^0.23.1
   line_icons: ^2.0.3
+  cached_network_image: ^3.4.1
+  firebase_database: ^11.3.6
+  hugeicons: ^0.0.11
+  sliver_tools: ^0.2.12
+  bloc_lint: ^0.2.0-dev.4
+
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  custom_lint: ^0.7.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

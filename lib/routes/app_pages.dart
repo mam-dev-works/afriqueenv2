@@ -12,6 +12,8 @@ import 'package:afriqueen/features/forgot_password/screen/email_sent_screen.dart
 import 'package:afriqueen/features/forgot_password/screen/forgot_password_screen.dart';
 import 'package:afriqueen/features/login/screen/login_screen.dart';
 import 'package:afriqueen/features/main/screen/main_screen.dart';
+import 'package:afriqueen/features/profile/screen/profile_screen.dart';
+import 'package:afriqueen/features/setting/screen/setting_screen.dart';
 import 'package:afriqueen/features/signup/screen/signup_screen.dart';
 import 'package:afriqueen/features/signup/widgets/condition_of_use.dart';
 import 'package:afriqueen/features/signup/widgets/privacy_and_policy.dart';
@@ -40,8 +42,9 @@ List<GetPage<dynamic>>? getPages = [
   GetPage(name: AppRoutes.interests, page: () => InterestsScreen()),
   GetPage(name: AppRoutes.passion, page: () => PassionScreen()),
   GetPage(name: AppRoutes.upload, page: () => UploadImageScreen()),
-    GetPage(name: AppRoutes.discription, page: () => DiscriptionScreen()),
+  GetPage(name: AppRoutes.discription, page: () => DiscriptionScreen()),
+  GetPage(name: AppRoutes.setting, page: () => SettingScreen()),
+  GetPage(
+    
+    name: AppRoutes.profile, page: () => ProfileScreen()),
 ];
-
-
-

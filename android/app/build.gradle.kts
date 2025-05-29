@@ -1,11 +1,29 @@
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
-    id("com.google.gms.google-services")
+    id("com.google.gms.google-services") 
     // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+dependencies {
+    
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+
+    // Required for Firebase Authentication
+    implementation("com.google.firebase:firebase-auth-ktx") // <--- ADD THIS
+
+    // Required for Google Sign-In functionality itself
+    implementation("com.google.android.gms:play-services-auth") // <--- ADD THIS
+
+    // For Firebase Analytics (already there)
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Other Flutter dependencies (if any)
+    // implementation("androidx.annotation:annotation:1.x.x") // Example
 }
 
 android {

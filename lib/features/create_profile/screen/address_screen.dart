@@ -1,6 +1,5 @@
 import 'package:afriqueen/common/widgets/steps.dart';
-import 'package:afriqueen/features/create_profile/widget/create_profile_widgets.dart';
-
+import 'package:afriqueen/features/create_profile/widget/address_screen_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -32,7 +31,7 @@ class AddressScreen extends StatelessWidget {
                 const Location(),
                 SizedBox(height: 80.h),
                 //----------------- Button to naviagte next page------------
-             AddressNextButton(),
+                AddressNextButton(),
               ],
             ),
           ),

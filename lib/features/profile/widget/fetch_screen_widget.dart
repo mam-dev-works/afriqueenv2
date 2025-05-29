@@ -1,0 +1,43 @@
+//-------------------Favorites user-----------------------
+import 'package:afriqueen/common/localization/enums/enums.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
+
+class FavoritesListTile extends StatelessWidget {
+  const FavoritesListTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () {},
+      trailing: Icon(CupertinoIcons.forward),
+      leading: Icon(HugeIcons.strokeRoundedFavouriteSquare),
+      title: Text(
+        EnumLocale.favorites.name.tr,
+        style: Theme.of(context).textTheme.bodyMedium,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+}
+
+//-------------------Archive user-----------------------
+class ArchiveListTile extends StatelessWidget {
+  const ArchiveListTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () {},
+      trailing: Icon(CupertinoIcons.forward),
+      leading: Icon(HugeIcons.strokeRoundedArchive),
+      title: Text(
+        EnumLocale.archieve.name.tr,
+        style: Theme.of(context).textTheme.bodyMedium,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+}

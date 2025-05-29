@@ -10,8 +10,8 @@ import 'package:get/get.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository _loginRepository;
-  bool isPasswordHidden = true;
-  final app = AppGetStorage();
+  bool _isPasswordHidden = true;
+  final _app = AppGetStorage();
   LoginModel _loginModel = LoginModel(email: '', password: '');
 
   LoginBloc({required LoginRepository loginrepository})
@@ -22,8 +22,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginPasswordVisibility event,
       Emitter<LoginState> emit,
     ) {
-      isPasswordHidden = !isPasswordHidden;
-      emit(state.copyWith(isLoginPasswordVisible: isPasswordHidden));
+      _isPasswordHidden = !_isPasswordHidden;
+      emit(state.copyWith(isLoginPasswordVisible: _isPasswordHidden));
     });
     //------------------------track user input for email--------------------------
     on<LoginEmailChanged>((event, emit) {
@@ -55,7 +55,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (userCredential != null) {
         bool isNewUser = await _loginRepository.checkUserAvaibility();
         if (isNewUser == true) {
-          app.setPageNumber(2);
+          _app.setPageNumber(2);
           emit(GoogleLoginNewUser.fromState(state));
         } else if (isNewUser == false) {
           emit(GoogleLoginOldUser.fromState(state));

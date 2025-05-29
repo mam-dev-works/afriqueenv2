@@ -18,5 +18,7 @@ class AppRoutes {
   static const String interests = '/interests';
   static const String passion = '/passion';
   static const String upload = '/upload';
+  static const String setting = '/setting';
   static const String discription = '/discription';
+  static const String profile = '/profile';
 }

@@ -1,5 +1,5 @@
 import 'package:afriqueen/common/widgets/steps.dart';
-import 'package:afriqueen/features/create_profile/widget/create_profile_widgets.dart';
+import 'package:afriqueen/features/create_profile/widget/age_screen_widgets.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,7 +33,7 @@ class AgeScreen extends StatelessWidget {
 
                 SizedBox(height: 80.h),
                 //----------------- Button to naviagte next page------------
-                 AgeNextButton(),
+                AgeNextButton(),
               ],
             ),
           ),

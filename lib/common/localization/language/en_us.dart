@@ -2,7 +2,7 @@
 
 import 'package:afriqueen/common/localization/enums/enums.dart';
 
-final  Map<String, String> enUS = {
+final Map<String, String> enUS = {
   EnumLocale.appName.name: 'Afriqueen',
   EnumLocale.signupText.name: 'Signup',
   EnumLocale.loginText.name: 'Login',
@@ -182,9 +182,7 @@ By using Afriqueen, you agree to the following terms and conditions. These terms
   EnumLocale.uploadImageTitle.name: "Add at least one photo",
   EnumLocale.uploadImageDiscription.name:
       "Select photo that express your personality and show you doing things you love.",
-
   EnumLocale.submit.name: "Submit",
-
   EnumLocale.storagePermissionRequired.name:
       "Storage permission is required for further process",
   EnumLocale.photosPermissionDeniedText.name:
@@ -194,8 +192,22 @@ By using Afriqueen, you agree to the following terms and conditions. These terms
   EnumLocale.discriptionBody.name:
       "You can change this information later by contacting our Customer service department.",
   EnumLocale.discriptionLabelText.name: "Discription",
-  EnumLocale.home.name: "Home",
-  EnumLocale.likes.name: "Likes",
-  EnumLocale.search.name: "Search",
-  EnumLocale.profile.name: "Profile",
+  EnumLocale.joinedJustNow.name: 'Joined just now',
+  EnumLocale.joined.name: 'Joined',
+  EnumLocale.minutesAgo.name: 'minutes ago',
+  EnumLocale.hoursAgo.name: 'hours ago',
+  EnumLocale.daysAgo.name: 'days ago',
+  EnumLocale.ago.name: 'ago',
+  EnumLocale.joinedOn.name: 'Joined on',
+  EnumLocale.setting.name: "Settings",
+  EnumLocale.logout.name: "Logout",
+  EnumLocale.notifications.name: 'Notifications',
+  EnumLocale.privacySettings.name: 'Privacy settings',
+  EnumLocale.helpCenter.name: 'Help center',
+  EnumLocale.changeLanguage.name: 'Change Language',
+  EnumLocale.favorites.name: "Favorites  ",
+  EnumLocale.archieve.name: "Archieve",
+  EnumLocale.block.name: 'Block',
+  EnumLocale.report.name: "Report",
+  EnumLocale.more.name: 'More',
 };

@@ -1,5 +1,6 @@
 import 'package:afriqueen/common/widgets/steps.dart';
-import 'package:afriqueen/features/create_profile/widget/create_profile_widgets.dart';
+
+import 'package:afriqueen/features/create_profile/widget/discription_screen_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

@@ -11,6 +11,7 @@ class EmailVerificationBloc
     : _repository = repository,
       super(EmailVerificationInitial()) {
     //------------when user clicked send link button for verification----------------------------------
+
     on<OnButtonClicked>((event, emit) async {
       try {
         await _repository.sendEmailVerificationLink();
@@ -27,6 +28,10 @@ class EmailVerificationBloc
       } catch (e) {
         emit(EmailVerifiedError.fromState(state, error: e.toString()));
       }
+    });
+    //=--------------- reset email verification--------------------
+        on<ResetEmailVerification>((event, emit) async {
+          emit(EmailVerificationInitial());
     });
   }
 }

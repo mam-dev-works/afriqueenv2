@@ -96,5 +96,11 @@ class LoginScreen extends StatelessWidget {
       Get.offNamed(AppRoutes.main);
       Get.back();
     }
+
+    if (state is GoogleLoginError) {
+      Get.back();
+      debugPrint("Error : ${state.error}");
+      snackBarMessage(context, state.error, Theme.of(context));
+    }
   }
 }

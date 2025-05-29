@@ -19,8 +19,11 @@ import 'package:lottie/lottie.dart';
 // --------------Email verification button----------------------------------
 class EmailVerificationButton extends StatelessWidget {
   EmailVerificationButton({super.key});
+
   final repository = EmailVerificationRepository();
+
   final appGetStorage = AppGetStorage();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EmailVerificationBloc, EmailVerificationState>(

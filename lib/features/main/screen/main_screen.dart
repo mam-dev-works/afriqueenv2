@@ -1,11 +1,16 @@
 import 'package:afriqueen/common/constant/constant_colors.dart';
-import 'package:afriqueen/common/localization/enums/enums.dart';
+import 'package:afriqueen/features/add/screen/add_screen.dart';
+import 'package:afriqueen/features/reels/screen/reels_screen.dart';
+import 'package:afriqueen/features/home/screen/home_screen.dart';
+import 'package:afriqueen/features/match/screen/match_screen.dart';
+import 'package:afriqueen/services/status/repository/status_repository.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -16,20 +21,26 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  final List<Widget> _widgets = [
+    HomeScreen(),
+    AddScreen(),
+    MatchScreen(),
+    AddScreen(),
+    ReelsScreen(),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (FirebaseAuth.instance.currentUser != null) {
+      StatusRepository().setupUserPresence();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: InkWell(
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-            },
-
-            child: Text("Log out"),
-          ),
-        ),
-      ),
+      body: _widgets[_selectedIndex],
 
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -50,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
               gap: 8.w,
               activeColor: AppColors.primaryColor,
               iconSize: 24.r,
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
+              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 3.h),
               duration: Duration(milliseconds: 400),
               tabBackgroundColor: AppColors.grey.withValues(alpha: 0.2),
               color: Colors.black,
@@ -59,33 +70,43 @@ class _MainScreenState extends State<MainScreen> {
                   textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: AppColors.primaryColor,
                   ),
+                  iconSize: 27.r,
                   gap: 5.w,
-                  icon: LineIcons.home,
-                  text: EnumLocale.home.name.tr,
+                  icon: HugeIcons.strokeRoundedLocation01,
+                ),
+
+                GButton(
+                  textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: AppColors.primaryColor,
+                  ),
+                  gap: 5.w,
+                  iconSize: 27.r,
+                  icon: HugeIcons.strokeRoundedCards01,
+                ),
+
+                GButton(
+                  textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: AppColors.primaryColor,
+                  ),
+                  gap: 5.w,
+                  iconSize: 27.r,
+                  icon: CupertinoIcons.plus,
                 ),
                 GButton(
                   textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: AppColors.primaryColor,
                   ),
                   gap: 5.w,
-                  icon: LineIcons.heart,
-                  text: EnumLocale.likes.name.tr,
+                  iconSize: 27.r,
+                  icon: CupertinoIcons.chat_bubble,
                 ),
                 GButton(
                   textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: AppColors.primaryColor,
                   ),
+                  iconSize: 27.r,
                   gap: 5.w,
-                  icon: LineIcons.search,
-                  text: EnumLocale.search.name.tr,
-                ),
-                GButton(
-                  textStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: AppColors.primaryColor,
-                  ),
-                  gap: 5.w,
-                  icon: LineIcons.user,
-                  text: EnumLocale.profile.name.tr,
+                  icon: CupertinoIcons.play_arrow,
                 ),
               ],
               selectedIndex: _selectedIndex,
