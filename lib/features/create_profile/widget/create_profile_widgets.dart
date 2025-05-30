@@ -787,7 +787,7 @@ class InterestsNextButton extends StatelessWidget {
                 state.love.isNotEmpty &&
                 state.sports.isNotEmpty) {
               app.setPageNumber(7);
-              Get.offNamed(AppRoutes.passion);
+              Get.offAllNamed(AppRoutes.passion);
             } else {
               snackBarMessage(
                 context,
@@ -955,7 +955,7 @@ class PassionNextButton extends StatelessWidget {
                 state.food.isNotEmpty &&
                 state.adventure.isNotEmpty) {
               app.setPageNumber(8);
-              Get.offNamed(AppRoutes.discription);
+              Get.offAllNamed(AppRoutes.discription);
             } else {
               snackBarMessage(
                 context,

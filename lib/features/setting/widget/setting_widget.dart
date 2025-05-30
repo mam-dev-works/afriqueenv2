@@ -213,7 +213,7 @@ class LogoutListTile extends StatelessWidget {
         if (!currentContext.mounted) return;
         customLoading(context);
         await Future.delayed(Duration(milliseconds:1500));
-        Get.offNamed(AppRoutes.login);
+        Get.offAllNamed(AppRoutes.login);
       },
       trailing: Icon(CupertinoIcons.forward),
     );

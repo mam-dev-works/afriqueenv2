@@ -10,6 +10,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc({required ProfileRepository repo})
     : _repository = repo,
       super(ProfileInitial()) {
+
+
     on<ProfileFetch>((event, emit) async {
       try {
         emit(Loading.fromState(state));
@@ -17,7 +19,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (data != null) return emit(ProfileState(data: data));
       } catch (e) {
         emit(Error.fromState(state, error: e.toString()));
-
       }
     });
   }

@@ -1,3 +1,4 @@
+import 'package:afriqueen/common/constant/constant_strings.dart';
 import 'package:afriqueen/features/create_profile/model/create_profile_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
@@ -56,7 +57,7 @@ class CreateProfileRepository {
 
   Future<String?> uploadToCloudinary(String imagePath) async {
     try {
-      final cloudinary = CloudinaryPublic("dwzriczge", "afrikhc9o0");
+      final cloudinary = CloudinaryPublic(AppStrings.cloudName,AppStrings.uploadPreset);
       CloudinaryResponse response = await cloudinary.uploadFile(
         CloudinaryFile.fromFile(
           imagePath,

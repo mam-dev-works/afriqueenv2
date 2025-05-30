@@ -71,7 +71,7 @@ class UploadImageScreen extends StatelessWidget {
     }
 
     if (state is Success) {
-      Get.offNamed(AppRoutes.main);
+      Get.offAllNamed(AppRoutes.main);
       box.remove('pageNumber');
       box.remove('pseudo');
       box.remove('sex');

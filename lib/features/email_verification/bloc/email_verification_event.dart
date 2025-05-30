@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 //----------------------------Event--------------------------------
 sealed class EmailVerificationEvent extends Equatable {
   const EmailVerificationEvent();
@@ -10,6 +11,3 @@ sealed class EmailVerificationEvent extends Equatable {
 final class OnButtonClicked extends EmailVerificationEvent {}
 
 final class OnClickedDeleteButton extends EmailVerificationEvent {}
-
-
-final class ResetEmailVerification extends EmailVerificationEvent {}

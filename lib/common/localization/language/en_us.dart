@@ -210,4 +210,6 @@ By using Afriqueen, you agree to the following terms and conditions. These terms
   EnumLocale.block.name: 'Block',
   EnumLocale.report.name: "Report",
   EnumLocale.more.name: 'More',
+  EnumLocale.blocked.name: 'Blocked',
+  EnumLocale.addStory.name: 'Add Story',
 };

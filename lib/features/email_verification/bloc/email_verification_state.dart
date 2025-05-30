@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class EmailVerificationState extends Equatable {
   final bool isVerified;
-  
+
   const EmailVerificationState({required this.isVerified});
 
   EmailVerificationState copyWith({bool? isVerified}) =>

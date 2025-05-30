@@ -206,6 +206,8 @@ En utilisant Afriqueen, vous acceptez les conditions générales suivantes. Ces 
   EnumLocale.favorites.name: "Favoris",
   EnumLocale.archieve.name: "Archive",
   EnumLocale.block.name: "Bloquer",
-EnumLocale.report.name: "Signaler",
-EnumLocale.more.name: "Plus"
+  EnumLocale.report.name: "Signaler",
+  EnumLocale.more.name: "Plus",
+  EnumLocale.blocked.name: "Bloqué(e)",
+  EnumLocale.addStory.name: "Ajouter une histoire",
 };

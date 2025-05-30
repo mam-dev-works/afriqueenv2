@@ -29,9 +29,6 @@ class EmailVerificationBloc
         emit(EmailVerifiedError.fromState(state, error: e.toString()));
       }
     });
-    //=--------------- reset email verification--------------------
-        on<ResetEmailVerification>((event, emit) async {
-          emit(EmailVerificationInitial());
-    });
+
   }
 }

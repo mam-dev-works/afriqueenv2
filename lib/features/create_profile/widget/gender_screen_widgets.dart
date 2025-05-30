@@ -56,7 +56,7 @@ class GenderNextButton extends StatelessWidget {
     return CommonButton(
       onPressed: () {
         app.setPageNumber(4);
-        Get.offNamed(AppRoutes.age);
+        Get.offAllNamed(AppRoutes.age);
       },
       buttonText: EnumLocale.next.name.tr,
     );

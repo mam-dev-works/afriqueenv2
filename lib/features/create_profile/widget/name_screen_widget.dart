@@ -72,7 +72,7 @@ class NameNextButton extends StatelessWidget {
       onPressed: () {
         if (formKey.currentState!.validate()) {
           app.setPageNumber(3);
-          Get.offNamed(AppRoutes.gender);
+          Get.offAllNamed(AppRoutes.gender);
         }
       },
       buttonText: EnumLocale.next.name.tr,

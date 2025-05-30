@@ -26,7 +26,7 @@ class NextButton extends StatelessWidget {
     return CommonButton(
       onPressed: () async {
         app.setHasOpenedApp();
-        Get.offNamed(AppRoutes.login);
+        Get.offAllNamed(AppRoutes.login);
       },
 
       buttonText: EnumLocale.next.name.tr,

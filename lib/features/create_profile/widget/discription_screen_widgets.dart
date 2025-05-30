@@ -122,7 +122,7 @@ class DiscriptionNextButton extends StatelessWidget {
       onPressed: () {
         if (formKey.currentState!.validate()) {
           app.setPageNumber(9);
-          Get.offNamed(AppRoutes.upload);
+          Get.offAllNamed(AppRoutes.upload);
         }
       },
       buttonText: EnumLocale.next.name.tr,

@@ -33,6 +33,8 @@ class ProfileDataContent extends StatelessWidget {
 
                   //--------------Archive user list----------------------------
                   ArchiveListTile(),
+                  //--------------Blocked user list----------------------------
+                  BlockedListTile(),
                 ],
               ),
             ),

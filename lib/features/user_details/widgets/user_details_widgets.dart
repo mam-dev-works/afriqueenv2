@@ -36,7 +36,7 @@ class StackWidget extends StatelessWidget {
                   ? BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12.r),
-                      topRight: Radius.circular(12.r)
+                      topRight: Radius.circular(12.r),
                     ),
                     image: DecorationImage(
                       fit: BoxFit.cover,
@@ -212,7 +212,7 @@ class UserDetailsAppBar extends StatelessWidget {
       pinned: true,
       centerTitle: true,
       title: Text(
-        isScrollingUp ?'': name  ,
+        isScrollingUp ? '' : name,
         style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 25.sp),
         overflow: TextOverflow.ellipsis,
       ),

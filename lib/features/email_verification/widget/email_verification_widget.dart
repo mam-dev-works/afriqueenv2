@@ -36,7 +36,7 @@ class EmailVerificationButton extends StatelessWidget {
               if (!currentContext.mounted) return;
 
               if (isVerified) {
-                Get.offNamed(AppRoutes.name);
+                Get.offAllNamed(AppRoutes.name);
                 appGetStorage.setPageNumber(2);
               } else {
                 snackBarMessage(

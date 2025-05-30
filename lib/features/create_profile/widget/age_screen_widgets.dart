@@ -58,7 +58,7 @@ class AgeNextButton extends StatelessWidget {
           onPressed: () {
             if (DateTime.now().year - state.dob.year > 18) {
               app.setPageNumber(5);
-              Get.offNamed(AppRoutes.address);
+              Get.offAllNamed(AppRoutes.address);
             } else {
               snackBarMessage(
                 context,

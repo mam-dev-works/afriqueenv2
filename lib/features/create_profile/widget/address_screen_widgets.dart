@@ -39,7 +39,7 @@ class AddressNextButton extends StatelessWidget {
             if (isGranted) {
               app.setPageNumber(6);
 
-              Get.offNamed(AppRoutes.interests);
+              Get.offAllNamed(AppRoutes.interests);
             } else {
               snackBarMessage(
                 currentContext,

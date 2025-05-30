@@ -21,4 +21,19 @@ class Seniority {
       return '${EnumLocale.joinedOn.name.tr} ${createdAt.day}/${createdAt.month}/${createdAt.year}';
     }
   }
+
+  static String formatStoriesTime(DateTime createdAt) {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
+
+    if (difference.inMinutes < 1) {
+      return '0 ${EnumLocale.minutesAgo.name.tr}';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} ${EnumLocale.minutesAgo.name.tr}';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} ${EnumLocale.hoursAgo.name.tr}';
+    } else {
+      return '';
+    }
+  }
 }

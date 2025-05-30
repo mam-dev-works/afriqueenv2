@@ -139,6 +139,8 @@ enum EnumLocale {
  block,
  report,
  more,
+ blocked,
+ addStory,
 }
 
 /*abstract class AppStrings {
