@@ -57,3 +57,5 @@ web/.dart_tool/
 .env
 .env.*extracted/
 *.lib
+extracted/
+*.lib
