@@ -55,4 +55,5 @@ web/.dart_tool/
 
 # Environment files (optional)
 .env
-.env.*
+.env.*extracted/
+*.lib
