@@ -19,3 +19,5 @@ final class FavoriteUserRemoved extends FavoriteEvent {
 }
 
 final class FavoriteUsersFetched extends FavoriteEvent {}
+
+final class ToggleFavoriteEvent extends FavoriteEvent {}

@@ -88,10 +88,12 @@ class LikeRepository {
           .where('likerId', isEqualTo: currentUserId)
           .get();
 
-      return likeQuery.docs.map((doc) => doc.data()['likedUserId'] as String).toList();
+      return likeQuery.docs
+          .map((doc) => doc.data()['likedUserId'] as String)
+          .toList();
     } catch (e) {
       debugPrint('Error getting liked user IDs: $e');
       return [];
     }
   }
-} 
+}

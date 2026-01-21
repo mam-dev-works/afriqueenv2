@@ -761,7 +761,7 @@ packages:
     source: hosted
     version: "0.2.5"
   get:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: get
       sha256: c79eeb4339f1f3deffd9ec912f8a923834bec55f7b49c9e882b8fef2c139d425
@@ -1400,14 +1400,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-  riverpod:
-    dependency: "direct main"
-    description:
-      name: riverpod
-      sha256: "59062512288d3056b2321804332a13ffdd1bf16df70dcc8e506e411280a72959"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.1"
   rxdart:
     dependency: "direct overridden"
     description:
@@ -1557,14 +1549,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.1"
-  state_notifier:
-    dependency: transitive
-    description:
-      name: state_notifier
-      sha256: b8677376aa54f2d7c58280d5a007f9e8774f1968d1fb1c096adcb4792fba29bb
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   step_progress_indicator:
     dependency: "direct main"
     description:

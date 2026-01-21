@@ -2,7 +2,6 @@
 import 'package:afriqueen/features/home/model/home_model.dart';
 import 'package:equatable/equatable.dart';
 
-
 //-----------------------------Fav State-----------------------------
 class FavoriteState extends Equatable {
   final List<HomeModel> favUserList;

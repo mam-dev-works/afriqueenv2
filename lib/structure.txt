@@ -1,71 +1,225 @@
 lib/
-├── main.dart
+├── main.dart                       # App entry point
 ├── app.dart                        # Root widget with routes, themes, localization
+├── firebase_options.dart           # Firebase configuration for all platforms
+├── plan.md                         # Project planning document
+├── structure.txt                   # This file - project structure documentation
 │
 ├── common/                         # Shared app-wide resources
-│   ├── constants/                  # App-wide constants like colors, sizes, strings
-│   ├── theme/                      # App light/dark themes
+│   ├── constant/                   # App-wide constants
+│   │   ├── constant_colors.dart
+│   │   └── constant_strings.dart
+│   ├── theme/                      # App themes
+│   │   ├── app_colors.dart
+│   │   └── app_theme.dart
 │   ├── widgets/                    # Reusable UI components
-│   ├── localization/              # Localization support
-│   │   ├── translations.dart
-│   │   ├── en_US.dart
-│   │   └── np_NP.dart
+│   │   ├── app_logo.dart
+│   │   ├── circular_indicator.dart
+│   │   ├── city_name.dart
+│   │   ├── common_button.dart
+│   │   ├── common_textfield.dart
+│   │   ├── confirmation_dialog.dart
+│   │   ├── country_name.dart
+│   │   ├── divider.dart
+│   │   ├── invisible_mode_premium_dialog.dart
+│   │   ├── loading.dart
+│   │   ├── logout_dialog.dart
+│   │   ├── password_visibility.dart
+│   │   ├── premium_info_dialog.dart
+│   │   ├── seniority.dart
+│   │   ├── shimmer_effect.dart
+│   │   ├── snackbar_message.dart
+│   │   ├── steps.dart
+│   │   ├── success_screen.dart
+│   │   └── user_status.dart
+│   ├── localization/               # Localization support
+│   │   ├── enums/
+│   │   │   └── enums.dart
+│   │   ├── language/
+│   │   │   ├── en_us.dart
+│   │   │   └── fr_fr.dart
+│   │   └── translations/
+│   │       └── app_translations.dart
 │   └── utils/                      # Utility/helper classes & functions
-│       ├── validators.dart
-│       ├── date_formatter.dart
-│       ├── string_utils.dart
-│       ├── device_utils.dart
-│       ├── debouncer.dart
-│       ├── logger.dart
-│       └── snackbar_util.dart
+│       └── validators.dart
+│
+├── core/                           # Core architecture & configurations
+│   ├── constants/
+│   │   └── translations/
+│   └── services/                   # (Empty - reserved for core services)
 │
 ├── services/                       # App-wide service logic
+│   ├── account_management_service.dart
+│   ├── comprehensive_edit_profile_service.dart
+│   ├── invisible_mode_service.dart
+│   ├── logout_service.dart
+│   ├── passwordless_login_services.dart
+│   ├── premium_service.dart
+│   ├── premium_test_helper.dart
 │   ├── storage/                    # Local storage layer
-│   │   ├── storage_service.dart
-│   │   ├── shared_prefs_storage.dart
-│   │   └── get_storage_service.dart
-│   ├── network/                    # API and HTTP services
-│   │   ├── api_service.dart
-│   │   ├── network_client.dart
-│   │   └── auth_interceptor.dart
-│   ├── auth/                       # Authentication/session services
-│   │   ├── auth_service.dart
-│   │   └── session_manager.dart
-│   ├── notifications/             # Push notifications
-│   │   ├── notification_service.dart
-│   │   └── firebase_messaging_handler.dart
-│   ├── analytics/                 # Event & screen analytics
-│   │   └── analytics_service.dart
-│   ├── logging/                   # Error/crash logging
-│   │   └── crashlytics_service.dart
-│   ├── connectivity/              # Internet check service
-│   │   └── connectivity_service.dart
-│   ├── file/                      # File reading/downloading
-│   │   └── file_service.dart
-│   ├── permissions/               # Runtime permission handling
-│   │   └── permission_service.dart
-│   └── location/                  # GPS/location
-│       └── location_service.dart
+│   │   └── get_storage.dart
+│   ├── firebase/                   # Firebase services (empty folder)
+│   ├── notifications/              # Push notifications (empty folder)
+│   ├── connectivity/               # Internet check service (empty folder)
+│   ├── permissions/                # Runtime permission handling
+│   │   └── permission_handler.dart
+│   ├── location/                   # GPS/location services
+│   │   └── location.dart
+│   ├── distance/                   # Distance calculation
+│   │   └── distance_calculator.dart
+│   └── status/                     # User online/offline status
+│       ├── bloc/
+│       ├── model/
+│       └── repository/
 │
-├── features/                      # Feature-first structure
-│   ├── home/
+├── features/                       # Feature-first structure (30 features)
+│   ├── activity/                   # User activity tracking
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── add/                        # Add content feature
+│   ├── archive/                    # Archived conversations
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   └── screen/
+│   ├── auth/                       # Authentication helpers
+│   │   ├── model/
+│   │   └── repository/
+│   ├── blocked/                    # Blocked users management
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   └── screen/
+│   ├── chat/                       # Chat/messaging
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── chat_request/               # Chat requests
+│   ├── create_profile/             # Profile creation
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── edit_profile/               # Profile editing
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   └── screen/
+│   ├── email_verification/         # Email verification
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   └── screen/
+│   ├── event/                      # Events/meetings
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── favorite/                   # Favorite users
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   └── screen/
+│   ├── forgot_password/            # Password recovery
 │   │   ├── models/
 │   │   ├── repository/
 │   │   ├── bloc/
-│   │   │   └── bloc.dart
-│   │   ├── screens/
-│   │   │   └── home_screen.dart
-│   │   └── widgets/
-│   │       └── home_card.dart
-│   ├── profile/
+│   │   └── screen/
+│   ├── gifts/                      # Virtual gifts
+│   │   ├── model/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── home/                       # Home/discover screen
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── login/                      # User login
 │   │   ├── models/
 │   │   ├── repository/
 │   │   ├── bloc/
-│   │   ├── screens/
-│   │   └── widgets/
+│   │   └── screen/
+│   ├── main/                       # Main navigation
+│   │   └── screen/
+│   ├── match/                      # Match/like system
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── meeting/                    # Meeting scheduling
+│   │   ├── model/
+│   │   └── screen/
+│   ├── profile/                    # User profile
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── reels/                      # Short video reels
+│   │   └── screen/
+│   ├── report_profile/             # Profile reporting
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   └── screen/
+│   ├── setting/                    # App settings
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── signup/                     # User registration
+│   │   ├── models/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   └── screen/
+│   ├── stories/                    # Stories (24h content)
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── user_details/               # User detail view
+│   │   ├── screen/
+│   │   └── widget/
+│   ├── visibility/                 # Visibility/privacy settings
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── bloc/
+│   │   └── screen/
+│   └── wellcome/                   # Welcome/onboarding
+│       └── screen/
 │
-├── routes/                        # App route config
-│   ├── app_routes.dart
-│   └── app_pages.dart
+└── routes/                         # App route config
+    ├── app_routes.dart
+    └── app_pages.dart
+
+---
+
+## Architecture Pattern: BLoC (Business Logic Component)
+
+Each feature follows a consistent structure:
+- **model/**: Data models and entities
+- **repository/**: Data layer (Firebase, API calls)
+- **bloc/**: Business logic (BLoC pattern with events, states, and bloc)
+- **screen/**: UI screens
+- **widget/**: Feature-specific reusable widgets
+
+## Key Technologies
+- State Management: flutter_bloc ^9.1.1
+- Backend: Firebase (Auth, Firestore, Storage, Realtime DB, Dynamic Links)
+- Image Management: Cloudinary
+- Local Storage: get_storage, shared_preferences
+- Localization: Multi-language support (EN, FR)
+
+## Total Features: 30
+Authentication, Profile Management, Chat, Stories, Matching, Events, Gifts, 
+Settings, Activity Tracking, Privacy Controls, and more.
 
 

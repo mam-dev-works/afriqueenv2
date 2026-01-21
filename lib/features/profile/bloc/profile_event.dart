@@ -8,3 +8,5 @@ class ProfileEvent extends Equatable {
 }
 
 final class ProfileFetch extends ProfileEvent {}
+
+final class ProfileClick extends ProfileEvent {}

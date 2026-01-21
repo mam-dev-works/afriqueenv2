@@ -11,6 +11,7 @@ import 'package:afriqueen/features/chat/bloc/chat_bloc.dart';
 import 'package:afriqueen/features/chat/screen/chat_screen.dart';
 import 'package:afriqueen/features/favorite/bloc/favorite_bloc.dart';
 import 'package:afriqueen/features/favorite/bloc/favorite_event.dart';
+import 'package:afriqueen/features/favorite/bloc/favorite_state.dart';
 import 'package:afriqueen/features/home/model/home_model.dart';
 import 'package:afriqueen/features/user_details/screen/user_details_screen.dart';
 import 'package:afriqueen/routes/app_routes.dart';
@@ -51,13 +52,17 @@ class ProfileImageGallery extends StatelessWidget {
             height: 200.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.r),
-              border: widget.data.isElite ? Border.all(
-                color: Color(0xFFFFD700), // Yellow border for elite accounts
-                width: 3.w,
-              ) : null,
+              border: widget.data.isElite
+                  ? Border.all(
+                      color:
+                          Color(0xFFFFD700), // Yellow border for elite accounts
+                      width: 3.w,
+                    )
+                  : null,
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(widget.data.isElite ? 9.r : 12.r),
+              borderRadius:
+                  BorderRadius.circular(widget.data.isElite ? 9.r : 12.r),
               child: hasValidUrl
                   ? CachedNetworkImage(
                       imageUrl: widget.data.photos.first,
@@ -70,18 +75,20 @@ class ProfileImageGallery extends StatelessWidget {
                       ),
                       errorWidget: (context, url, error) => Container(
                         color: Colors.grey[300],
-                        child: Icon(Icons.person, size: 50.r, color: Colors.grey[600]),
+                        child: Icon(Icons.person,
+                            size: 50.r, color: Colors.grey[600]),
                       ),
                     )
                   : Container(
                       color: Colors.grey[300],
-                      child: Icon(Icons.person, size: 50.r, color: Colors.grey[600]),
+                      child: Icon(Icons.person,
+                          size: 50.r, color: Colors.grey[600]),
                     ),
             ),
           ),
         ),
         SizedBox(width: 12.w),
-        
+
         // Thumbnail images
         Expanded(
           child: Column(
@@ -128,7 +135,8 @@ class ProfileImageGallery extends StatelessWidget {
                 height: double.infinity,
                 placeholder: (context, url) => Container(
                   color: Colors.grey[300],
-                  child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                  child:
+                      Center(child: CircularProgressIndicator(strokeWidth: 2)),
                 ),
                 errorWidget: (context, url, error) => Container(
                   color: Colors.grey[200],
@@ -169,13 +177,14 @@ class ProfileImageGallery extends StatelessWidget {
 class ActionButtonsRow extends StatefulWidget {
   const ActionButtonsRow({super.key, required this.model});
   final HomeModel model;
-  
+
   @override
   State<ActionButtonsRow> createState() => _ActionButtonsRowState();
 }
 
 class _ActionButtonsRowState extends State<ActionButtonsRow> {
   bool isLiked = false;
+  bool isFavorited = false;
   bool loadingLike = true;
 
   @override
@@ -214,7 +223,8 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
                 ),
           onTap: () async {
             final likeRepository = LikeRepository();
-            final alreadyLiked = await likeRepository.hasLikedUser(widget.model.id);
+            final alreadyLiked =
+                await likeRepository.hasLikedUser(widget.model.id);
             if (alreadyLiked) {
               await likeRepository.unlikeUser(widget.model.id);
               if (mounted) {
@@ -233,7 +243,8 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
           },
         ),
         _buildActionButton(
-          icon: Icon(Icons.chat_bubble_outline, color: Colors.grey[600], size: 24),
+          icon: Icon(Icons.chat_bubble_outline,
+              color: Colors.grey[600], size: 24),
           onTap: () async {
             final chatRepository = ChatRepository();
             try {
@@ -245,9 +256,9 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
                   'photoUrl': widget.model.photos.first,
                 },
               );
-              
+
               if (!mounted) return;
-              
+
               Get.to(
                 () => RepositoryProvider(
                   create: (context) => ChatRepository(),
@@ -268,19 +279,53 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
           },
         ),
         _buildActionButton(
-          icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600], size: 24),
+          icon: Icon(Icons.keyboard_arrow_down,
+              color: Colors.grey[600], size: 24),
           onTap: () {
-            context.read<ArchiveBloc>().add(ArchiveUserAdded(archiveId: widget.model.id));
-            snackBarMessage(context, EnumLocale.savedToArchives.name.tr, Theme.of(context));
+            context
+                .read<ArchiveBloc>()
+                .add(ArchiveUserAdded(archiveId: widget.model.id));
+            snackBarMessage(
+                context, EnumLocale.savedToArchives.name.tr, Theme.of(context));
           },
         ),
+        // add favorite button with ui state connected to favorite bloc
+        // _buildActionButton(
+        //   icon: Icon(isFavorited ? Icons.star : Icons.star_outline,
+        //       color: isFavorited ? Colors.red : Colors.grey[600], size: 24),
+        //   onTap: () {
+        //     context
+        //         .read<FavoriteBloc>()
+        //         .add(FavoriteUserAdded(favId: widget.model.id));
+        //     snackBarMessage(context, EnumLocale.savedToFavorites.name.tr,
+        //         Theme.of(context));
+        //   },
+        // ),
         _buildActionButton(
-          icon: Icon(Icons.star_outline, color: Colors.grey[600], size: 24),
+          icon: BlocBuilder<FavoriteBloc, FavoriteState>(
+            builder: (context, state) {
+              // Check if the current user is in the favorites list
+              final bool isActuallyFavorited = state is FavoriteState &&
+                  state.favUserList
+                      .any((favUser) => favUser.id == widget.model.id);
+
+              return Icon(
+                isActuallyFavorited ? Icons.star : Icons.star_outline,
+                color: isActuallyFavorited ? Colors.red : Colors.grey[600],
+                size: 24,
+              );
+            },
+          ),
           onTap: () {
-            context.read<FavoriteBloc>().add(FavoriteUserAdded(favId: widget.model.id));
-            snackBarMessage(context, EnumLocale.savedToFavorites.name.tr, Theme.of(context));
+            // Dispatch event to add user to favorites
+            context
+                .read<FavoriteBloc>()
+                .add(FavoriteUserAdded(favId: widget.model.id));
+            snackBarMessage(context, EnumLocale.savedToFavorites.name.tr,
+                Theme.of(context));
           },
         ),
+
         _buildActionButton(
           icon: Icon(Icons.block_outlined, color: Colors.grey[600], size: 24),
           onTap: () {
@@ -427,15 +472,15 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
             ],
           ),
         ),
-        
+
         // Right column
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.userDetailsScreen.data.relationshipStatus.isNotEmpty 
-                    ? widget.userDetailsScreen.data.relationshipStatus 
+                widget.userDetailsScreen.data.relationshipStatus.isNotEmpty
+                    ? widget.userDetailsScreen.data.relationshipStatus
                     : EnumLocale.userDetailsSingle.name.tr,
                 style: TextStyle(
                   fontSize: 14.sp,
@@ -445,8 +490,8 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
               ),
               SizedBox(height: 4.h),
               Text(
-                widget.userDetailsScreen.data.mainInterests.isNotEmpty 
-                    ? widget.userDetailsScreen.data.mainInterests.first 
+                widget.userDetailsScreen.data.mainInterests.isNotEmpty
+                    ? widget.userDetailsScreen.data.mainInterests.first
                     : EnumLocale.userDetailsDating.name.tr,
                 style: TextStyle(
                   fontSize: 14.sp,
@@ -533,8 +578,8 @@ class DescriptionSection extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         Text(
-          widget.data.description.isNotEmpty 
-              ? widget.data.description 
+          widget.data.description.isNotEmpty
+              ? widget.data.description
               : EnumLocale.userDetailsDefaultDescription.name.tr,
           style: TextStyle(
             fontSize: 14.sp,
@@ -569,8 +614,8 @@ class WhatLookingForSection extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         Text(
-          widget.data.whatLookingFor.isNotEmpty 
-              ? widget.data.whatLookingFor 
+          widget.data.whatLookingFor.isNotEmpty
+              ? widget.data.whatLookingFor
               : EnumLocale.userDetailsDefaultLookingFor.name.tr,
           style: TextStyle(
             fontSize: 14.sp,
@@ -605,8 +650,8 @@ class WhatNotWantSection extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         Text(
-          widget.data.whatNotWant.isNotEmpty 
-              ? widget.data.whatNotWant 
+          widget.data.whatNotWant.isNotEmpty
+              ? widget.data.whatNotWant
               : EnumLocale.userDetailsDefaultNotWant.name.tr,
           style: TextStyle(
             fontSize: 14.sp,
@@ -731,10 +776,10 @@ class Description extends StatelessWidget {
         child: Text(
           widget.data.description,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: AppColors.black,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
-          ),
+                color: AppColors.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+              ),
         ),
       ),
     );
@@ -765,10 +810,10 @@ class Interests extends StatelessWidget {
             child: Text(
               interest,
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 14.sp,
-              ),
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.sp,
+                  ),
               overflow: TextOverflow.ellipsis,
             ),
           );
@@ -794,10 +839,10 @@ class UserDetails extends StatelessWidget {
           Text(
             widget.data.pseudo,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              color: AppColors.black,
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-            ),
+                  color: AppColors.black,
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           SizedBox(width: 10.w),
           Container(
@@ -809,10 +854,10 @@ class UserDetails extends StatelessWidget {
             child: Text(
               "${widget.data.age}",
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 18.sp,
-              ),
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18.sp,
+                  ),
             ),
           ),
           SizedBox(width: 10.w),
@@ -821,10 +866,10 @@ class UserDetails extends StatelessWidget {
           Text(
             widget.data.city,
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: AppColors.grey,
-              fontWeight: FontWeight.w400,
-              fontSize: 16.sp,
-            ),
+                  color: AppColors.grey,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.sp,
+                ),
             overflow: TextOverflow.ellipsis,
           ),
         ],
@@ -837,7 +882,7 @@ class UserDetails extends StatelessWidget {
 class ButtonList extends StatefulWidget {
   const ButtonList({super.key, required this.model});
   final HomeModel model;
-  
+
   @override
   State<ButtonList> createState() => _ButtonListState();
 }
@@ -880,7 +925,8 @@ class _ButtonListState extends State<ButtonList> {
               IconButton(
                 onPressed: () async {
                   final likeRepository = LikeRepository();
-                  final alreadyLiked = await likeRepository.hasLikedUser(widget.model.id);
+                  final alreadyLiked =
+                      await likeRepository.hasLikedUser(widget.model.id);
                   if (alreadyLiked) {
                     await likeRepository.unlikeUser(widget.model.id);
                     if (mounted) {
@@ -914,7 +960,9 @@ class _ButtonListState extends State<ButtonList> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : Icon(
-                        isLiked ? Icons.thumb_up_alt : Icons.thumb_up_alt_outlined,
+                        isLiked
+                            ? Icons.thumb_up_alt
+                            : Icons.thumb_up_alt_outlined,
                         color: isLiked ? Colors.red : AppColors.black,
                         size: 30,
                       ),
@@ -946,9 +994,9 @@ class _ButtonListState extends State<ButtonList> {
                       },
                     );
                     debugPrint('Chat created with ID: $chatId');
-                    
+
                     if (!mounted) return;
-                    
+
                     final args = {
                       'chatId': chatId,
                       'otherUser': {
@@ -958,7 +1006,7 @@ class _ButtonListState extends State<ButtonList> {
                       },
                     };
                     debugPrint('Navigating to chat with args: $args');
-                    
+
                     Get.to(
                       () => RepositoryProvider(
                         create: (context) => ChatRepository(),
@@ -1105,10 +1153,11 @@ class UserDetailsAppBar extends StatelessWidget {
             ),
             PopupMenuItem(
               onTap: () => showDialog(
-                  context: context, builder: (context) => BlockAlertDialog(
-                    userId: userId,
-                    userName: userName,
-                  )),
+                  context: context,
+                  builder: (context) => BlockAlertDialog(
+                        userId: userId,
+                        userName: userName,
+                      )),
               child: Text(
                 EnumLocale.block.name.tr,
                 style: Theme.of(context).textTheme.bodyMedium,
@@ -1175,14 +1224,14 @@ class BlockAlertDialog extends StatelessWidget {
                 try {
                   final repository = BlockedRepository();
                   await repository.blockUser(userId);
-                  
+
                   if (context.mounted) {
                     snackBarMessage(
                       context,
                       '$userName ' + EnumLocale.hasBeenBlocked.name.tr,
                       Theme.of(context),
                     );
-                    
+
                     // Navigate back to main screen
                     await Future.delayed(Duration(milliseconds: 500));
                     Get.offAllNamed(AppRoutes.main);
@@ -1197,7 +1246,7 @@ class BlockAlertDialog extends StatelessWidget {
                     );
                   }
                 }
-              }, 
+              },
               buttonText: EnumLocale.yesBlock.name.tr),
           TextButton(
               onPressed: () => Get.back(),
