@@ -45,7 +45,7 @@ lib/
 │
 ├── core/                           # Core architecture & configurations
 │   ├── constants/
-│   │   └── translations/
+│   │   └── translations/           # (Empty folder)
 │   └── services/                   # (Empty - reserved for core services)
 │
 ├── services/                       # App-wide service logic
