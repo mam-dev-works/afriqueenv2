@@ -1,3 +1,4 @@
+// match page
 //-------------------Image and status------------------------------
 import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
@@ -8,6 +9,7 @@ import 'package:afriqueen/features/archive/bloc/archive_bloc.dart';
 import 'package:afriqueen/features/archive/bloc/archive_event.dart';
 import 'package:afriqueen/features/favorite/bloc/favorite_bloc.dart';
 import 'package:afriqueen/features/favorite/bloc/favorite_event.dart';
+import 'package:afriqueen/features/favorite/bloc/favorite_state.dart';
 import 'package:afriqueen/features/home/model/home_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -292,23 +294,46 @@ class ListOfButtons extends StatelessWidget {
             },
           ),
           // Favorite button (Star)
-          IconButton(
-            onPressed: () async {
-              context
-                  .read<FavoriteBloc>()
-                  .add(FavoriteUserAdded(favId: user.id));
-              snackBarMessage(
-                context,
-                EnumLocale.savedToFavorites.name.tr,
-                Theme.of(context),
+          BlocBuilder<FavoriteBloc, FavoriteState>(
+            builder: (context, state) {
+              final bool isActuallyFavorited =
+                  state.favUserList.any((favUser) => favUser.id == user.id);
+
+              return IconButton(
+                onPressed: () async {
+                  final favoriteBloc = context.read<FavoriteBloc>();
+                  final currentState = favoriteBloc.state;
+
+                  final bool isCurrentlyFavorited = currentState.favUserList
+                      .any((favUser) => favUser.id == user.id);
+
+                  if (isCurrentlyFavorited) {
+                    favoriteBloc.add(FavoriteUserRemoved(favId: user.id));
+                    snackBarMessage(
+                      context,
+                      EnumLocale.removedFromFavorites.name.tr,
+                      Theme.of(context),
+                    );
+                  } else {
+                    favoriteBloc.add(FavoriteUserAdded(favId: user.id));
+                    snackBarMessage(
+                      context,
+                      EnumLocale.savedToFavorites.name.tr,
+                      Theme.of(context),
+                    );
+                  }
+                  await Future.delayed(Duration(milliseconds: 500));
+                },
+                icon: Icon(
+                  isActuallyFavorited
+                      ? Icons.favorite
+                      : Icons.favorite_border_outlined,
+                  size: 22.r,
+                  color:
+                      isActuallyFavorited ? Colors.red : AppColors.primaryColor,
+                ),
               );
-              await Future.delayed(Duration(milliseconds: 500));
             },
-            icon: Icon(
-              Icons.favorite_border_outlined,
-              size: 22.r,
-              color: AppColors.primaryColor,
-            ),
           ),
           // Archive button (Box with down arrow)
           IconButton(

@@ -18,6 +18,8 @@ import 'package:afriqueen/features/chat/repository/chat_repository.dart';
 import 'package:afriqueen/features/chat/screen/chat_screen.dart';
 
 import '../../favorite/bloc/favorite_bloc.dart';
+import '../../favorite/bloc/favorite_event.dart';
+import '../../favorite/bloc/favorite_state.dart';
 
 //-------------------- user Image--------------------
 class UserImage extends StatelessWidget {
@@ -42,7 +44,7 @@ class UserImage extends StatelessWidget {
               image: CachedNetworkImageProvider(Homedata!.photos.first),
             ),
             // Elite styling
-            border: Homedata!.isElite 
+            border: Homedata!.isElite
                 ? Border.all(
                     color: Colors.amber,
                     width: 3.w,
@@ -93,7 +95,7 @@ class UserImage extends StatelessWidget {
                 ],
               ),
             ),
-        ),
+          ),
       ],
     );
   }
@@ -177,9 +179,9 @@ class ButtonsList extends StatelessWidget {
                       },
                     );
                     debugPrint('Chat created with ID: $chatId');
-                    
+
                     if (!context.mounted) return;
-                    
+
                     final args = {
                       'chatId': chatId,
                       'otherUser': {
@@ -189,7 +191,7 @@ class ButtonsList extends StatelessWidget {
                       },
                     };
                     debugPrint('Navigating to chat with args: $args');
-                    
+
                     Get.to(
                       () => RepositoryProvider(
                         create: (context) => ChatRepository(),
@@ -234,13 +236,47 @@ class ButtonsList extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.favorite_border_outlined,
-                    color: AppColors.black,
-                    size: 30,
-                  )),
+              BlocBuilder<FavoriteBloc, FavoriteState>(
+                builder: (context, state) {
+                  final bool isActuallyFavorited = state.favUserList
+                      .any((favUser) => favUser.id == Homedata!.id);
+
+                  return IconButton(
+                    onPressed: () {
+                      final favoriteBloc = context.read<FavoriteBloc>();
+                      final currentState = favoriteBloc.state;
+
+                      final bool isCurrentlyFavorited = currentState.favUserList
+                          .any((favUser) => favUser.id == Homedata!.id);
+
+                      if (isCurrentlyFavorited) {
+                        favoriteBloc
+                            .add(FavoriteUserRemoved(favId: Homedata!.id));
+                        snackBarMessage(
+                          context,
+                          EnumLocale.removedFromFavorites.name.tr,
+                          Theme.of(context),
+                        );
+                      } else {
+                        favoriteBloc
+                            .add(FavoriteUserAdded(favId: Homedata!.id));
+                        snackBarMessage(
+                          context,
+                          EnumLocale.savedToFavorites.name.tr,
+                          Theme.of(context),
+                        );
+                      }
+                    },
+                    icon: Icon(
+                      isActuallyFavorited
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                      color: isActuallyFavorited ? Colors.red : AppColors.black,
+                      size: 30,
+                    ),
+                  );
+                },
+              ),
               Text(
                 EnumLocale.favorites.name.tr,
                 style: Theme.of(context)

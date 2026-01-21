@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// user_details page
 import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/common/widgets/common_button.dart';
@@ -27,7 +27,6 @@ import 'package:afriqueen/features/chat/repository/chat_repository.dart';
 import 'package:afriqueen/features/blocked/repository/blocked_repository.dart';
 import 'package:afriqueen/features/report_profile/screen/report_profile_reason_screen.dart';
 import 'package:afriqueen/services/distance/distance_calculator.dart';
-
 import '../../match/repository/like_repository.dart';
 
 //-------------------Profile Image Gallery------------------------------
@@ -310,26 +309,37 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
           icon: BlocBuilder<FavoriteBloc, FavoriteState>(
             builder: (context, state) {
               // Check if the current user is in the favorites list
-              final bool isActuallyFavorited = state is FavoriteState &&
-                  state.favUserList
-                      .any((favUser) => favUser.id == widget.model.id);
+              final bool isActuallyFavorited = state.favUserList
+                  .any((favUser) => favUser.id == widget.model.id);
 
               return Icon(
                 isActuallyFavorited
-                    ? Icons.thumb_down
-                    : Icons.thumb_up_sharp, // favorite button fix
+                    ? Icons.star // Filled icon when favorited
+                    : Icons.star_border_outlined, // Outline when not favorited
                 color: isActuallyFavorited ? Colors.red : Colors.grey[600],
                 size: 24,
               );
             },
           ),
           onTap: () {
-            // Dispatch event to add user to favorites
-            context
-                .read<FavoriteBloc>()
-                .add(FavoriteUserAdded(favId: widget.model.id));
-            snackBarMessage(context, EnumLocale.savedToFavorites.name.tr,
-                Theme.of(context));
+            final favoriteBloc = context.read<FavoriteBloc>();
+            final currentState = favoriteBloc.state;
+
+            // Toggle favorite status
+            final bool isCurrentlyFavorited = currentState.favUserList
+                .any((favUser) => favUser.id == widget.model.id);
+
+            if (isCurrentlyFavorited) {
+              // Remove from favorites
+              favoriteBloc.add(FavoriteUserRemoved(favId: widget.model.id));
+              snackBarMessage(context, EnumLocale.removedFromFavorites.name.tr,
+                  Theme.of(context));
+            } else {
+              // Add to favorites
+              favoriteBloc.add(FavoriteUserAdded(favId: widget.model.id));
+              snackBarMessage(context, EnumLocale.savedToFavorites.name.tr,
+                  Theme.of(context));
+            }
           },
         ),
         // Block and Report buttons

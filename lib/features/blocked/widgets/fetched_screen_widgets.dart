@@ -19,6 +19,8 @@ import 'package:afriqueen/features/chat/repository/chat_repository.dart';
 import 'package:afriqueen/features/chat/screen/chat_screen.dart';
 
 import '../../favorite/bloc/favorite_bloc.dart';
+import '../../favorite/bloc/favorite_event.dart';
+import '../../favorite/bloc/favorite_state.dart';
 
 //-------------------- user Image--------------------
 class UserImage extends StatelessWidget {
@@ -279,13 +281,47 @@ class ButtonsList extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.favorite_border_outlined,
-                    color: AppColors.black,
-                    size: 30,
-                  )),
+              BlocBuilder<FavoriteBloc, FavoriteState>(
+                builder: (context, state) {
+                  final bool isActuallyFavorited = state.favUserList
+                      .any((favUser) => favUser.id == Homedata!.id);
+
+                  return IconButton(
+                    onPressed: () {
+                      final favoriteBloc = context.read<FavoriteBloc>();
+                      final currentState = favoriteBloc.state;
+
+                      final bool isCurrentlyFavorited = currentState.favUserList
+                          .any((favUser) => favUser.id == Homedata!.id);
+
+                      if (isCurrentlyFavorited) {
+                        favoriteBloc
+                            .add(FavoriteUserRemoved(favId: Homedata!.id));
+                        snackBarMessage(
+                          context,
+                          EnumLocale.removedFromFavorites.name.tr,
+                          Theme.of(context),
+                        );
+                      } else {
+                        favoriteBloc
+                            .add(FavoriteUserAdded(favId: Homedata!.id));
+                        snackBarMessage(
+                          context,
+                          EnumLocale.savedToFavorites.name.tr,
+                          Theme.of(context),
+                        );
+                      }
+                    },
+                    icon: Icon(
+                      isActuallyFavorited
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                      color: isActuallyFavorited ? Colors.red : AppColors.black,
+                      size: 30,
+                    ),
+                  );
+                },
+              ),
               Text(
                 EnumLocale.favorites.name.tr,
                 style: Theme.of(context)
@@ -307,7 +343,8 @@ class ButtonsList extends StatelessWidget {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text(EnumLocale.unblockUser.name.tr),
-                          content: Text(EnumLocale.questionToBlockUser.name.tr + ' ${Homedata!.pseudo}?'),
+                          content: Text(EnumLocale.questionToBlockUser.name.tr +
+                              ' ${Homedata!.pseudo}?'),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(),
@@ -329,7 +366,8 @@ class ButtonsList extends StatelessWidget {
                                   if (context.mounted) {
                                     snackBarMessage(
                                         context,
-                                        EnumLocale.userUnblockedSuccessfully.name.tr,
+                                        EnumLocale
+                                            .userUnblockedSuccessfully.name.tr,
                                         Theme.of(context));
                                   }
                                 } catch (e) {
@@ -460,14 +498,18 @@ class BlockedGridCard extends StatelessWidget {
                   bottom: 8.h,
                   right: 8.w,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     decoration: BoxDecoration(
                       color: Colors.red.withOpacity(0.85),
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Text(
                       EnumLocale.unblock.name.tr,
-                      style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 )
@@ -484,7 +526,10 @@ class BlockedGridCard extends StatelessWidget {
                 children: [
                   Text(
                     '${homeModel.pseudo}, ${homeModel.age}',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontWeight: FontWeight.w600),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
