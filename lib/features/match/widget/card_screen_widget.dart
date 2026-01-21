@@ -50,12 +50,14 @@ class ImageAndStatus extends StatelessWidget {
                   ),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(user.photos.isNotEmpty ? user.photos.first : ''),
+                    image: CachedNetworkImageProvider(
+                        user.photos.isNotEmpty ? user.photos.first : ''),
                   ),
                   // Elite styling
-                  border: user.isElite 
+                  border: user.isElite
                       ? Border.all(
-                          color: Color(0xFFFFD700), // Yellow border for elite accounts
+                          color: Color(
+                              0xFFFFD700), // Yellow border for elite accounts
                           width: 3.w,
                         )
                       : null,
@@ -151,6 +153,7 @@ class ListOfButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          // Like button (Thumbs up)
           IconButton(
             onPressed: () async {
               final likeRepository = LikeRepository();
@@ -179,10 +182,12 @@ class ListOfButtons extends StatelessWidget {
               size: 22.r,
             ),
           ),
+          // Chat button with pending request handling
           StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('chats')
-                .where('participants', arrayContains: FirebaseAuth.instance.currentUser?.uid)
+                .where('participants',
+                    arrayContains: FirebaseAuth.instance.currentUser?.uid)
                 .snapshots(),
             builder: (context, snapshot) {
               final currentUserId = FirebaseAuth.instance.currentUser?.uid;
@@ -190,13 +195,18 @@ class ListOfButtons extends StatelessWidget {
               if (snapshot.hasData) {
                 for (final d in snapshot.data!.docs) {
                   final p = List<String>.from(d['participants'] ?? []);
-                  if (currentUserId != null && p.contains(currentUserId) && p.contains(user.id)) {
+                  if (currentUserId != null &&
+                      p.contains(currentUserId) &&
+                      p.contains(user.id)) {
                     existing = d;
                     break;
                   }
                 }
               }
-              final isPending = existing != null && (existing!['isRequest'] == true) && ((existing!['status'] == null) || (existing!['status'] == 'PENDING'));
+              final isPending = existing != null &&
+                  (existing!['isRequest'] == true) &&
+                  ((existing!['status'] == null) ||
+                      (existing!['status'] == 'PENDING'));
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -209,7 +219,8 @@ class ListOfButtons extends StatelessWidget {
                           {
                             'id': user.id,
                             'name': user.pseudo,
-                            'photoUrl': user.photos.isNotEmpty ? user.photos.first : '',
+                            'photoUrl':
+                                user.photos.isNotEmpty ? user.photos.first : '',
                           },
                         );
                         if (!context.mounted) return;
@@ -222,7 +233,9 @@ class ListOfButtons extends StatelessWidget {
                                 chatId: chatId,
                                 receiverId: user.id,
                                 receiverName: user.pseudo,
-                                receiverPhotoUrl: user.photos.isNotEmpty ? user.photos.first : '',
+                                receiverPhotoUrl: user.photos.isNotEmpty
+                                    ? user.photos.first
+                                    : '',
                               ),
                             ),
                           ),
@@ -248,25 +261,37 @@ class ListOfButtons extends StatelessWidget {
                     GestureDetector(
                       onTap: () async {
                         try {
-                          await FirebaseFirestore.instance.collection('chats').doc(existing!.id).delete();
+                          await FirebaseFirestore.instance
+                              .collection('chats')
+                              .doc(existing!.id)
+                              .delete();
                         } catch (e) {
                           if (!context.mounted) return;
-                          snackBarMessage(context, EnumLocale.defaultError.name.tr, Theme.of(context));
+                          snackBarMessage(
+                              context,
+                              EnumLocale.defaultError.name.tr,
+                              Theme.of(context));
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 6.h),
                         decoration: BoxDecoration(
                           color: Colors.redAccent,
                           borderRadius: BorderRadius.circular(20.r),
                         ),
-                        child: Text(EnumLocale.cancel.name.tr, style: TextStyle(color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600)),
+                        child: Text(EnumLocale.cancel.name.tr,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600)),
                       ),
                     ),
                 ],
               );
             },
           ),
+          // Favorite button (Star)
           IconButton(
             onPressed: () async {
               context
@@ -285,6 +310,7 @@ class ListOfButtons extends StatelessWidget {
               color: AppColors.primaryColor,
             ),
           ),
+          // Archive button (Box with down arrow)
           IconButton(
             onPressed: () async {
               context

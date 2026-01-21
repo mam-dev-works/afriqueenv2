@@ -209,6 +209,7 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        // Like Button
         _buildActionButton(
           icon: loadingLike
               ? SizedBox(
@@ -242,6 +243,7 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
             }
           },
         ),
+        // Chat Button
         _buildActionButton(
           icon: Icon(Icons.chat_bubble_outline,
               color: Colors.grey[600], size: 24),
@@ -278,6 +280,7 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
             }
           },
         ),
+        // Archive Button
         _buildActionButton(
           icon: Icon(Icons.keyboard_arrow_down,
               color: Colors.grey[600], size: 24),
@@ -301,6 +304,8 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
         //         Theme.of(context));
         //   },
         // ),
+
+        // favorite button with ui state from favorite bloc
         _buildActionButton(
           icon: BlocBuilder<FavoriteBloc, FavoriteState>(
             builder: (context, state) {
@@ -310,7 +315,9 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
                       .any((favUser) => favUser.id == widget.model.id);
 
               return Icon(
-                isActuallyFavorited ? Icons.star : Icons.star_outline,
+                isActuallyFavorited
+                    ? Icons.thumb_down
+                    : Icons.thumb_up_sharp, // favorite button fix
                 color: isActuallyFavorited ? Colors.red : Colors.grey[600],
                 size: 24,
               );
@@ -325,7 +332,7 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
                 Theme.of(context));
           },
         ),
-
+        // Block and Report buttons
         _buildActionButton(
           icon: Icon(Icons.block_outlined, color: Colors.grey[600], size: 24),
           onTap: () {
@@ -338,6 +345,7 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
             );
           },
         ),
+        // Report Button
         _buildActionButton(
           icon: Icon(Icons.report_outlined, color: Colors.grey[600], size: 24),
           onTap: () {
