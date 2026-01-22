@@ -69,7 +69,8 @@ class ActivityScreenWrapper extends StatelessWidget {
 class _ActivityScreenState extends State<ActivityScreen> {
   int _selectedMainTabIndex = 0;
   int _selectedSubTabIndex = 0;
-  final EventRequestRepository _eventRequestRepository = EventRequestRepository();
+  final EventRequestRepository _eventRequestRepository =
+      EventRequestRepository();
   final EventRepository _eventRepository = EventRepository();
   final PremiumService _premiumService = PremiumService();
   bool _isPremiumUser = false;
@@ -84,7 +85,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     GiftRechargeService.initializeRechargeTimers();
 
     _loadPremiumStatus();
-    
+
     // Load initial data for the default tab (Views > "I have been seen")
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UserProfileBloc>().add(LoadViewedUsers());
@@ -112,9 +113,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
     try {
       // Debug user status
       await _premiumService.debugUserStatus();
-      
+
       final hasReachedLimit = await _premiumService.hasReachedEventLimit();
-      
+
       if (hasReachedLimit) {
         // Show premium info dialog
         PremiumInfoDialog.show(context);
@@ -143,14 +144,14 @@ class _ActivityScreenState extends State<ActivityScreen> {
           ),
           onPressed: () => Get.toNamed(AppRoutes.profileHome),
         ),
-         title: Text(
-           _getAppBarTitle(),
-           style: TextStyle(
-             fontSize: 18.sp,
-             fontWeight: FontWeight.w600,
-             color: AppColors.black,
-           ),
-         ),
+        title: Text(
+          _getAppBarTitle(),
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+            color: AppColors.black,
+          ),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -188,28 +189,33 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      _buildMainTab(EnumLocale.activityVus.name.tr, 0, _selectedMainTabIndex == 0, 0),
-                      _buildMainTab(EnumLocale.activityLikes.name.tr, 1, _selectedMainTabIndex == 1, 0),
-                      _buildMainTab(EnumLocale.activityCadeaux.name.tr, 2, _selectedMainTabIndex == 2, 0),
-                      _buildMainTab(EnumLocale.activityStory.name.tr, 3, _selectedMainTabIndex == 3, 0),
-                      _buildMainTab(EnumLocale.activityEvenement.name.tr, 4, _selectedMainTabIndex == 4, 0),
+                      _buildMainTab(EnumLocale.activityVus.name.tr, 0,
+                          _selectedMainTabIndex == 0, 0),
+                      _buildMainTab(EnumLocale.activityLikes.name.tr, 1,
+                          _selectedMainTabIndex == 1, 0),
+                      _buildMainTab(EnumLocale.activityCadeaux.name.tr, 2,
+                          _selectedMainTabIndex == 2, 0),
+                      _buildMainTab(EnumLocale.activityStory.name.tr, 3,
+                          _selectedMainTabIndex == 3, 0),
+                      _buildMainTab(EnumLocale.activityEvenement.name.tr, 4,
+                          _selectedMainTabIndex == 4, 0),
                     ],
                   ),
                 ),
-                
+
                 SizedBox(height: 6.h),
-                
-                 // Second row of sub tabs
-                 Container(
-                   height: 32.h,
-                   child: ListView(
-                     scrollDirection: Axis.horizontal,
-                     children: _buildSubTabs(),
-                   ),
-                 ),
-                
+
+                // Second row of sub tabs
+                Container(
+                  height: 32.h,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: _buildSubTabs(),
+                  ),
+                ),
+
                 SizedBox(height: 16.h),
-                
+
                 // Statistics
                 Row(
                   children: [
@@ -227,7 +233,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ],
             ),
           ),
-          
+
           // Content
           Expanded(
             child: _buildContent(),
@@ -244,13 +250,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(16.r),
-           onTap: () {
-             setState(() {
-               _selectedMainTabIndex = index;
-               _selectedSubTabIndex = 0; // Reset sub-tab when main tab changes
-             });
-             _loadDataForMainTab(index);
-           },
+          onTap: () {
+            setState(() {
+              _selectedMainTabIndex = index;
+              _selectedSubTabIndex = 0; // Reset sub-tab when main tab changes
+            });
+            _loadDataForMainTab(index);
+          },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
@@ -275,7 +281,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 if (count > 0) ...[
                   SizedBox(width: 4.w),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(10.r),
@@ -335,7 +342,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 if (count > 0) ...[
                   SizedBox(width: 4.w),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(10.r),
@@ -380,7 +388,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
   }
 
   String _getAppBarTitle() {
-    if (_selectedMainTabIndex == 1) { // Likes tab
+    if (_selectedMainTabIndex == 1) {
+      // Likes tab
       switch (_selectedSubTabIndex) {
         case 0:
           return EnumLocale.activityLikeRecu.name.tr;
@@ -391,7 +400,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
         default:
           return EnumLocale.activityLikesTitle.name.tr;
       }
-    } else if (_selectedMainTabIndex == 2) { // Gifts tab
+    } else if (_selectedMainTabIndex == 2) {
+      // Gifts tab
       switch (_selectedSubTabIndex) {
         case 0:
           return EnumLocale.activityCadeauxRecu.name.tr;
@@ -402,7 +412,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
         default:
           return EnumLocale.activityCadeaux.name.tr;
       }
-    } else if (_selectedMainTabIndex == 3) { // Story tab
+    } else if (_selectedMainTabIndex == 3) {
+      // Story tab
       switch (_selectedSubTabIndex) {
         case 0:
           return EnumLocale.activityVu.name.tr;
@@ -413,7 +424,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
         default:
           return EnumLocale.activityStory.name.tr;
       }
-    } else if (_selectedMainTabIndex == 4) { // Event tab
+    } else if (_selectedMainTabIndex == 4) {
+      // Event tab
       switch (_selectedSubTabIndex) {
         case 0:
           return EnumLocale.activityEventIlsOntParticipe.name.tr;
@@ -429,53 +441,75 @@ class _ActivityScreenState extends State<ActivityScreen> {
   }
 
   String _getStatisticsText() {
-    if (_selectedMainTabIndex == 2) { // Gifts tab
+    if (_selectedMainTabIndex == 2) {
+      // Gifts tab
       return EnumLocale.activityNombreCadeaux7Jours.name.tr + ' : 4';
-    } else if (_selectedMainTabIndex == 3) { // Story tab
+    } else if (_selectedMainTabIndex == 3) {
+      // Story tab
       return EnumLocale.activityLikeDepuisStory7Jours.name.tr + ' : 4';
-    } else if (_selectedMainTabIndex == 4) { // Event tab
+    } else if (_selectedMainTabIndex == 4) {
+      // Event tab
       return EnumLocale.activityNombreParticipations7Jours.name.tr + ' : 58';
     }
     return EnumLocale.activityNombreVues7Jours.name.tr + ' : 4';
   }
 
   List<Widget> _buildSubTabs() {
-    if (_selectedMainTabIndex == 1) { // Likes tab
+    if (_selectedMainTabIndex == 1) {
+      // Likes tab
       return [
-        _buildSubTab(EnumLocale.activityLikeRecu.name.tr, 0, _selectedSubTabIndex == 0, 0),
-        _buildSubTab(EnumLocale.activityMatch.name.tr, 1, _selectedSubTabIndex == 1, 0),
-        _buildSubTab(EnumLocale.activityJaiLike.name.tr, 2, _selectedSubTabIndex == 2, 0),
+        _buildSubTab(EnumLocale.activityLikeRecu.name.tr, 0,
+            _selectedSubTabIndex == 0, 0),
+        _buildSubTab(
+            EnumLocale.activityMatch.name.tr, 1, _selectedSubTabIndex == 1, 0),
+        _buildSubTab(EnumLocale.activityJaiLike.name.tr, 2,
+            _selectedSubTabIndex == 2, 0),
       ];
-    } else if (_selectedMainTabIndex == 2) { // Gifts tab
+    } else if (_selectedMainTabIndex == 2) {
+      // Gifts tab
       return [
-        _buildSubTab(EnumLocale.activityCadeauxRecu.name.tr, 0, _selectedSubTabIndex == 0, 0),
-        _buildSubTab(EnumLocale.activityCadeauxEnvoye.name.tr, 1, _selectedSubTabIndex == 1, 0),
-        _buildSubTab(EnumLocale.activityMesCadeaux.name.tr, 2, _selectedSubTabIndex == 2, 0),
+        _buildSubTab(EnumLocale.activityCadeauxRecu.name.tr, 0,
+            _selectedSubTabIndex == 0, 0),
+        _buildSubTab(EnumLocale.activityCadeauxEnvoye.name.tr, 1,
+            _selectedSubTabIndex == 1, 0),
+        _buildSubTab(EnumLocale.activityMesCadeaux.name.tr, 2,
+            _selectedSubTabIndex == 2, 0),
       ];
-    } else if (_selectedMainTabIndex == 3) { // Story tab
+    } else if (_selectedMainTabIndex == 3) {
+      // Story tab
       return [
-        _buildSubTab(EnumLocale.activityVu.name.tr, 0, _selectedSubTabIndex == 0, 0),
-        _buildSubTab(EnumLocale.activityLike.name.tr, 1, _selectedSubTabIndex == 1, 0),
-        _buildSubTab(EnumLocale.activityMesStory.name.tr, 2, _selectedSubTabIndex == 2, 0),
+        _buildSubTab(
+            EnumLocale.activityVu.name.tr, 0, _selectedSubTabIndex == 0, 0),
+        _buildSubTab(
+            EnumLocale.activityLike.name.tr, 1, _selectedSubTabIndex == 1, 0),
+        _buildSubTab(EnumLocale.activityMesStory.name.tr, 2,
+            _selectedSubTabIndex == 2, 0),
       ];
-    } else if (_selectedMainTabIndex == 4) { // Event tab
+    } else if (_selectedMainTabIndex == 4) {
+      // Event tab
       return [
-        _buildSubTab(EnumLocale.activityEventIlsOntParticipe.name.tr, 0, _selectedSubTabIndex == 0, 0),
-        _buildSubTab(EnumLocale.activityEventJaiParticipe.name.tr, 1, _selectedSubTabIndex == 1, 0),
-        _buildSubTab(EnumLocale.activityEventMesEvenements.name.tr, 2, _selectedSubTabIndex == 2, 0),
+        _buildSubTab(EnumLocale.activityEventIlsOntParticipe.name.tr, 0,
+            _selectedSubTabIndex == 0, 0),
+        _buildSubTab(EnumLocale.activityEventJaiParticipe.name.tr, 1,
+            _selectedSubTabIndex == 1, 0),
+        _buildSubTab(EnumLocale.activityEventMesEvenements.name.tr, 2,
+            _selectedSubTabIndex == 2, 0),
       ];
     } else {
       return [
-        _buildSubTab(EnumLocale.activityOnMaVu.name.tr, 0, _selectedSubTabIndex == 0, 0),
-        _buildSubTab(EnumLocale.activityJaiVu.name.tr, 1, _selectedSubTabIndex == 1, 0),
+        _buildSubTab(
+            EnumLocale.activityOnMaVu.name.tr, 0, _selectedSubTabIndex == 0, 0),
+        _buildSubTab(
+            EnumLocale.activityJaiVu.name.tr, 1, _selectedSubTabIndex == 1, 0),
       ];
     }
   }
 
   void _loadDataForSubTab(int index) {
     final bloc = context.read<UserProfileBloc>();
-    
-    if (_selectedMainTabIndex == 1) { // Likes tab
+
+    if (_selectedMainTabIndex == 1) {
+      // Likes tab
       switch (index) {
         case 0: // Like reçu
           bloc.add(LoadLikedUsers());
@@ -487,7 +521,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
           bloc.add(LoadUsersILiked());
           break;
       }
-    } else if (_selectedMainTabIndex == 2) { // Gifts tab
+    } else if (_selectedMainTabIndex == 2) {
+      // Gifts tab
       switch (index) {
         case 0: // Cadeaux reçus
           // TODO: Load received gifts
@@ -499,7 +534,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
           // TODO: Load my gifts
           break;
       }
-    } else if (_selectedMainTabIndex == 3) { // Story tab
+    } else if (_selectedMainTabIndex == 3) {
+      // Story tab
       switch (index) {
         case 0: // Vu
           bloc.add(LoadStoryLikedUsers());
@@ -511,7 +547,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
           bloc.add(LoadMyStories());
           break;
       }
-    } else if (_selectedMainTabIndex == 4) { // Event tab
+    } else if (_selectedMainTabIndex == 4) {
+      // Event tab
       switch (index) {
         case 0: // Ils ont participé
           // TODO: wire to event feed later
@@ -556,7 +593,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             return _buildGiftsUI();
           }
         }
-        
+
         // Event tab: Sub-tab 0 and 1 use custom UI per design
         if (_selectedMainTabIndex == 4 && _selectedSubTabIndex == 0) {
           return _buildTheyParticipatedUI();
@@ -564,7 +601,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         if (_selectedMainTabIndex == 4 && _selectedSubTabIndex == 1) {
           return _buildIParticipatedUI();
         }
-        
+
         if (state is UserProfileError) {
           return Center(
             child: Column(
@@ -588,7 +625,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
           );
         }
-        
+
         // Mes évènements embedded UI
         if (_selectedMainTabIndex == 4 && _selectedSubTabIndex == 2) {
           final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -604,8 +641,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 );
               }
               final events = snap.data ?? [];
-              const int totalSlots = 5; // show 5 rows (events first, then create placeholders)
-              final int showEvents = events.length > totalSlots ? totalSlots : events.length;
+              const int totalSlots =
+                  5; // show 5 rows (events first, then create placeholders)
+              final int showEvents =
+                  events.length > totalSlots ? totalSlots : events.length;
               final List<Widget> rows = [];
               for (int i = 0; i < showEvents; i++) {
                 rows.add(_buildMyEventCard(events[i]));
@@ -650,7 +689,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
           return GridView.builder(
             shrinkWrap: false,
-            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 12.h, bottom: 16.h),
+            padding: EdgeInsets.only(
+                left: 20.w, right: 20.w, top: 12.h, bottom: 16.h),
             physics: const BouncingScrollPhysics(),
             itemCount: state.stories.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -668,15 +708,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
         if (state is UserProfileLoaded) {
           print('ActivityScreen: Received ${state.users.length} users');
-          
+
           // Debug: Print each user
           for (int i = 0; i < state.users.length; i++) {
             final user = state.users[i];
-            print('ActivityScreen: User $i - ID: ${user.id}, Name: ${user.name}, Pseudo: ${user.pseudo}');
+            print(
+                'ActivityScreen: User $i - ID: ${user.id}, Name: ${user.name}, Pseudo: ${user.pseudo}');
             print('ActivityScreen: User $i - photos: ${user.photos}');
-            print('ActivityScreen: User $i - photos length: ${user.photos?.length ?? 0}');
+            print(
+                'ActivityScreen: User $i - photos length: ${user.photos?.length ?? 0}');
           }
-          
+
           if (state.users.isEmpty) {
             return Center(
               child: Column(
@@ -699,12 +741,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ),
             );
           }
-          
+
           return Transform.translate(
             offset: Offset(0, 0),
             child: GridView.builder(
               shrinkWrap: false,
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 12.h, bottom: 16.h),
+              padding: EdgeInsets.only(
+                  left: 20.w, right: 20.w, top: 12.h, bottom: 16.h),
               physics: const BouncingScrollPhysics(),
               itemCount: state.users.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -723,7 +766,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
           );
         }
-        
+
         return SizedBox.shrink();
       },
     );
@@ -762,8 +805,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.0),
-                    Colors.black.withOpacity(0.5),
+                    Colors.black.withValues(alpha: 0.0),
+                    Colors.black.withValues(alpha: 0.5),
                   ],
                 ),
               ),
@@ -860,7 +903,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         requestId: request.id,
         status: EventRequestStatus.ACCEPTED,
       );
-      
+
       // Add the user to the event's participants collection
       await _eventRepository.addParticipantToEvent(
         eventId: request.eventId,
@@ -868,7 +911,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         userName: request.requesterName,
         userPhotoUrl: request.requesterPhotoUrl,
       );
-      
+
       Get.snackbar(
         'Success',
         'Event request accepted and user added to participants',
@@ -893,7 +936,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         requestId: request.id,
         status: EventRequestStatus.REJECTED,
       );
-      
+
       Get.snackbar(
         'Success',
         'Event request rejected',
@@ -915,7 +958,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   Future<void> _cancelEventRequest(EventRequestModel request) async {
     try {
       await _eventRequestRepository.deleteEventRequest(request.id);
-      
+
       Get.snackbar(
         'Success',
         'Event request cancelled',
@@ -986,7 +1029,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
     }
 
     return StreamBuilder<List<EventRequestModel>>(
-      stream: _eventRequestRepository.streamReceivedEventRequests(currentUser.uid),
+      stream:
+          _eventRequestRepository.streamReceivedEventRequests(currentUser.uid),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -1126,21 +1170,24 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   subtitleTop,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   subtitleMid,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   subtitleBottom,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 10.h),
                 Row(
@@ -1158,7 +1205,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
     );
   }
 
-  Widget _pillButton({required String label, required Color color, required VoidCallback onTap}) {
+  Widget _pillButton(
+      {required String label,
+      required Color color,
+      required VoidCallback onTap}) {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
@@ -1182,7 +1232,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     final timeAgo = timeago.format(request.createdAt, locale: 'en');
     String statusText = '';
     Color statusColor = Colors.grey.shade600;
-    
+
     switch (request.status) {
       case EventRequestStatus.PENDING:
         statusText = '';
@@ -1196,7 +1246,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         statusColor = Color(0xFFE53935);
         break;
     }
-    
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
@@ -1216,7 +1266,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
               color: Colors.grey.shade300,
               child: (request.requesterPhotoUrl?.isNotEmpty == true)
                   ? Image.network(request.requesterPhotoUrl!, fit: BoxFit.cover)
-                  : Icon(Icons.person, color: Colors.grey.shade600, size: 24.sp),
+                  : Icon(Icons.person,
+                      color: Colors.grey.shade600, size: 24.sp),
             ),
           ),
           SizedBox(width: 12.w),
@@ -1235,19 +1286,22 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 SizedBox(height: 4.h),
                 Text(
                   '$timeAgo',
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   'Event: ${request.eventTitle ?? 'Unknown Event'}',
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   request.message,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 10.h),
                 // Show action buttons only for pending requests
@@ -1290,7 +1344,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
     final timeAgo = timeago.format(request.createdAt, locale: 'en');
     String statusText = '';
     Color statusColor = Colors.grey.shade600;
-    
+
     switch (request.status) {
       case EventRequestStatus.PENDING:
         statusText = EnumLocale.giftWaiting.name.tr;
@@ -1305,7 +1359,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         statusColor = Color(0xFFE53935);
         break;
     }
-    
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
@@ -1323,7 +1377,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
               width: 48.w,
               height: 48.w,
               color: Colors.grey.shade300,
-              child: Icon(Icons.event, color: Colors.grey.shade600, size: 24.sp),
+              child:
+                  Icon(Icons.event, color: Colors.grey.shade600, size: 24.sp),
             ),
           ),
           SizedBox(width: 12.w),
@@ -1342,14 +1397,16 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 SizedBox(height: 4.h),
                 Text(
                   '$timeAgo',
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   request.message,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 10.h),
                 Row(
@@ -1440,13 +1497,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
               child: CircularProgressIndicator(color: AppColors.primaryColor),
             );
           }
-          
+
           if (snapshot.hasError) {
             return Center(
               child: Text('${EnumLocale.giftError.name.tr} ${snapshot.error}'),
             );
           }
-          
+
           final gifts = snapshot.data ?? [];
           if (gifts.isEmpty) {
             return Center(
@@ -1459,7 +1516,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ),
             );
           }
-          
+
           return ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             itemCount: gifts.length,
@@ -1480,13 +1537,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
               child: CircularProgressIndicator(color: AppColors.primaryColor),
             );
           }
-          
+
           if (snapshot.hasError) {
             return Center(
               child: Text('${EnumLocale.giftError.name.tr} ${snapshot.error}'),
             );
           }
-          
+
           final gifts = snapshot.data ?? [];
           if (gifts.isEmpty) {
             return Center(
@@ -1499,7 +1556,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ),
             );
           }
-          
+
           return ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             itemCount: gifts.length,
@@ -1516,10 +1573,12 @@ class _ActivityScreenState extends State<ActivityScreen> {
   Widget _buildGiftSentCard(GiftSentModel gift, bool isReceived) {
     // Get user ID based on whether it's received or sent
     final userId = isReceived ? gift.senderId : gift.recipientId;
-    
-    print('ActivityScreen: Building gift card for ${isReceived ? "received" : "sent"} gift');
+
+    print(
+        'ActivityScreen: Building gift card for ${isReceived ? "received" : "sent"} gift');
     print('ActivityScreen: User ID: $userId');
-    print('ActivityScreen: Gift data: senderName=${gift.senderName}, senderAge=${gift.senderAge}, recipientName=${gift.recipientName}, recipientAge=${gift.recipientAge}');
+    print(
+        'ActivityScreen: Gift data: senderName=${gift.senderName}, senderAge=${gift.senderAge}, recipientName=${gift.recipientName}, recipientAge=${gift.recipientAge}');
     return FutureBuilder<DocumentSnapshot>(
       future: FirebaseFirestore.instance.collection('user').doc(userId).get(),
       builder: (context, snapshot) {
@@ -1537,9 +1596,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
             ),
           );
         }
-        
+
         if (snapshot.hasError || !snapshot.hasData || !snapshot.data!.exists) {
-          print('ActivityScreen: Error fetching user data for $userId: ${snapshot.error}');
+          print(
+              'ActivityScreen: Error fetching user data for $userId: ${snapshot.error}');
           return Container(
             margin: EdgeInsets.only(bottom: 16.h),
             padding: EdgeInsets.all(16.w),
@@ -1551,17 +1611,19 @@ class _ActivityScreenState extends State<ActivityScreen> {
             child: Text('Error loading user data'),
           );
         }
-        
+
         final userData = snapshot.data!.data() as Map<String, dynamic>;
         final userName = userData['name'] ?? 'Unknown';
         final userAge = userData['age'] ?? 0;
         final userPhotos = userData['photos'] as List<dynamic>?;
-        final userPhotoUrl = userPhotos?.isNotEmpty == true ? userPhotos!.first : null;
+        final userPhotoUrl =
+            userPhotos?.isNotEmpty == true ? userPhotos!.first : null;
         final userCity = userData['city']?.toString() ?? '';
         final userCountry = userData['country']?.toString() ?? '';
-        
-        print('ActivityScreen: Fetched user data - name: $userName, age: $userAge, photo: $userPhotoUrl');
-        
+
+        print(
+            'ActivityScreen: Fetched user data - name: $userName, age: $userAge, photo: $userPhotoUrl');
+
         return Container(
           margin: EdgeInsets.only(bottom: 16.h),
           padding: EdgeInsets.all(16.w),
@@ -1588,7 +1650,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(24.r),
                       child: Image.network(
-                        userPhotoUrl ?? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200',
+                        userPhotoUrl ??
+                            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200',
                         width: 48.w,
                         height: 48.w,
                         fit: BoxFit.cover,
@@ -1625,9 +1688,12 @@ class _ActivityScreenState extends State<ActivityScreen> {
                             ),
                             Spacer(),
                             FutureBuilder<double?>(
-                              future: DistanceCalculator.calculateDistanceToUser(userCity, userCountry),
+                              future:
+                                  DistanceCalculator.calculateDistanceToUser(
+                                      userCity, userCountry),
                               builder: (context, distanceSnapshot) {
-                                if (distanceSnapshot.connectionState == ConnectionState.waiting) {
+                                if (distanceSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return Text(
                                     '...',
                                     style: TextStyle(
@@ -1637,7 +1703,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                   );
                                 }
                                 return Text(
-                                  DistanceCalculator.formatDistance(distanceSnapshot.data),
+                                  DistanceCalculator.formatDistance(
+                                      distanceSnapshot.data),
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: Colors.grey.shade600,
@@ -1715,14 +1782,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: gift.giftType == GiftType.heart ? Colors.yellow : Colors.red,
+                color: gift.giftType == GiftType.heart
+                    ? Colors.yellow
+                    : Colors.red,
                 width: 2.w,
               ),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24.r),
               child: Image.network(
-                gift.senderPhotoUrl ?? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200',
+                gift.senderPhotoUrl ??
+                    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200',
                 width: 48.w,
                 height: 48.w,
                 fit: BoxFit.cover,
@@ -1835,7 +1905,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   Widget _buildGiftIconFromType(String giftType) {
     IconData iconData;
     Color iconColor;
-    
+
     switch (giftType) {
       case 'rose':
         iconData = Icons.local_florist;
@@ -1890,7 +1960,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         iconColor = Colors.grey;
         break;
     }
-    
+
     return Icon(
       iconData,
       size: 24.sp,
@@ -1901,7 +1971,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   Widget _buildGiftIcon(GiftType giftType) {
     IconData iconData;
     Color iconColor;
-    
+
     switch (giftType) {
       case GiftType.heart:
         iconData = Icons.favorite;
@@ -1928,7 +1998,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         iconColor = Colors.amber;
         break;
     }
-    
+
     return Icon(
       iconData,
       size: 24.sp,
@@ -1955,10 +2025,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   String _formatLastActive(DateTime? lastActive) {
     if (lastActive == null) return '';
-    
+
     final now = DateTime.now();
     final difference = now.difference(lastActive);
-    
+
     if (difference.inHours < 1) {
       return 'il y a ${difference.inMinutes}min';
     } else if (difference.inHours < 24) {
@@ -1971,7 +2041,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   String _formatTimeAgo(DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
-    
+
     if (difference.inHours < 1) {
       return 'il y a ${difference.inMinutes}min';
     } else if (difference.inHours < 24) {
@@ -2014,9 +2084,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
             children: [
               // Regular Gifts Section
               _buildGiftGrid(regularGifts),
-              
+
               SizedBox(height: 24.h),
-              
+
               // Premium Gifts Section
               _buildPremiumGiftsHeader(),
               SizedBox(height: 16.h),
@@ -2037,26 +2107,27 @@ class _ActivityScreenState extends State<ActivityScreen> {
         .map((snapshot) {
       // Always start with default gifts (all with 0 count)
       final defaultGifts = _getDefaultGiftsWithZeroCount();
-      
+
       if (snapshot.docs.isEmpty) {
         // Return default gifts with 0 count if collection doesn't exist
         return defaultGifts;
       }
-      
+
       // Merge Firestore data with default gifts
-      final firestoreGifts = snapshot.docs.map((doc) => UserGiftModel.fromFirestore(doc)).toList();
+      final firestoreGifts =
+          snapshot.docs.map((doc) => UserGiftModel.fromFirestore(doc)).toList();
       final Map<String, UserGiftModel> giftMap = {};
-      
+
       // Add default gifts first (all with 0 count)
       for (var gift in defaultGifts) {
         giftMap[gift.giftType] = gift;
       }
-      
+
       // Update with Firestore data
       for (var gift in firestoreGifts) {
         giftMap[gift.giftType] = gift;
       }
-      
+
       return giftMap.values.toList();
     }).handleError((error) {
       // If there's any error (like permission denied), return default gifts with 0 count
@@ -2066,7 +2137,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   List<UserGiftModel> _getDefaultGiftsWithZeroCount() {
     final List<UserGiftModel> defaultGifts = [];
-    
+
     // Add regular gifts with 0 count
     for (String giftType in GiftTypes.regularGifts) {
       defaultGifts.add(UserGiftModel(
@@ -2075,7 +2146,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         isPremium: false,
       ));
     }
-    
+
     // Add premium gifts with 0 count
     for (String giftType in GiftTypes.premiumGifts) {
       defaultGifts.add(UserGiftModel(
@@ -2084,7 +2155,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
         isPremium: true,
       ));
     }
-    
+
     return defaultGifts;
   }
 
@@ -2158,29 +2229,29 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 : Colors.grey.shade400,
           ),
           SizedBox(height: 8.h),
-          
+
           // Gift Name
           Text(
             GiftTypes.giftNames[gift.giftType] ?? gift.giftType,
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
-              color: isActive
-                  ? AppColors.black
-                  : Colors.grey.shade400,
+              color: isActive ? AppColors.black : Colors.grey.shade400,
             ),
           ),
           SizedBox(height: 4.h),
-          
+
           // Remaining Count
           Text(
             '${gift.remainingCount} ${gift.remainingCount > 1 ? EnumLocale.giftRestants.name.tr : EnumLocale.giftRestant.name.tr}',
             style: TextStyle(
               fontSize: 12.sp,
-              color: gift.remainingCount > 0 ? Colors.grey.shade600 : Colors.grey.shade400,
+              color: gift.remainingCount > 0
+                  ? Colors.grey.shade600
+                  : Colors.grey.shade400,
             ),
           ),
-          
+
           // Lock icon for premium gifts
           if (gift.isPremium && !_isPremiumUser) ...[
             SizedBox(height: 8.h),
@@ -2197,7 +2268,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
 
   IconData _getGiftIcon(String giftType) {
     final iconName = GiftTypes.giftIcons[giftType] ?? 'card_giftcard';
-    
+
     switch (iconName) {
       case 'local_florist':
         return Icons.local_florist;
@@ -2246,5 +2317,4 @@ class _ActivityScreenState extends State<ActivityScreen> {
         return Colors.grey;
     }
   }
-
 }

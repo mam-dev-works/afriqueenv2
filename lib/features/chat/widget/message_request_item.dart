@@ -29,12 +29,12 @@ class MessageRequestItem extends StatelessWidget {
             color: AppColors.white,
             borderRadius: BorderRadius.circular(16.r),
             border: Border.all(
-              color: AppColors.primaryColor.withOpacity(0.2),
+              color: AppColors.primaryColor.withValues(alpha: 0.2),
               width: 1.w,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -51,17 +51,18 @@ class MessageRequestItem extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.primaryColor.withOpacity(0.2),
+                        color: AppColors.primaryColor.withValues(alpha: 0.2),
                         width: 2.w,
                       ),
                     ),
                     child: ClipOval(
-                      child: request.senderPhotoUrl != null && request.senderPhotoUrl!.isNotEmpty
+                      child: request.senderPhotoUrl != null &&
+                              request.senderPhotoUrl!.isNotEmpty
                           ? CachedNetworkImage(
                               imageUrl: request.senderPhotoUrl!,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Container(
-                                color: AppColors.grey.withOpacity(0.2),
+                                color: AppColors.grey.withValues(alpha: 0.2),
                                 child: Icon(
                                   Icons.person,
                                   size: 20.sp,
@@ -69,7 +70,7 @@ class MessageRequestItem extends StatelessWidget {
                                 ),
                               ),
                               errorWidget: (context, url, error) => Container(
-                                color: AppColors.grey.withOpacity(0.2),
+                                color: AppColors.grey.withValues(alpha: 0.2),
                                 child: Icon(
                                   Icons.person,
                                   size: 20.sp,
@@ -78,7 +79,7 @@ class MessageRequestItem extends StatelessWidget {
                               ),
                             )
                           : Container(
-                              color: AppColors.grey.withOpacity(0.2),
+                              color: AppColors.grey.withValues(alpha: 0.2),
                               child: Icon(
                                 Icons.person,
                                 size: 20.sp,
@@ -121,10 +122,10 @@ class MessageRequestItem extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.05),
+                  color: AppColors.primaryColor.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(12.r),
                   border: Border.all(
-                    color: AppColors.primaryColor.withOpacity(0.1),
+                    color: AppColors.primaryColor.withValues(alpha: 0.1),
                     width: 1.w,
                   ),
                 ),
@@ -142,10 +143,10 @@ class MessageRequestItem extends StatelessWidget {
                   ? Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
-                        color: AppColors.grey.withOpacity(0.1),
+                        color: AppColors.grey.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12.r),
                         border: Border.all(
-                          color: AppColors.grey.withOpacity(0.3),
+                          color: AppColors.grey.withValues(alpha: 0.3),
                           width: 1.w,
                         ),
                       ),
@@ -176,7 +177,9 @@ class MessageRequestItem extends StatelessWidget {
                             height: 48.h,
                             child: ElevatedButton(
                               onPressed: () {
-                                context.read<ChatBloc>().add(AcceptMessageRequest(request.id));
+                                context
+                                    .read<ChatBloc>()
+                                    .add(AcceptMessageRequest(request.id));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
@@ -202,12 +205,14 @@ class MessageRequestItem extends StatelessWidget {
                             height: 48.h,
                             child: OutlinedButton(
                               onPressed: () {
-                                context.read<ChatBloc>().add(RejectMessageRequest(request.id));
+                                context
+                                    .read<ChatBloc>()
+                                    .add(RejectMessageRequest(request.id));
                               },
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.grey,
                                 side: BorderSide(
-                                  color: AppColors.grey.withOpacity(0.5),
+                                  color: AppColors.grey.withValues(alpha: 0.5),
                                   width: 1.w,
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -232,4 +237,4 @@ class MessageRequestItem extends StatelessWidget {
       ),
     );
   }
-} 
+}

@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:afriqueen/services/passwordless_login_services.dart';
 
-
 //----------------------------Button for passwordless login-----------------------------
 class PasswordlessLoginButton extends StatelessWidget {
   const PasswordlessLoginButton({super.key});
@@ -22,7 +21,8 @@ class PasswordlessLoginButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(20.r),
           ),
           child: Container(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.7),
             padding: EdgeInsets.all(20.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.r),
@@ -36,7 +36,7 @@ class PasswordlessLoginButton extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(12.w),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.1),
+                      color: AppColors.primaryColor.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -46,29 +46,29 @@ class PasswordlessLoginButton extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 12.h),
-                  
+
                   // Title
                   Text(
                     EnumLocale.passwordlessLogin.name.tr,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 6.h),
-                  
+
                   // Subtitle
                   Text(
                     EnumLocale.passwordlessLoginSubtitle.name.tr,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                      fontSize: 13.sp,
-                    ),
+                          color: Colors.grey[600],
+                          fontSize: 13.sp,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20.h),
-                  
+
                   // Email TextField
                   SizedBox(
                     height: 48.h,
@@ -84,9 +84,11 @@ class PasswordlessLoginButton extends StatelessWidget {
                       scrollPadding: EdgeInsets.only(bottom: 80.h),
                       decoration: InputDecoration(
                         hintText: EnumLocale.pleaseEnterYourEmail.name.tr,
-                        prefixIcon: Icon(Icons.email_outlined, color: Colors.grey[400]),
+                        prefixIcon:
+                            Icon(Icons.email_outlined, color: Colors.grey[400]),
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 12.h, horizontal: 12.w),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.r),
                           borderSide: BorderSide(color: Colors.grey[300]!),
@@ -97,7 +99,8 @@ class PasswordlessLoginButton extends StatelessWidget {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+                          borderSide: BorderSide(
+                              color: AppColors.primaryColor, width: 2),
                         ),
                         filled: true,
                         fillColor: Colors.grey[50],
@@ -105,7 +108,7 @@ class PasswordlessLoginButton extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  
+
                   // Buttons
                   Row(
                     children: [
@@ -130,7 +133,8 @@ class PasswordlessLoginButton extends StatelessWidget {
                       SizedBox(width: 12.w),
                       Expanded(
                         child: ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(emailController.text.trim()),
+                          onPressed: () => Navigator.of(context)
+                              .pop(emailController.text.trim()),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryColor,
                             padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -190,13 +194,13 @@ class PasswordlessLoginButton extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               AppColors.primaryColor,
-              AppColors.primaryColor.withOpacity(0.8),
+              AppColors.primaryColor.withValues(alpha: 0.8),
             ],
           ),
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primaryColor.withOpacity(0.3),
+              color: AppColors.primaryColor.withValues(alpha: 0.3),
               blurRadius: 12,
               offset: Offset(0, 4),
             ),
@@ -212,7 +216,7 @@ class PasswordlessLoginButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.r),
             ),
           ),
-                        child: Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -220,7 +224,7 @@ class PasswordlessLoginButton extends StatelessWidget {
                 width: 32.w,
                 height: 32.h,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Center(
@@ -235,10 +239,10 @@ class PasswordlessLoginButton extends StatelessWidget {
               Text(
                 EnumLocale.passwordlessLogin.name.tr,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.sp,
-                ),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14.sp,
+                    ),
               ),
             ],
           ),
@@ -247,5 +251,3 @@ class PasswordlessLoginButton extends StatelessWidget {
     );
   }
 }
-
-

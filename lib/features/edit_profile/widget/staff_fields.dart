@@ -67,15 +67,15 @@ class _StaffFieldsState extends State<StaffFields> {
               child: Padding(
                 padding: EdgeInsets.all(16.r),
                 child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     // Age
                     Text(
                       EnumLocale.age.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     TextField(
@@ -98,9 +98,9 @@ class _StaffFieldsState extends State<StaffFields> {
                     Text(
                       EnumLocale.spokenLanguages.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Choice<String>.prompt(
@@ -136,10 +136,13 @@ class _StaffFieldsState extends State<StaffFields> {
                             children: [
                               Text(
                                 EnumLocale.selectLanguages.name.tr,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               IconButton(
                                 onPressed: () => Get.back(),
@@ -167,7 +170,9 @@ class _StaffFieldsState extends State<StaffFields> {
                             width: double.maxFinite,
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                              border: Border.all(
+                                  color: AppColors.primaryColor
+                                      .withValues(alpha: 0.3)),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Center(
@@ -191,19 +196,22 @@ class _StaffFieldsState extends State<StaffFields> {
                     Text(
                       EnumLocale.religion.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                        border: Border.all(
+                            color:
+                                AppColors.primaryColor.withValues(alpha: 0.3)),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
-                        value: selectedReligion != null && AppStrings.religions.contains(selectedReligion) 
-                            ? selectedReligion 
+                        value: selectedReligion != null &&
+                                AppStrings.religions.contains(selectedReligion)
+                            ? selectedReligion
                             : null,
                         isExpanded: true,
                         underline: const SizedBox(),
@@ -212,7 +220,8 @@ class _StaffFieldsState extends State<StaffFields> {
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: Text(
                             EnumLocale.selectReligion.name.tr,
-                            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                            style:
+                                TextStyle(fontSize: 12.sp, color: Colors.grey),
                           ),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -236,14 +245,16 @@ class _StaffFieldsState extends State<StaffFields> {
                     Text(
                       EnumLocale.hasChildren.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                        border: Border.all(
+                            color:
+                                AppColors.primaryColor.withValues(alpha: 0.3)),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
@@ -255,7 +266,8 @@ class _StaffFieldsState extends State<StaffFields> {
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: Text(
                             EnumLocale.selectNumberOfChildren.name.tr,
-                            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                            style:
+                                TextStyle(fontSize: 12.sp, color: Colors.grey),
                           ),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -290,10 +302,11 @@ class _StaffFieldsState extends State<StaffFields> {
                         ),
                         Text(
                           EnumLocale.wantChildren.name.tr,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                         ),
                       ],
                     ),
@@ -303,9 +316,9 @@ class _StaffFieldsState extends State<StaffFields> {
                     Text(
                       EnumLocale.characterTraits.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Choice<String>.prompt(
@@ -341,10 +354,13 @@ class _StaffFieldsState extends State<StaffFields> {
                             children: [
                               Text(
                                 EnumLocale.selectCharacterTraits.name.tr,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               IconButton(
                                 onPressed: () => Get.back(),
@@ -372,7 +388,9 @@ class _StaffFieldsState extends State<StaffFields> {
                             width: double.maxFinite,
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                              border: Border.all(
+                                  color: AppColors.primaryColor
+                                      .withValues(alpha: 0.3)),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Center(
@@ -400,4 +418,4 @@ class _StaffFieldsState extends State<StaffFields> {
       ),
     );
   }
-} 
+}

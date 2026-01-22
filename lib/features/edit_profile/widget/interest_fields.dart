@@ -19,7 +19,8 @@ class _InterestFieldsState extends State<InterestFields> {
   late Map<String, List<String>> selected;
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController lookingForController = TextEditingController();
-  final TextEditingController dontWantToMeetController = TextEditingController();
+  final TextEditingController dontWantToMeetController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -27,7 +28,8 @@ class _InterestFieldsState extends State<InterestFields> {
     final userSelected = widget.model?.interests ?? [];
     selected = {};
     AppStrings.categorizedUserInterests.forEach((category, items) {
-      selected[category] = items.where((item) => userSelected.contains(item)).toList();
+      selected[category] =
+          items.where((item) => userSelected.contains(item)).toList();
     });
 
     // Initialize text controllers with existing values
@@ -47,7 +49,8 @@ class _InterestFieldsState extends State<InterestFields> {
   void onChanged(List<String> value, String category) {
     setState(() {
       selected[category] = value;
-      widget.model?.interests = selected.values.expand((e) => e).toSet().toList();
+      widget.model?.interests =
+          selected.values.expand((e) => e).toSet().toList();
     });
   }
 
@@ -75,9 +78,9 @@ class _InterestFieldsState extends State<InterestFields> {
                     Text(
                       EnumLocale.description.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     TextField(
@@ -100,9 +103,9 @@ class _InterestFieldsState extends State<InterestFields> {
                     Text(
                       EnumLocale.lookingFor.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     TextField(
@@ -125,9 +128,9 @@ class _InterestFieldsState extends State<InterestFields> {
                     Text(
                       EnumLocale.dontWantToMeet.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     TextField(
@@ -154,13 +157,13 @@ class _InterestFieldsState extends State<InterestFields> {
             Text(
               EnumLocale.interests.name.tr,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColors.primaryColor,
-                fontWeight: FontWeight.w600,
-              ),
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             SizedBox(height: 16.h),
             ...categories.map((category) {
-          final items = AppStrings.categorizedUserInterests[category]!;
+              final items = AppStrings.categorizedUserInterests[category]!;
               return Card(
                 color: AppColors.floralWhite,
                 shape: RoundedRectangleBorder(
@@ -173,16 +176,30 @@ class _InterestFieldsState extends State<InterestFields> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        category == 'Friendship' ? EnumLocale.friendshipInterests.name.tr :
-                        category == 'Food & Restaurants' ? EnumLocale.foodAndRestaurantsInterests.name.tr :
-                        category == 'Passion & Personality' ? EnumLocale.passionAndPersonalityInterests.name.tr :
-                        category == 'Love & Romance' ? EnumLocale.loveAndRomanceInterests.name.tr :
-                        category == 'Sports & Outdoors' ? EnumLocale.sportsAndOutdoorsInterests.name.tr :
-                        category == 'Adventure & Travel' ? EnumLocale.adventureAndTravelInterests.name.tr :
-                        category,
+                        category == 'Friendship'
+                            ? EnumLocale.friendshipInterests.name.tr
+                            : category == 'Food & Restaurants'
+                                ? EnumLocale.foodAndRestaurantsInterests.name.tr
+                                : category == 'Passion & Personality'
+                                    ? EnumLocale
+                                        .passionAndPersonalityInterests.name.tr
+                                    : category == 'Love & Romance'
+                                        ? EnumLocale
+                                            .loveAndRomanceInterests.name.tr
+                                        : category == 'Sports & Outdoors'
+                                            ? EnumLocale
+                                                .sportsAndOutdoorsInterests
+                                                .name
+                                                .tr
+                                            : category == 'Adventure & Travel'
+                                                ? EnumLocale
+                                                    .adventureAndTravelInterests
+                                                    .name
+                                                    .tr
+                                                : category,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       SizedBox(height: 8.h),
                       Choice<String>.prompt(
@@ -193,13 +210,15 @@ class _InterestFieldsState extends State<InterestFields> {
                         itemBuilder: (state, i) {
                           final item = items[i];
                           final selected = state.selected(item);
-                          final isLimitReached = state.value.length >= 2 && !selected;
+                          final isLimitReached =
+                              state.value.length >= 2 && !selected;
                           return CheckboxListTile(
                             dense: true,
                             activeColor: AppColors.primaryColor,
                             value: selected,
-                            onChanged: isLimitReached ? null : state.onSelected(item),
-                title: Text(
+                            onChanged:
+                                isLimitReached ? null : state.onSelected(item),
+                            title: Text(
                               item,
                               style: Theme.of(context).textTheme.bodySmall,
                               overflow: TextOverflow.ellipsis,
@@ -216,10 +235,13 @@ class _InterestFieldsState extends State<InterestFields> {
                                 Expanded(
                                   child: Text(
                                     EnumLocale.chooseOption.name.tr,
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.primaryColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
@@ -249,7 +271,9 @@ class _InterestFieldsState extends State<InterestFields> {
                               width: double.maxFinite,
                               padding: EdgeInsets.symmetric(horizontal: 12.w),
                               decoration: BoxDecoration(
-                                border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                                border: Border.all(
+                                    color: AppColors.primaryColor
+                                        .withValues(alpha: 0.3)),
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
                               child: Center(
@@ -270,11 +294,11 @@ class _InterestFieldsState extends State<InterestFields> {
                     ],
                   ),
                 ),
-                );
-              }).toList(),
+              );
+            }).toList(),
             SizedBox(height: 24.h),
           ],
-            ),
+        ),
       ),
     );
   }

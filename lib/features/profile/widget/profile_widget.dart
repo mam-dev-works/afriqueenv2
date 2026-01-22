@@ -82,7 +82,7 @@ class DescriptionText extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.r),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -94,17 +94,17 @@ class DescriptionText extends StatelessWidget {
                 Text(
                   EnumLocale.description.name.tr,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   data,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[800],
-                    height: 1.4,
-                  ),
+                        color: Colors.grey[800],
+                        height: 1.4,
+                      ),
                 ),
               ],
             ),
@@ -199,9 +199,9 @@ class UserInterestsList extends StatelessWidget {
               child: Text(
                 EnumLocale.interests.name.tr,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ),
             SizedBox(height: 12.h),
@@ -219,7 +219,7 @@ class UserInterestsList extends StatelessWidget {
               itemBuilder: (BuildContext context, index) {
                 final interest = data[index];
                 final translatedInterest = _getTranslatedInterest(interest);
-                
+
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   height: 20.h,
@@ -228,20 +228,22 @@ class UserInterestsList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.r),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
                     ],
-                    border: Border.all(color: AppColors.primaryColor.withOpacity(0.3), width: 1.w),
+                    border: Border.all(
+                        color: AppColors.primaryColor.withValues(alpha: 0.3),
+                        width: 1.w),
                   ),
                   child: Center(
                     child: Text(
                       translatedInterest,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: 14.sp,
-                        color: AppColors.primaryColor,
-                      ),
+                            fontSize: 14.sp,
+                            color: AppColors.primaryColor,
+                          ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -274,7 +276,7 @@ class UserSeniority extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.r),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -283,13 +285,14 @@ class UserSeniority extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.calendar_today, size: 16.r, color: AppColors.primaryColor),
+                Icon(Icons.calendar_today,
+                    size: 16.r, color: AppColors.primaryColor),
                 SizedBox(width: 8.w),
                 Text(
                   date,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[800],
-                  ),
+                        color: Colors.grey[800],
+                      ),
                 ),
               ],
             ),
@@ -317,7 +320,7 @@ class UserDetails extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -326,7 +329,8 @@ class UserDetails extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildDetailItem(context, data.pseudo, EnumLocale.nameTitle.name.tr),
+              _buildDetailItem(
+                  context, data.pseudo, EnumLocale.nameTitle.name.tr),
               Container(
                 height: 24.h,
                 width: 1.w,
@@ -352,16 +356,16 @@ class UserDetails extends StatelessWidget {
         Text(
           value,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: AppColors.primaryColor,
-            fontWeight: FontWeight.bold,
-          ),
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Colors.grey[600],
-          ),
+                color: Colors.grey[600],
+              ),
         ),
       ],
     );
@@ -372,13 +376,14 @@ class UserDetails extends StatelessWidget {
 class ProfileImage extends StatelessWidget {
   ProfileImage({super.key});
   final auth = FirebaseAuth.instance;
-  
+
   @override
   Widget build(BuildContext context) {
     return BlocSelector<ProfileBloc, ProfileState, ProfileModel>(
       selector: (state) => state.data,
       builder: (context, profile) {
-        final hasValidUrl = profile.imgURL.isNotEmpty && Uri.tryParse(profile.imgURL)?.hasAbsolutePath == true;
+        final hasValidUrl = profile.imgURL.isNotEmpty &&
+            Uri.tryParse(profile.imgURL)?.hasAbsolutePath == true;
         return Padding(
           padding: EdgeInsets.only(bottom: 5.h),
           child: Container(
@@ -398,13 +403,13 @@ class ProfileImage extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
               ],
               // Elite styling
-              border: profile.isElite 
+              border: profile.isElite
                   ? Border.all(
                       color: Colors.amber,
                       width: 3.w,
@@ -424,13 +429,14 @@ class ProfileImage extends StatelessWidget {
                     top: 8.r,
                     left: 8.r,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                       decoration: BoxDecoration(
-                        color: Color(0xFFFFD700).withOpacity(0.9),
+                        color: Color(0xFFFFD700).withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(12.r),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -483,7 +489,7 @@ class ProfileMenuSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -500,14 +506,17 @@ class ProfileMenuSection extends StatelessWidget {
                   child: BlocSelector<ProfileBloc, ProfileState, String>(
                     selector: (s) => s.data.imgURL,
                     builder: (context, url) {
-                      final valid = url.isNotEmpty && Uri.tryParse(url)?.hasAbsolutePath == true;
+                      final valid = url.isNotEmpty &&
+                          Uri.tryParse(url)?.hasAbsolutePath == true;
                       if (valid) {
                         return CachedNetworkImage(
                           imageUrl: url,
                           fit: BoxFit.cover,
                         );
                       }
-                      return Container(color: AppColors.floralWhite, child: Icon(Icons.person, size: 32.r));
+                      return Container(
+                          color: AppColors.floralWhite,
+                          child: Icon(Icons.person, size: 32.r));
                     },
                   ),
                 ),
@@ -517,12 +526,14 @@ class ProfileMenuSection extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(EnumLocale.youAreOnClassic.name.tr, style: textTheme.bodySmall),
+                    Text(EnumLocale.youAreOnClassic.name.tr,
+                        style: textTheme.bodySmall),
                     SizedBox(height: 6.h),
                     GestureDetector(
                       onTap: () => Get.toNamed(AppRoutes.premiumPlans),
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 8.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6.r),
                           border: Border.all(color: Colors.grey.shade400),
@@ -531,7 +542,8 @@ class ProfileMenuSection extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Flexible(
-                              child: Text(EnumLocale.switchToPremium.name.tr, style: textTheme.bodySmall),
+                              child: Text(EnumLocale.switchToPremium.name.tr,
+                                  style: textTheme.bodySmall),
                             ),
                             SizedBox(width: 6.w),
                             Icon(CupertinoIcons.forward, size: 16.r),
@@ -541,14 +553,18 @@ class ProfileMenuSection extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     GestureDetector(
-                      onTap: () => Get.toNamed(AppRoutes.comprehensiveEditProfile),
+                      onTap: () =>
+                          Get.toNamed(AppRoutes.comprehensiveEditProfile),
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 6.h),
                         decoration: BoxDecoration(
                           color: const Color(0xFFF7BD8E),
                           borderRadius: BorderRadius.circular(4.r),
                         ),
-                        child: Text(EnumLocale.editMyProfileCTA.name.tr, style: textTheme.bodySmall?.copyWith(color: Colors.white)),
+                        child: Text(EnumLocale.editMyProfileCTA.name.tr,
+                            style: textTheme.bodySmall
+                                ?.copyWith(color: Colors.white)),
                       ),
                     ),
                   ],
@@ -674,4 +690,3 @@ class _MenuTile extends StatelessWidget {
     );
   }
 }
-

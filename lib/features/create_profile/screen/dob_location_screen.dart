@@ -32,22 +32,30 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
   }
 
   Future<void> _getLocation() async {
-    setState(() { isLocating = true; });
+    setState(() {
+      isLocating = true;
+    });
     try {
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          setState(() { isLocating = false; });
+          setState(() {
+            isLocating = false;
+          });
           return;
         }
       }
       if (permission == LocationPermission.deniedForever) {
-        setState(() { isLocating = false; });
+        setState(() {
+          isLocating = false;
+        });
         return;
       }
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
       if (placemarks.isNotEmpty) {
         countryController.text = placemarks.first.country ?? '';
         cityController.text = placemarks.first.locality ?? '';
@@ -55,7 +63,9 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
     } catch (e) {
       // Optionally show error
     }
-    setState(() { isLocating = false; });
+    setState(() {
+      isLocating = false;
+    });
   }
 
   @override
@@ -93,13 +103,15 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                       selectedDate.day,
                       1,
                       31,
-                      (val) => setState(() => selectedDate = DateTime(selectedDate.year, selectedDate.month, val)),
+                      (val) => setState(() => selectedDate =
+                          DateTime(selectedDate.year, selectedDate.month, val)),
                     ),
                     SizedBox(width: 12.w),
                     _buildMonthPicker(
                       context,
                       selectedDate.month,
-                      (val) => setState(() => selectedDate = DateTime(selectedDate.year, val, selectedDate.day)),
+                      (val) => setState(() => selectedDate =
+                          DateTime(selectedDate.year, val, selectedDate.day)),
                     ),
                     SizedBox(width: 12.w),
                     _buildPicker(
@@ -108,7 +120,8 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                       selectedDate.year,
                       1950,
                       2011,
-                      (val) => setState(() => selectedDate = DateTime(val, selectedDate.month, selectedDate.day)),
+                      (val) => setState(() => selectedDate =
+                          DateTime(val, selectedDate.month, selectedDate.day)),
                     ),
                   ],
                 ),
@@ -145,7 +158,8 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                       },
                       activeColor: const Color(0xFFB7410E),
                       checkColor: Colors.white,
-                      side: const BorderSide(color: Color(0xFFB7410E), width: 2),
+                      side:
+                          const BorderSide(color: Color(0xFFB7410E), width: 2),
                     ),
                     SizedBox(
                       width: 87.w,
@@ -205,18 +219,22 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 8.h),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.r),
-                            borderSide: const BorderSide(color: Color(0xFFD9D9D9), width: 1),
+                            borderSide: const BorderSide(
+                                color: Color(0xFFD9D9D9), width: 1),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.r),
-                            borderSide: const BorderSide(color: Color(0xFFD9D9D9), width: 1),
+                            borderSide: const BorderSide(
+                                color: Color(0xFFD9D9D9), width: 1),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.r),
-                            borderSide: const BorderSide(color: Color(0xFFD9D9D9), width: 1),
+                            borderSide: const BorderSide(
+                                color: Color(0xFFD9D9D9), width: 1),
                           ),
                         ),
                         readOnly: isLocateMe,
@@ -256,18 +274,22 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.r),
-                        borderSide: const BorderSide(color: Color(0xFFD9D9D9), width: 1),
+                        borderSide: const BorderSide(
+                            color: Color(0xFFD9D9D9), width: 1),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.r),
-                        borderSide: const BorderSide(color: Color(0xFFD9D9D9), width: 1),
+                        borderSide: const BorderSide(
+                            color: Color(0xFFD9D9D9), width: 1),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.r),
-                        borderSide: const BorderSide(color: Color(0xFFD9D9D9), width: 1),
+                        borderSide: const BorderSide(
+                            color: Color(0xFFD9D9D9), width: 1),
                       ),
                     ),
                     readOnly: isLocateMe,
@@ -290,18 +312,21 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                         borderRadius: BorderRadius.circular(10.r),
                         onTap: () {
                           // Save DOB and location data to the bloc
-                          context.read<CreateProfileBloc>().add(DobChanged(dob: selectedDate));
+                          context
+                              .read<CreateProfileBloc>()
+                              .add(DobChanged(dob: selectedDate));
                           context.read<CreateProfileBloc>().add(AddressChanged(
-                            country: countryController.text,
-                            city: cityController.text,
-                          ));
-                          
+                                country: countryController.text,
+                                city: cityController.text,
+                              ));
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (routeContext) => Builder(
                                 builder: (newContext) => BlocProvider.value(
-                                  value: BlocProvider.of<CreateProfileBloc>(context),
+                                  value: BlocProvider.of<CreateProfileBloc>(
+                                      context),
                                   child: const UnifiedProfileSetupScreen(),
                                 ),
                               ),
@@ -335,7 +360,8 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
     );
   }
 
-  Widget _buildPicker(BuildContext context, String label, int value, int min, int max, ValueChanged<int> onChanged) {
+  Widget _buildPicker(BuildContext context, String label, int value, int min,
+      int max, ValueChanged<int> onChanged) {
     return Column(
       children: [
         Text(label, style: Theme.of(context).textTheme.bodySmall),
@@ -354,7 +380,9 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                 return Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: itemValue == value ? AppColors.primaryColor.withOpacity(0.1) : Colors.transparent,
+                    color: itemValue == value
+                        ? AppColors.primaryColor.withValues(alpha: 0.1)
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Text(
@@ -362,7 +390,9 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16.sp,
-                      color: itemValue == value ? AppColors.primaryColor : Colors.black,
+                      color: itemValue == value
+                          ? AppColors.primaryColor
+                          : Colors.black,
                     ),
                   ),
                 );
@@ -375,7 +405,8 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
     );
   }
 
-  Widget _buildMonthPicker(BuildContext context, int value, ValueChanged<int> onChanged) {
+  Widget _buildMonthPicker(
+      BuildContext context, int value, ValueChanged<int> onChanged) {
     final months = [
       EnumLocale.dobLocationMonthJan.name.tr,
       EnumLocale.dobLocationMonthFeb.name.tr,
@@ -392,7 +423,8 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
     ];
     return Column(
       children: [
-        Text(EnumLocale.dobLocationMonthLabel.name.tr, style: Theme.of(context).textTheme.bodySmall),
+        Text(EnumLocale.dobLocationMonthLabel.name.tr,
+            style: Theme.of(context).textTheme.bodySmall),
         SizedBox(
           height: 60.h,
           width: 60.w,
@@ -408,7 +440,9 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
                 return Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.primaryColor.withOpacity(0.1) : Colors.transparent,
+                    color: isSelected
+                        ? AppColors.primaryColor.withValues(alpha: 0.1)
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Text(
@@ -428,4 +462,4 @@ class _DobLocationScreenState extends State<DobLocationScreen> {
       ],
     );
   }
-} 
+}

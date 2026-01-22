@@ -88,7 +88,7 @@ class ReportProfileUserHeader extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(color: AppColors.primaryColor),
-        color: AppColors.primaryColor.withOpacity(0.08),
+        color: AppColors.primaryColor.withValues(alpha: 0.08),
       ),
       child: Text(
         EnumLocale.message.name.tr,
@@ -115,4 +115,3 @@ class ReportProfileUserHeader extends StatelessWidget {
     }
   }
 }
-

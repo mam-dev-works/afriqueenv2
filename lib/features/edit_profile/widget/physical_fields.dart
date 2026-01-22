@@ -66,15 +66,15 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
               child: Padding(
                 padding: EdgeInsets.all(16.r),
                 child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     // Age
                     Text(
                       EnumLocale.age.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     TextField(
@@ -97,9 +97,9 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
                     Text(
                       EnumLocale.size.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     TextField(
@@ -122,9 +122,9 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
                     Text(
                       EnumLocale.weight.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     TextField(
@@ -147,18 +147,22 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
                     Text(
                       EnumLocale.silhouette.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                        border: Border.all(
+                            color:
+                                AppColors.primaryColor.withValues(alpha: 0.3)),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
-                        value: selectedSilhouette != null && AppStrings.silhouettes.contains(selectedSilhouette)
+                        value: selectedSilhouette != null &&
+                                AppStrings.silhouettes
+                                    .contains(selectedSilhouette)
                             ? selectedSilhouette
                             : null,
                         isExpanded: true,
@@ -168,7 +172,8 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: Text(
                             EnumLocale.selectSilhouette.name.tr,
-                            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                            style:
+                                TextStyle(fontSize: 12.sp, color: Colors.grey),
                           ),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -192,9 +197,9 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
                     Text(
                       EnumLocale.ethnicOrigin.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Choice<String>.prompt(
@@ -212,12 +217,14 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
                       itemBuilder: (state, i) {
                         final item = AppStrings.ethnicOrigins[i];
                         final selected = state.selected(item);
-                        final isLimitReached = state.value.length >= 2 && !selected;
+                        final isLimitReached =
+                            state.value.length >= 2 && !selected;
                         return CheckboxListTile(
                           dense: true,
                           activeColor: AppColors.primaryColor,
                           value: selected,
-                          onChanged: isLimitReached ? null : state.onSelected(item),
+                          onChanged:
+                              isLimitReached ? null : state.onSelected(item),
                           title: Text(
                             item,
                             style: Theme.of(context).textTheme.bodySmall,
@@ -233,10 +240,13 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
                             children: [
                               Text(
                                 EnumLocale.selectEthnicOrigin.name.tr,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               IconButton(
                                 onPressed: () => Get.back(),
@@ -264,7 +274,9 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
                             width: double.maxFinite,
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                              border: Border.all(
+                                  color: AppColors.primaryColor
+                                      .withValues(alpha: 0.3)),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Center(
@@ -292,4 +304,4 @@ class _PhysicalFieldsState extends State<PhysicalFields> {
       ),
     );
   }
-} 
+}

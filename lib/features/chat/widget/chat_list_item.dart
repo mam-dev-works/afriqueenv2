@@ -56,12 +56,12 @@ class ChatListItem extends StatelessWidget {
               color: AppColors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: AppColors.grey.withOpacity(0.1),
+                color: AppColors.grey.withValues(alpha: 0.1),
                 width: 1.w,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -76,17 +76,18 @@ class ChatListItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AppColors.primaryColor.withOpacity(0.2),
+                      color: AppColors.primaryColor.withValues(alpha: 0.2),
                       width: 2.w,
                     ),
                   ),
                   child: ClipOval(
-                    child: otherUser['photoUrl'] != null && otherUser['photoUrl'].toString().isNotEmpty
+                    child: otherUser['photoUrl'] != null &&
+                            otherUser['photoUrl'].toString().isNotEmpty
                         ? CachedNetworkImage(
                             imageUrl: otherUser['photoUrl'],
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Container(
-                              color: AppColors.grey.withOpacity(0.2),
+                              color: AppColors.grey.withValues(alpha: 0.2),
                               child: Icon(
                                 Icons.person,
                                 size: 24.sp,
@@ -94,7 +95,7 @@ class ChatListItem extends StatelessWidget {
                               ),
                             ),
                             errorWidget: (context, url, error) => Container(
-                              color: AppColors.grey.withOpacity(0.2),
+                              color: AppColors.grey.withValues(alpha: 0.2),
                               child: Icon(
                                 Icons.person,
                                 size: 24.sp,
@@ -103,7 +104,7 @@ class ChatListItem extends StatelessWidget {
                             ),
                           )
                         : Container(
-                            color: AppColors.grey.withOpacity(0.2),
+                            color: AppColors.grey.withValues(alpha: 0.2),
                             child: Icon(
                               Icons.person,
                               size: 24.sp,
@@ -112,9 +113,9 @@ class ChatListItem extends StatelessWidget {
                           ),
                   ),
                 ),
-                
+
                 SizedBox(width: 16.w),
-                
+
                 // Chat Info
                 Expanded(
                   child: Column(
@@ -149,9 +150,9 @@ class ChatListItem extends StatelessWidget {
                           ),
                         ],
                       ),
-                      
+
                       SizedBox(height: 6.h),
-                      
+
                       // Last Message
                       Row(
                         children: [
@@ -167,7 +168,7 @@ class ChatListItem extends StatelessWidget {
                               ),
                             ),
                           ),
-                          
+
                           // Unread Count Badge
                           if (chat.unreadCount > 0) ...[
                             SizedBox(width: 8.w),
@@ -202,4 +203,4 @@ class ChatListItem extends StatelessWidget {
       ),
     );
   }
-} 
+}

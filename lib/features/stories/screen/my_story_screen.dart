@@ -39,30 +39,37 @@ class MyStoryScreen extends StatelessWidget {
                 ),
               );
             }
-            
+
             final currentUserId = FirebaseAuth.instance.currentUser?.uid;
             print('MyStoryScreen - Current user ID: $currentUserId');
             print('MyStoryScreen - Available stories: ${state.data.length}');
-            
+
             // Debug: print all story IDs
             for (var story in state.data) {
-              print('MyStoryScreen - Story ID: ${story.id}, UserName: ${story.userName}');
+              print(
+                  'MyStoryScreen - Story ID: ${story.id}, UserName: ${story.userName}');
             }
-            
-            final userStory = state.data.where((story) => story.id == currentUserId).firstOrNull;
+
+            final userStory = state.data
+                .where((story) => story.id == currentUserId)
+                .firstOrNull;
             print('MyStoryScreen - User story found: ${userStory != null}');
-            
+
             if (userStory != null) {
-              print('MyStoryScreen - User story has containUrl: ${userStory.containUrl.isNotEmpty}');
-              print('MyStoryScreen - User story has imageUrl: ${userStory.imageUrl != null && userStory.imageUrl!.isNotEmpty}');
-              
-              if (userStory.containUrl.isNotEmpty || (userStory.imageUrl != null && userStory.imageUrl!.isNotEmpty)) {
+              print(
+                  'MyStoryScreen - User story has containUrl: ${userStory.containUrl.isNotEmpty}');
+              print(
+                  'MyStoryScreen - User story has imageUrl: ${userStory.imageUrl != null && userStory.imageUrl!.isNotEmpty}');
+
+              if (userStory.containUrl.isNotEmpty ||
+                  (userStory.imageUrl != null &&
+                      userStory.imageUrl!.isNotEmpty)) {
                 // User has a story, show the story view
                 print('MyStoryScreen - Showing story view');
                 return _buildStoryView(userStory);
               }
             }
-            
+
             // User doesn't have a story, show create story screen
             print('MyStoryScreen - Showing create story screen');
             return CreateStoryScreen();
@@ -75,7 +82,7 @@ class MyStoryScreen extends StatelessWidget {
   String _getTimeAgo(DateTime dateTime) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inDays > 0) {
       return '${EnumLocale.publieIlY.name.tr} ${difference.inDays}${EnumLocale.publieJ.name.tr}';
     } else if (difference.inHours > 0) {
@@ -104,7 +111,7 @@ class MyStoryScreen extends StatelessWidget {
 
       // Delete story from Firebase
       final storiesRepository = StoriesRepository();
-      
+
       // Find and delete the story document
       final storyQuery = await storiesRepository.firestore
           .collection('stories')
@@ -116,10 +123,10 @@ class MyStoryScreen extends StatelessWidget {
         for (var doc in storyQuery.docs) {
           await doc.reference.delete();
         }
-        
+
         // Navigate back to previous screen (not the dialog, but the previous page)
         Get.back(); // Close dialog
-        
+
         // Show success message after a short delay to avoid snackbar conflicts
         Future.delayed(Duration(milliseconds: 300), () {
           Get.snackbar(
@@ -131,7 +138,7 @@ class MyStoryScreen extends StatelessWidget {
             duration: Duration(seconds: 2),
           );
         });
-        
+
         // Navigate back to previous page after a short delay
         Future.delayed(Duration(milliseconds: 500), () {
           Get.back(); // Go back to previous page
@@ -196,7 +203,7 @@ class MyStoryScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.r),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 8,
                         offset: Offset(0, 2),
                       ),
@@ -204,7 +211,9 @@ class MyStoryScreen extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
-                    child: (story.imageUrl != null && story.imageUrl!.isNotEmpty) || story.containUrl.isNotEmpty
+                    child: (story.imageUrl != null &&
+                                story.imageUrl!.isNotEmpty) ||
+                            story.containUrl.isNotEmpty
                         ? Image.network(
                             story.imageUrl ?? story.containUrl.first,
                             fit: BoxFit.cover,
@@ -320,9 +329,9 @@ class MyStoryScreen extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             SizedBox(height: 16.h),
-            
+
             // Description Text
             if (story.text != null && story.text!.isNotEmpty)
               Text(
@@ -333,9 +342,9 @@ class MyStoryScreen extends StatelessWidget {
                   height: 1.4,
                 ),
               ),
-            
+
             SizedBox(height: 16.h),
-            
+
             // Engagement Metrics (Likes only)
             Row(
               children: [
@@ -358,7 +367,9 @@ class MyStoryScreen extends StatelessWidget {
                 ),
                 Spacer(),
                 Text(
-                  _getTimeAgo(story.createdDate.isNotEmpty ? story.createdDate.first : DateTime.now()),
+                  _getTimeAgo(story.createdDate.isNotEmpty
+                      ? story.createdDate.first
+                      : DateTime.now()),
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: Colors.grey,
@@ -366,9 +377,9 @@ class MyStoryScreen extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             SizedBox(height: 8.h),
-            
+
             // Requests Count
             Text(
               '${EnumLocale.nombreDemande.name.tr} 23',
@@ -378,9 +389,9 @@ class MyStoryScreen extends StatelessWidget {
                 color: AppColors.black,
               ),
             ),
-            
+
             SizedBox(height: 16.h),
-            
+
             // Action Buttons
             Row(
               children: [
@@ -438,4 +449,4 @@ class MyStoryScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}

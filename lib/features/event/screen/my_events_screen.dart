@@ -25,9 +25,9 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
     try {
       // Debug user status
       await _premiumService.debugUserStatus();
-      
+
       final hasReachedLimit = await _premiumService.hasReachedEventLimit();
-      
+
       if (hasReachedLimit) {
         // Show premium info dialog
         PremiumInfoDialog.show(context);
@@ -93,7 +93,8 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                       itemCount: totalSlots,
                       separatorBuilder: (_, __) => SizedBox(height: 12.h),
                       itemBuilder: (context, index) {
-                        final EventModel? event = index < events.length ? events[index] : null;
+                        final EventModel? event =
+                            index < events.length ? events[index] : null;
                         if (event != null) {
                           return _EventRow(event: event);
                         }
@@ -116,15 +117,22 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.white,
-                        side: BorderSide(color: AppColors.primaryColor.withOpacity(0.6), width: 1),
+                        side: BorderSide(
+                            color:
+                                AppColors.primaryColor.withValues(alpha: 0.6),
+                            width: 1),
                         shape: const StadiumBorder(),
-                        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 18.w, vertical: 8.h),
                         minimumSize: Size(0, 36.h),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
                         EnumLocale.retour.name.tr,
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 12.sp),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.sp),
                       ),
                     ),
                   ),
@@ -137,13 +145,15 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                         elevation: 0,
                         shadowColor: Colors.transparent,
                         shape: const StadiumBorder(),
-                        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 18.w, vertical: 8.h),
                         minimumSize: Size(0, 36.h),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
                         EnumLocale.creer.name.tr,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),
@@ -175,8 +185,18 @@ class _EventRow extends StatelessWidget {
 
   String _monthName(int m) {
     const months = [
-      'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-      'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+      'janvier',
+      'février',
+      'mars',
+      'avril',
+      'mai',
+      'juin',
+      'juillet',
+      'août',
+      'septembre',
+      'octobre',
+      'novembre',
+      'décembre'
     ];
     return months[(m - 1).clamp(0, 11)];
   }
@@ -215,7 +235,8 @@ class _EventRow extends StatelessWidget {
                 children: [
                   Text(
                     event.title,
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp),
+                    style:
+                        TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp),
                   ),
                   Text(
                     '${EnumLocale.eventDateLabel.name.tr} ${_formatDate(event.date)}',
@@ -270,14 +291,17 @@ class _CreateRow extends StatelessWidget {
                 onPressed: onCreate,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF6B6FB2),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.r)),
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.r)),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
                   elevation: 0,
                 ),
                 icon: const Icon(Icons.add, size: 16, color: Colors.white),
                 label: Text(
                   EnumLocale.creer.name.tr,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w700),
                 ),
               ),
             ),
@@ -287,5 +311,3 @@ class _CreateRow extends StatelessWidget {
     );
   }
 }
-
-

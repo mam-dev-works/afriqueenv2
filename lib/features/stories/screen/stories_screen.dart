@@ -39,7 +39,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
   String _formatLastActive(DateTime lastActive) {
     final now = DateTime.now();
     final difference = now.difference(lastActive);
-    
+
     if (difference.inDays > 0) {
       return '${EnumLocale.derniereConnexion.name.tr} ${difference.inDays}${EnumLocale.derniereConnexionJ.name.tr}';
     } else if (difference.inHours > 0) {
@@ -56,7 +56,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
       selectedTabIndex = index;
       currentStoryIndex = 0; // Reset story index when tab changes
     });
-    
+
     // Liké tab'ına geçildiğinde liked stories'leri fetch et
     if (index == 3) {
       context.read<StoriesBloc>().add(StoriesFetchLikedStories());
@@ -74,13 +74,14 @@ class _StoriesScreenState extends State<StoriesScreen> {
   void _onPreviousStory(List<StoriesFetchModel> stories) {
     if (stories.isNotEmpty) {
       setState(() {
-        currentStoryIndex = (currentStoryIndex - 1 + stories.length) % stories.length;
+        currentStoryIndex =
+            (currentStoryIndex - 1 + stories.length) % stories.length;
       });
     }
   }
 
-  List<StoriesFetchModel> getFilteredStories(
-      List<StoriesFetchModel> allStories, List<StoriesFetchModel> likedStoriesList) {
+  List<StoriesFetchModel> getFilteredStories(List<StoriesFetchModel> allStories,
+      List<StoriesFetchModel> likedStoriesList) {
     switch (selectedTabIndex) {
       case 1: // Favori
         return allStories
@@ -128,21 +129,21 @@ class _StoriesScreenState extends State<StoriesScreen> {
               listeners: [
                 BlocListener<StoriesBloc, StoriesState>(
                   listener: (context, state) {
-                                      if (state is StoriesCreateSuccess) {
-                    Get.snackbar(
-                      EnumLocale.updateSuccessMessage.name.tr,
-                      EnumLocale.storyAdded.name.tr,
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.green,
-                      colorText: Colors.white,
-                      duration: Duration(seconds: 2),
-                    );
-                  }
+                    if (state is StoriesCreateSuccess) {
+                      Get.snackbar(
+                        EnumLocale.updateSuccessMessage.name.tr,
+                        EnumLocale.storyAdded.name.tr,
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.green,
+                        colorText: Colors.white,
+                        duration: Duration(seconds: 2),
+                      );
+                    }
                   },
                 ),
               ],
-              child: BlocSelector<StoriesBloc, StoriesState,
-                  Map<String, dynamic>>(
+              child:
+                  BlocSelector<StoriesBloc, StoriesState, Map<String, dynamic>>(
                 selector: (state) => {
                   'data': state.data,
                   'likedStoriesList': state.likedStoriesList,
@@ -154,18 +155,23 @@ class _StoriesScreenState extends State<StoriesScreen> {
                   debugPrint("StoriesScreen - Current user ID: $currentUserId");
 
                   final allStories = dataMap['data'] as List<StoriesFetchModel>;
-                  final likedStoriesList = dataMap['likedStoriesList'] as List<StoriesFetchModel>;
-                  final likedStories = dataMap['likedStories'] as Map<String, bool>;
+                  final likedStoriesList =
+                      dataMap['likedStoriesList'] as List<StoriesFetchModel>;
+                  final likedStories =
+                      dataMap['likedStories'] as Map<String, bool>;
 
                   // Filter out current user's story and get other users' stories
-                  final filteredStories = getFilteredStories(allStories, likedStoriesList)
-                      .where((story) => story.id != currentUserId)
-                      .toList();
-                  
-                  debugPrint("StoriesScreen - Other users' stories count: ${filteredStories.length}");
+                  final filteredStories =
+                      getFilteredStories(allStories, likedStoriesList)
+                          .where((story) => story.id != currentUserId)
+                          .toList();
+
+                  debugPrint(
+                      "StoriesScreen - Other users' stories count: ${filteredStories.length}");
 
                   // Get current story
-                  final currentStory = filteredStories.isNotEmpty && currentStoryIndex < filteredStories.length
+                  final currentStory = filteredStories.isNotEmpty &&
+                          currentStoryIndex < filteredStories.length
                       ? filteredStories[currentStoryIndex]
                       : null;
 
@@ -175,10 +181,11 @@ class _StoriesScreenState extends State<StoriesScreen> {
                       print('=== CHECKING LIKE STATUS FOR ALL STORIES ===');
                       for (final story in filteredStories) {
                         if (story.documentId != null) {
-                          print('Checking like status for story: ${story.documentId}');
+                          print(
+                              'Checking like status for story: ${story.documentId}');
                           context.read<StoriesBloc>().add(
-                            StoriesCheckLikeStatus(storyId: story.documentId!)
-                          );
+                              StoriesCheckLikeStatus(
+                                  storyId: story.documentId!));
                         } else {
                           print('Story has no documentId: ${story.id}');
                         }
@@ -191,7 +198,9 @@ class _StoriesScreenState extends State<StoriesScreen> {
                   // Liké tab'ına geçildiğinde liked stories'leri fetch et
                   if (selectedTabIndex == 3) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      context.read<StoriesBloc>().add(StoriesFetchLikedStories());
+                      context
+                          .read<StoriesBloc>()
+                          .add(StoriesFetchLikedStories());
                     });
                   }
 
@@ -268,16 +277,16 @@ class _StoriesScreenState extends State<StoriesScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              _buildTab(
-                                  context, EnumLocale.nouveau.name.tr, 0, selectedTabIndex == 0),
-                              _buildTab(
-                                  context, EnumLocale.favori.name.tr, 1, selectedTabIndex == 1),
-                              _buildTab(
-                                  context, EnumLocale.archive.name.tr, 2, selectedTabIndex == 2),
-                              _buildTab(
-                                  context, EnumLocale.like.name.tr, 3, selectedTabIndex == 3),
-                              _buildTab(
-                                  context, EnumLocale.tous.name.tr, 4, selectedTabIndex == 4),
+                              _buildTab(context, EnumLocale.nouveau.name.tr, 0,
+                                  selectedTabIndex == 0),
+                              _buildTab(context, EnumLocale.favori.name.tr, 1,
+                                  selectedTabIndex == 1),
+                              _buildTab(context, EnumLocale.archive.name.tr, 2,
+                                  selectedTabIndex == 2),
+                              _buildTab(context, EnumLocale.like.name.tr, 3,
+                                  selectedTabIndex == 3),
+                              _buildTab(context, EnumLocale.tous.name.tr, 4,
+                                  selectedTabIndex == 4),
                             ],
                           ),
                         ),
@@ -292,7 +301,8 @@ class _StoriesScreenState extends State<StoriesScreen> {
                                     // Profile Card with Animation
                                     AnimatedSwitcher(
                                       duration: Duration(milliseconds: 300),
-                                      transitionBuilder: (Widget child, Animation<double> animation) {
+                                      transitionBuilder: (Widget child,
+                                          Animation<double> animation) {
                                         return SlideTransition(
                                           position: Tween<Offset>(
                                             begin: Offset(1.0, 0.0),
@@ -305,15 +315,17 @@ class _StoriesScreenState extends State<StoriesScreen> {
                                         );
                                       },
                                       child: _buildProfileCard(currentStory),
-                                      key: ValueKey(currentStory?.documentId ?? currentStoryIndex),
+                                      key: ValueKey(currentStory?.documentId ??
+                                          currentStoryIndex),
                                     ),
                                     SizedBox(height: 16.h),
                                     // Main Content Area with Gesture Detection
                                     GestureDetector(
                                       onTapUp: (details) {
-                                        final screenWidth = MediaQuery.of(context).size.width;
+                                        final screenWidth =
+                                            MediaQuery.of(context).size.width;
                                         final tapX = details.globalPosition.dx;
-                                        
+
                                         if (tapX < screenWidth * 0.3) {
                                           // Left side - previous story
                                           _onPreviousStory(filteredStories);
@@ -324,7 +336,8 @@ class _StoriesScreenState extends State<StoriesScreen> {
                                       },
                                       child: AnimatedSwitcher(
                                         duration: Duration(milliseconds: 300),
-                                        transitionBuilder: (Widget child, Animation<double> animation) {
+                                        transitionBuilder: (Widget child,
+                                            Animation<double> animation) {
                                           return SlideTransition(
                                             position: Tween<Offset>(
                                               begin: Offset(1.0, 0.0),
@@ -336,8 +349,11 @@ class _StoriesScreenState extends State<StoriesScreen> {
                                             child: child,
                                           );
                                         },
-                                        child: _buildMainContent(currentStory, filteredStories),
-                                        key: ValueKey(currentStory?.documentId ?? currentStoryIndex),
+                                        child: _buildMainContent(
+                                            currentStory, filteredStories),
+                                        key: ValueKey(
+                                            currentStory?.documentId ??
+                                                currentStoryIndex),
                                       ),
                                     ),
                                   ],
@@ -395,7 +411,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
       future: story != null ? _fetchUserData(story.id) : Future.value(null),
       builder: (context, snapshot) {
         final userData = snapshot.data;
-        
+
         return Container(
           padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
@@ -403,7 +419,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
             borderRadius: BorderRadius.circular(12.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 8,
                 offset: Offset(0, 2),
               ),
@@ -428,7 +444,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
                       : story?.userImg.isNotEmpty == true
                           ? NetworkImage(story!.userImg)
                           : null,
-                  child: (userData?.imgURL.isEmpty != false && 
+                  child: (userData?.imgURL.isEmpty != false &&
                           story?.userImg.isEmpty != false)
                       ? Icon(Icons.person, size: 30.r, color: Colors.grey)
                       : null,
@@ -466,7 +482,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      userData?.lastActive != null 
+                      userData?.lastActive != null
                           ? _formatLastActive(userData!.lastActive!)
                           : EnumLocale.derniereConnexionInconnue.name.tr,
                       style: TextStyle(
@@ -496,7 +512,8 @@ class _StoriesScreenState extends State<StoriesScreen> {
     );
   }
 
-  Widget _buildMainContent(StoriesFetchModel? story, List<StoriesFetchModel> filteredStories) {
+  Widget _buildMainContent(
+      StoriesFetchModel? story, List<StoriesFetchModel> filteredStories) {
     return Column(
       children: [
         // Main Image Container
@@ -506,7 +523,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
             borderRadius: BorderRadius.circular(12.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 8,
                 offset: Offset(0, 2),
               ),
@@ -520,14 +537,18 @@ class _StoriesScreenState extends State<StoriesScreen> {
                 height: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.r),
-                  image: (story?.imageUrl != null && story!.imageUrl!.isNotEmpty) || story?.containUrl.isNotEmpty == true
+                  image: (story?.imageUrl != null &&
+                              story!.imageUrl!.isNotEmpty) ||
+                          story?.containUrl.isNotEmpty == true
                       ? DecorationImage(
-                          image: NetworkImage(story!.imageUrl ?? story.containUrl.first),
+                          image: NetworkImage(
+                              story!.imageUrl ?? story.containUrl.first),
                           fit: BoxFit.cover,
                         )
                       : null,
                 ),
-                child: ((story?.imageUrl == null || story!.imageUrl!.isEmpty) && story?.containUrl.isEmpty != false)
+                child: ((story?.imageUrl == null || story!.imageUrl!.isEmpty) &&
+                        story?.containUrl.isEmpty != false)
                     ? Container(
                         color: Colors.grey.shade300,
                         child: Icon(
@@ -551,24 +572,25 @@ class _StoriesScreenState extends State<StoriesScreen> {
                     SizedBox(height: 12.h),
                     BlocBuilder<StoriesBloc, StoriesState>(
                       builder: (context, state) {
-                        final isLiked = story?.documentId != null && 
+                        final isLiked = story?.documentId != null &&
                             state.likedStories[story!.documentId!] == true;
-                        
+
                         debugPrint('=== LIKE BUTTON DEBUG ===');
                         debugPrint('Story documentId: ${story?.documentId}');
                         debugPrint('Story ID: ${story?.id}');
                         debugPrint('Is story liked: $isLiked');
-                        debugPrint('Liked stories in state: ${state.likedStories}');
-                        debugPrint('Current story in likedStories: ${state.likedStories[story?.documentId]}');
+                        debugPrint(
+                            'Liked stories in state: ${state.likedStories}');
+                        debugPrint(
+                            'Current story in likedStories: ${state.likedStories[story?.documentId]}');
                         debugPrint('=== END LIKE BUTTON DEBUG ===');
-                        
+
                         return _buildActionButton(
                           isLiked ? Icons.favorite : Icons.favorite_border,
                           () {
                             if (story != null && story.documentId != null) {
-                              context.read<StoriesBloc>().add(
-                                StoriesLikeToggle(storyId: story.documentId!)
-                              );
+                              context.read<StoriesBloc>().add(StoriesLikeToggle(
+                                  storyId: story.documentId!));
                             }
                           },
                           iconColor: isLiked ? Colors.red : null,
@@ -585,7 +607,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
             ],
           ),
         ),
-        
+
         // Text Description (Below Photo with White Background)
         Container(
           width: double.infinity,
@@ -598,7 +620,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 4,
                 offset: Offset(0, 1),
               ),
@@ -619,14 +641,15 @@ class _StoriesScreenState extends State<StoriesScreen> {
     );
   }
 
-  Widget _buildActionButton(IconData icon, VoidCallback onTap, {Color? iconColor}) {
+  Widget _buildActionButton(IconData icon, VoidCallback onTap,
+      {Color? iconColor}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 40.w,
         height: 40.w,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: Colors.white.withValues(alpha: 0.9),
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.grey.shade300,
@@ -646,7 +669,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.7),
+        color: Colors.black.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Text(

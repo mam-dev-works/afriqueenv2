@@ -52,9 +52,9 @@ class _ImageCropPreviewScreenState extends State<ImageCropPreviewScreen> {
             ],
             backgroundColor: Colors.black,
             activeControlsWidgetColor: AppColors.primaryColor,
-            dimmedLayerColor: Colors.black.withOpacity(0.8),
+            dimmedLayerColor: Colors.black.withValues(alpha: 0.8),
             cropFrameColor: Colors.white,
-            cropGridColor: Colors.white.withOpacity(0.5),
+            cropGridColor: Colors.white.withValues(alpha: 0.5),
             cropFrameStrokeWidth: 2,
             cropGridStrokeWidth: 1,
             statusBarColor: AppColors.primaryColor,
@@ -227,7 +227,7 @@ class _ImageCropPreviewScreenState extends State<ImageCropPreviewScreen> {
                           color: Colors.black,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
+                              color: Colors.black.withValues(alpha: 0.5),
                               blurRadius: 15,
                               offset: Offset(0, -3),
                             ),

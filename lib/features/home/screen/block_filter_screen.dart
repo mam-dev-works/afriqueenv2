@@ -18,31 +18,31 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
   final VisibilityRepository _visibilityRepository = VisibilityRepository();
   // Profile type
   List<String> _selectedProfileTypes = ['Élite'];
-  
+
   // Sex
   List<String> _selectedSexes = ['Femme'];
-  
+
   // Sexual orientation
   List<String> _selectedOrientations = ['Hétéro'];
-  
+
   // Age range
   RangeValues _ageRange = const RangeValues(18, 99);
-  
+
   // Distance range
   RangeValues _distanceRange = const RangeValues(0, 500);
-  
+
   // Certified profiles only
   bool _certifiedOnly = false;
-  
+
   // Marital status
   List<String> _selectedMaritalStatuses = [];
-  
+
   // Main interest
   List<String> _selectedMainInterests = [];
-  
+
   // Age none option
   bool _ageNone = false;
-  
+
   // Distance none option
   bool _distanceNone = false;
 
@@ -56,9 +56,11 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
     try {
       final prefs = await _visibilityRepository.fetchInvisibilityPreferences();
       setState(() {
-        _selectedProfileTypes = List<String>.from(prefs['invisibleToProfileTypes'] ?? []);
+        _selectedProfileTypes =
+            List<String>.from(prefs['invisibleToProfileTypes'] ?? []);
         _selectedSexes = List<String>.from(prefs['invisibleToSexes'] ?? []);
-        _selectedOrientations = List<String>.from(prefs['invisibleToOrientations'] ?? []);
+        _selectedOrientations =
+            List<String>.from(prefs['invisibleToOrientations'] ?? []);
       });
     } catch (e) {
       // ignore errors silently
@@ -107,7 +109,7 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
         children: [
           // Reset button at top
           _buildResetButton(),
-          
+
           // Main filter content
           Expanded(
             child: SingleChildScrollView(
@@ -192,10 +194,10 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
                     _buildCertifiedFilter(),
                   ),
                   SizedBox(height: 32.h), // Space before apply button
-                  
+
                   // Apply button inside scroll view
                   _buildApplyButton(),
-                  
+
                   SizedBox(height: 20.h), // Space at bottom
                 ],
               ),
@@ -257,7 +259,7 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: Offset(0, 2),
           ),
@@ -280,7 +282,8 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
           });
         }),
         SizedBox(width: 12.w),
-        _buildOvalButton('Classique', _selectedProfileTypes.contains('Classique'), () {
+        _buildOvalButton(
+            'Classique', _selectedProfileTypes.contains('Classique'), () {
           setState(() {
             if (_selectedProfileTypes.contains('Classique')) {
               _selectedProfileTypes.remove('Classique');
@@ -322,7 +325,8 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
   Widget _buildOrientationFilter() {
     return Row(
       children: [
-        _buildOvalButton('Hétéro', _selectedOrientations.contains('Hétéro'), () {
+        _buildOvalButton('Hétéro', _selectedOrientations.contains('Hétéro'),
+            () {
           setState(() {
             if (_selectedOrientations.contains('Hétéro')) {
               _selectedOrientations.remove('Hétéro');
@@ -362,22 +366,22 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-                         Text(
-               'Âge',
-               style: TextStyle(
-                 color: AppColors.black,
-                 fontSize: 14.sp,
-                 fontWeight: FontWeight.w600,
-               ),
-             ),
-                         Text(
-               '${_ageRange.start.round()} à ${_ageRange.end.round()}+',
-               style: TextStyle(
-                 color: AppColors.black,
-                 fontSize: 12.sp,
-                 fontWeight: FontWeight.w500,
-               ),
-             ),
+            Text(
+              'Âge',
+              style: TextStyle(
+                color: AppColors.black,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              '${_ageRange.start.round()} à ${_ageRange.end.round()}+',
+              style: TextStyle(
+                color: AppColors.black,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ],
         ),
         SizedBox(height: 12.h),
@@ -431,22 +435,22 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-                         Text(
-               'Distance de moi en km',
-               style: TextStyle(
-                 color: AppColors.black,
-                 fontSize: 14.sp,
-                 fontWeight: FontWeight.w600,
-               ),
-             ),
-                         Text(
-               'De ${_distanceRange.start.round()} à ${_distanceRange.end.round()}+',
-               style: TextStyle(
-                 color: AppColors.black,
-                 fontSize: 12.sp,
-                 fontWeight: FontWeight.w500,
-               ),
-             ),
+            Text(
+              'Distance de moi en km',
+              style: TextStyle(
+                color: AppColors.black,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              'De ${_distanceRange.start.round()} à ${_distanceRange.end.round()}+',
+              style: TextStyle(
+                color: AppColors.black,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ],
         ),
         SizedBox(height: 12.h),
@@ -497,8 +501,8 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
     return GestureDetector(
       onTap: () async {
         final result = await Get.to(() => MaritalStatusScreen(
-          initialSelections: _selectedMaritalStatuses,
-        ));
+              initialSelections: _selectedMaritalStatuses,
+            ));
         if (result != null) {
           setState(() {
             _selectedMaritalStatuses = List<String>.from(result);
@@ -530,8 +534,8 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
     return GestureDetector(
       onTap: () async {
         final result = await Get.to(() => MainInterestScreen(
-          initialSelections: _selectedMainInterests,
-        ));
+              initialSelections: _selectedMainInterests,
+            ));
         if (result != null) {
           setState(() {
             _selectedMainInterests = List<String>.from(result);
@@ -563,14 +567,14 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-                 Text(
-           'Profil certifié uniquement',
-           style: TextStyle(
-             color: AppColors.black,
-             fontSize: 14.sp,
-             fontWeight: FontWeight.w600,
-           ),
-         ),
+        Text(
+          'Profil certifié uniquement',
+          style: TextStyle(
+            color: AppColors.black,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         Switch(
           value: _certifiedOnly,
           onChanged: (value) {
@@ -653,4 +657,4 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
       ),
     );
   }
-} 
+}

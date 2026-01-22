@@ -61,15 +61,15 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
               child: Padding(
                 padding: EdgeInsets.all(16.r),
                 child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     // Occupation
                     Text(
                       EnumLocale.occupation.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     TextField(
@@ -91,9 +91,9 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
                     Text(
                       EnumLocale.levelOfStudy.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Choice<String>.prompt(
@@ -129,10 +129,13 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
                             children: [
                               Text(
                                 EnumLocale.selectLevelOfStudy.name.tr,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               IconButton(
                                 onPressed: () => Get.back(),
@@ -160,7 +163,9 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
                             width: double.maxFinite,
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                              border: Border.all(
+                                  color: AppColors.primaryColor
+                                      .withValues(alpha: 0.3)),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Center(
@@ -184,9 +189,9 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
                     Text(
                       EnumLocale.professionalLanguages.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Choice<String>.prompt(
@@ -222,10 +227,13 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
                             children: [
                               Text(
                                 EnumLocale.selectProfessionalLanguages.name.tr,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                               IconButton(
                                 onPressed: () => Get.back(),
@@ -253,13 +261,16 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
                             width: double.maxFinite,
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                              border: Border.all(
+                                  color: AppColors.primaryColor
+                                      .withValues(alpha: 0.3)),
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: Center(
                               child: Text(
                                 selectedLanguages.isEmpty
-                                    ? EnumLocale.selectProfessionalLanguages.name.tr
+                                    ? EnumLocale
+                                        .selectProfessionalLanguages.name.tr
                                     : selectedLanguages.join(', '),
                                 style: Theme.of(context).textTheme.bodySmall,
                                 maxLines: 1,
@@ -277,18 +288,22 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
                     Text(
                       EnumLocale.incomeLevel.name.tr,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryColor.withOpacity(0.3)),
+                        border: Border.all(
+                            color:
+                                AppColors.primaryColor.withValues(alpha: 0.3)),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: DropdownButton<String>(
-                        value: selectedIncomeLevel != null && AppStrings.incomeLevel.contains(selectedIncomeLevel)
+                        value: selectedIncomeLevel != null &&
+                                AppStrings.incomeLevel
+                                    .contains(selectedIncomeLevel)
                             ? selectedIncomeLevel
                             : null,
                         isExpanded: true,
@@ -298,7 +313,8 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: Text(
                             EnumLocale.selectIncomeLevel.name.tr,
-                            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                            style:
+                                TextStyle(fontSize: 12.sp, color: Colors.grey),
                           ),
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -321,10 +337,9 @@ class _ProfessionalFieldsState extends State<ProfessionalFields> {
               ),
             ),
             SizedBox(height: 24.h),
-
           ],
         ),
       ),
     );
   }
-} 
+}

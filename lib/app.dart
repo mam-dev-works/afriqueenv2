@@ -21,7 +21,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AppGetStorage _appGetStorage = AppGetStorage();
-  final PasswordlessLoginServices _passwordlessLoginServices = PasswordlessLoginServices();
+  final PasswordlessLoginServices _passwordlessLoginServices =
+      PasswordlessLoginServices();
 
   @override
   void initState() {
@@ -48,7 +49,8 @@ class _MyAppState extends State<MyApp> {
       debugPrint("[GLOBAL] onLink dynamicLinkData: $dynamicLinkData");
       final Uri deepLink = dynamicLinkData.link;
       debugPrint("[GLOBAL] onLink deepLink: $deepLink");
-      debugPrint("[GLOBAL] onLink queryParameters: ${deepLink.queryParameters}");
+      debugPrint(
+          "[GLOBAL] onLink queryParameters: ${deepLink.queryParameters}");
       final email = _appGetStorage.getLastEmail();
       debugPrint("[GLOBAL] onLink email: $email");
 
@@ -56,9 +58,10 @@ class _MyAppState extends State<MyApp> {
         // Extract the 'link' parameter which contains the actual Firebase Auth email link
         final String? emailLink = deepLink.queryParameters['link'];
         debugPrint("[GLOBAL] onLink extracted emailLink: $emailLink");
-        
+
         if (emailLink != null) {
-          await _passwordlessLoginServices.handleLink(Uri.parse(emailLink), email, context);
+          await _passwordlessLoginServices.handleLink(
+              Uri.parse(emailLink), email, context);
         } else {
           debugPrint("[GLOBAL] onLink No 'link' parameter found in deepLink");
         }
@@ -71,7 +74,8 @@ class _MyAppState extends State<MyApp> {
     FirebaseDynamicLinks.instance.getInitialLink().then((data) async {
       final Uri? deepLink = data?.link;
       debugPrint("[GLOBAL] getInitialLink deepLink: $deepLink");
-      debugPrint("[GLOBAL] getInitialLink queryParameters: ${deepLink?.queryParameters}");
+      debugPrint(
+          "[GLOBAL] getInitialLink queryParameters: ${deepLink?.queryParameters}");
       final email = _appGetStorage.getLastEmail();
       debugPrint("[GLOBAL] getInitialLink email: $email");
 
@@ -79,11 +83,13 @@ class _MyAppState extends State<MyApp> {
         // Extract the 'link' parameter which contains the actual Firebase Auth email link
         final String? emailLink = deepLink.queryParameters['link'];
         debugPrint("[GLOBAL] getInitialLink extracted emailLink: $emailLink");
-        
+
         if (emailLink != null) {
-          await _passwordlessLoginServices.handleLink(Uri.parse(emailLink), email, context);
+          await _passwordlessLoginServices.handleLink(
+              Uri.parse(emailLink), email, context);
         } else {
-          debugPrint("[GLOBAL] getInitialLink No 'link' parameter found in deepLink");
+          debugPrint(
+              "[GLOBAL] getInitialLink No 'link' parameter found in deepLink");
         }
       }
     });
@@ -94,20 +100,21 @@ class _MyAppState extends State<MyApp> {
 
   void _initAppLinks() {
     final appLinks = AppLinks();
-    
+
     appLinks.uriLinkStream.listen((Uri uri) async {
       debugPrint("[GLOBAL] AppLinks uri: $uri");
       debugPrint("[GLOBAL] AppLinks queryParameters: ${uri.queryParameters}");
-      
+
       final email = _appGetStorage.getLastEmail();
       debugPrint("[GLOBAL] AppLinks email: $email");
-      
+
       if (email != null && email.isNotEmpty) {
         final String? emailLink = uri.queryParameters['link'];
         debugPrint("[GLOBAL] AppLinks emailLink: $emailLink");
-        
+
         if (emailLink != null) {
-          await _passwordlessLoginServices.handleLink(Uri.parse(emailLink), email, context);
+          await _passwordlessLoginServices.handleLink(
+              Uri.parse(emailLink), email, context);
         }
       }
     }, onError: (error) {
@@ -118,17 +125,19 @@ class _MyAppState extends State<MyApp> {
     appLinks.getInitialAppLink().then((Uri? uri) async {
       if (uri != null) {
         debugPrint("[GLOBAL] AppLinks initial uri: $uri");
-        debugPrint("[GLOBAL] AppLinks initial queryParameters: ${uri.queryParameters}");
-        
+        debugPrint(
+            "[GLOBAL] AppLinks initial queryParameters: ${uri.queryParameters}");
+
         final email = _appGetStorage.getLastEmail();
         debugPrint("[GLOBAL] AppLinks initial email: $email");
-        
+
         if (email != null && email.isNotEmpty) {
           final String? emailLink = uri.queryParameters['link'];
           debugPrint("[GLOBAL] AppLinks initial emailLink: $emailLink");
-          
+
           if (emailLink != null) {
-            await _passwordlessLoginServices.handleLink(Uri.parse(emailLink), email, context);
+            await _passwordlessLoginServices.handleLink(
+                Uri.parse(emailLink), email, context);
           }
         }
       }
@@ -153,11 +162,11 @@ class _MyAppState extends State<MyApp> {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Scaffold(); // or splash screen
+              return const CircularProgressIndicator(); // or splash screen
             }
 
             final String initialRoute = snapshot.hasData
-                ?routeNameFromPageNumber()!
+                ? routeNameFromPageNumber()!
                 : (_appGetStorage.hasOpenedApp()
                     ? AppRoutes.login
                     : AppRoutes.wellcome);

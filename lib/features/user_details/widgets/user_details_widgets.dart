@@ -3,7 +3,6 @@ import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/common/widgets/common_button.dart';
 import 'package:afriqueen/common/widgets/snackbar_message.dart';
-import 'package:afriqueen/common/widgets/user_status.dart';
 import 'package:afriqueen/common/widgets/seniority.dart';
 import 'package:afriqueen/features/archive/bloc/archive_bloc.dart';
 import 'package:afriqueen/features/archive/bloc/archive_event.dart';
@@ -381,7 +380,7 @@ class _ActionButtonsRowState extends State<ActionButtonsRow> {
           border: Border.all(color: Colors.grey.shade300, width: 1),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 4,
               offset: Offset(0, 2),
             ),
@@ -558,7 +557,7 @@ class InformationCategories extends StatelessWidget {
       width: double.infinity,
       height: 40.h,
       decoration: BoxDecoration(
-        color: Color(0xFFFFB6C1).withOpacity(0.3), // Light pink
+        color: Color(0xFFFFB6C1).withValues(alpha: 0.3), // Light pink
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Center(
@@ -785,7 +784,7 @@ class Description extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
               blurRadius: 8,
               offset: Offset(0, 2),
             ),
@@ -821,7 +820,7 @@ class Interests extends StatelessWidget {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 7.h),
             decoration: BoxDecoration(
-              color: AppColors.primaryColor.withOpacity(0.08),
+              color: AppColors.primaryColor.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(20.r),
               border: Border.all(color: AppColors.primaryColor, width: 1.2.w),
             ),
@@ -866,7 +865,7 @@ class UserDetails extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
             decoration: BoxDecoration(
-              color: AppColors.primaryColor.withOpacity(0.1),
+              color: AppColors.primaryColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16.r),
             ),
             child: Text(

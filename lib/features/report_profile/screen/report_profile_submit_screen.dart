@@ -19,7 +19,8 @@ class ReportProfileSubmitScreen extends StatefulWidget {
   final EnumLocale selectedReason;
 
   @override
-  State<ReportProfileSubmitScreen> createState() => _ReportProfileSubmitScreenState();
+  State<ReportProfileSubmitScreen> createState() =>
+      _ReportProfileSubmitScreenState();
 }
 
 class _ReportProfileSubmitScreenState extends State<ReportProfileSubmitScreen> {
@@ -151,7 +152,7 @@ class _ReportProfileSubmitScreenState extends State<ReportProfileSubmitScreen> {
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color: AppColors.lightOrange.withOpacity(0.2),
+        color: AppColors.lightOrange.withValues(alpha: 0.2),
       ),
       child: Text(
         widget.selectedReason.name.tr,
@@ -192,7 +193,8 @@ class _ReportProfileSubmitScreenState extends State<ReportProfileSubmitScreen> {
       children: [
         Expanded(
           child: OutlinedButton(
-            onPressed: _isSubmitting ? null : () => _handleSubmit(alsoBlock: false),
+            onPressed:
+                _isSubmitting ? null : () => _handleSubmit(alsoBlock: false),
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: AppColors.primaryColor),
               foregroundColor: AppColors.primaryColor,
@@ -210,7 +212,8 @@ class _ReportProfileSubmitScreenState extends State<ReportProfileSubmitScreen> {
         SizedBox(width: 12.w),
         Expanded(
           child: ElevatedButton(
-            onPressed: _isSubmitting ? null : () => _handleSubmit(alsoBlock: true),
+            onPressed:
+                _isSubmitting ? null : () => _handleSubmit(alsoBlock: true),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryColor,
               padding: EdgeInsets.symmetric(vertical: 14.h),
@@ -234,4 +237,3 @@ class _ReportProfileSubmitScreenState extends State<ReportProfileSubmitScreen> {
     );
   }
 }
-

@@ -24,7 +24,7 @@ class EventCard extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -38,13 +38,23 @@ class EventCard extends StatelessWidget {
             future: ProfileRepository().fetchUserDataById(event.creatorId),
             builder: (context, snap) {
               final profile = snap.data;
-              final String displayName = profile != null && (profile.toMap().containsKey('name') || profile.toMap().containsKey('surname'))
-                  ? '${(profile.toMap()['name'] ?? '').toString().trim()} ${(profile.toMap()['surname'] ?? '').toString().trim()}'.trim()
+              final String displayName = profile != null &&
+                      (profile.toMap().containsKey('name') ||
+                          profile.toMap().containsKey('surname'))
+                  ? '${(profile.toMap()['name'] ?? '').toString().trim()} ${(profile.toMap()['surname'] ?? '').toString().trim()}'
+                      .trim()
                   : (profile?.pseudo ?? '');
-              final String nameAge = (displayName.isNotEmpty ? displayName : EnumLocale.utilisateur.name.tr) + (profile != null && profile.age > 0 ? ', ${profile.age}' : '');
-              final ImageProvider<Object> avatar = (profile != null && profile.imgURL.isNotEmpty)
-                  ? (NetworkImage(profile.imgURL) as ImageProvider<Object>)
-                  : (const AssetImage('assets/images/couple.png') as ImageProvider<Object>);
+              final String nameAge = (displayName.isNotEmpty
+                      ? displayName
+                      : EnumLocale.utilisateur.name.tr) +
+                  (profile != null && profile.age > 0
+                      ? ', ${profile.age}'
+                      : '');
+              final ImageProvider<Object> avatar =
+                  (profile != null && profile.imgURL.isNotEmpty)
+                      ? (NetworkImage(profile.imgURL) as ImageProvider<Object>)
+                      : (const AssetImage('assets/images/couple.png')
+                          as ImageProvider<Object>);
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -81,21 +91,27 @@ class EventCard extends StatelessWidget {
                         SizedBox(height: 4.h),
                         Text(
                           '${EnumLocale.derniereConnexion.name.tr}: ${'il y a'.tr} 2h',
-                          style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade700),
+                          style: TextStyle(
+                              fontSize: 12.sp, color: Colors.grey.shade700),
                         ),
                         Text(
                           EnumLocale.chercheRelationSerieuse.name.tr,
-                          style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade700),
+                          style: TextStyle(
+                              fontSize: 12.sp, color: Colors.grey.shade700),
                         ),
                         SizedBox(height: 6.h),
                         Text(
                           '${EnumLocale.eventOrganizedPrefix.name.tr} 6',
-                          style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade800),
+                          style: TextStyle(
+                              fontSize: 12.sp, color: Colors.grey.shade800),
                         ),
                         SizedBox(height: 6.h),
                         Text(
                           '${EnumLocale.eventToDoPrefix.name.tr} ${event.status == EventStatus.DUO ? EnumLocale.duoText.name.tr : EnumLocale.groupText.name.tr}',
-                          style: TextStyle(fontSize: 12.sp, color: Colors.black, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              fontSize: 12.sp,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -119,9 +135,12 @@ class EventCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(EnumLocale.eventDateLabel.name.tr, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp)),
+                    Text(EnumLocale.eventDateLabel.name.tr,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 12.sp)),
                     SizedBox(height: 2.h),
-                    Text(_formatDate(event.date), style: TextStyle(fontSize: 12.sp)),
+                    Text(_formatDate(event.date),
+                        style: TextStyle(fontSize: 12.sp)),
                   ],
                 ),
               ),
@@ -129,7 +148,9 @@ class EventCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(EnumLocale.eventPlaceLabel.name.tr, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12.sp)),
+                    Text(EnumLocale.eventPlaceLabel.name.tr,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 12.sp)),
                     SizedBox(height: 2.h),
                     Text(event.location, style: TextStyle(fontSize: 12.sp)),
                   ],
@@ -205,7 +226,7 @@ class EventCard extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 6,
             offset: const Offset(0, 2),
           )
@@ -221,5 +242,3 @@ class EventCard extends StatelessWidget {
   String _pad(int n) => n.toString().padLeft(2, '0');
   String _formatDate(DateTime d) => '${_pad(d.day)}/${_pad(d.month)}/${d.year}';
 }
-
-

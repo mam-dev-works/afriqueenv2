@@ -42,14 +42,15 @@ class _MessageBubbleState extends State<MessageBubble> {
   }
 
   Future<void> _initAudioPlayer() async {
-    if (widget.message.type == MessageType.voice && widget.message.audioUrl != null) {
+    if (widget.message.type == MessageType.voice &&
+        widget.message.audioUrl != null) {
       try {
         setState(() {
           _isLoading = true;
         });
 
         await _audioPlayer.setUrl(widget.message.audioUrl!);
-        
+
         // Listen to player state changes
         _audioPlayer.playerStateStream.listen((state) {
           if (mounted) {
@@ -142,7 +143,8 @@ class _MessageBubbleState extends State<MessageBubble> {
             bottom: 8.h,
           ),
           child: Column(
-            crossAxisAlignment: widget.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            crossAxisAlignment:
+                widget.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -156,7 +158,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -185,11 +187,11 @@ class _MessageBubbleState extends State<MessageBubble> {
   String _formatTimestamp() {
     final now = DateTime.now();
     final messageTime = widget.message.timestamp;
-    
+
     if (messageTime == null) return '';
-    
+
     final difference = now.difference(messageTime);
-    
+
     if (difference.inDays == 0) {
       // Today
       final hour = messageTime.hour.toString().padLeft(2, '0');
@@ -242,7 +244,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                       width: 200.w,
                       height: 200.w,
                       decoration: BoxDecoration(
-                        color: AppColors.grey.withOpacity(0.2),
+                        color: AppColors.grey.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Center(
@@ -256,7 +258,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                       width: 200.w,
                       height: 200.w,
                       decoration: BoxDecoration(
-                        color: AppColors.grey.withOpacity(0.2),
+                        color: AppColors.grey.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Icon(
@@ -271,7 +273,7 @@ class _MessageBubbleState extends State<MessageBubble> {
             : Container(
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
-                  color: AppColors.grey.withOpacity(0.2),
+                  color: AppColors.grey.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Row(
@@ -304,7 +306,7 @@ class _MessageBubbleState extends State<MessageBubble> {
             : Container(
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
-                  color: AppColors.grey.withOpacity(0.2),
+                  color: AppColors.grey.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Row(
@@ -330,7 +332,7 @@ class _MessageBubbleState extends State<MessageBubble> {
         return Container(
           padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
-            color: AppColors.grey.withOpacity(0.2),
+            color: AppColors.grey.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Row(
@@ -354,4 +356,4 @@ class _MessageBubbleState extends State<MessageBubble> {
         );
     }
   }
-} 
+}

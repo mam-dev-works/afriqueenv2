@@ -43,7 +43,7 @@ class UserImage extends StatelessWidget {
               image: CachedNetworkImageProvider(Homedata!.photos.first),
             ),
             // Elite styling
-            border: Homedata!.isElite 
+            border: Homedata!.isElite
                 ? Border.all(
                     color: Colors.amber,
                     width: 3.w,
@@ -68,7 +68,7 @@ class UserImage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.r),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -94,7 +94,7 @@ class UserImage extends StatelessWidget {
                 ],
               ),
             ),
-        ),
+          ),
       ],
     );
   }
@@ -178,9 +178,9 @@ class ButtonsList extends StatelessWidget {
                       },
                     );
                     debugPrint('Chat created with ID: $chatId');
-                    
+
                     if (!context.mounted) return;
-                    
+
                     final args = {
                       'chatId': chatId,
                       'otherUser': {
@@ -190,7 +190,7 @@ class ButtonsList extends StatelessWidget {
                       },
                     };
                     debugPrint('Navigating to chat with args: $args');
-                    
+
                     Get.to(
                       () => RepositoryProvider(
                         create: (context) => ChatRepository(),

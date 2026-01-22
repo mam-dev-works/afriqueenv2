@@ -21,10 +21,11 @@ class MessageRequestsScreen extends StatefulWidget {
   State<MessageRequestsScreen> createState() => _MessageRequestsScreenState();
 }
 
-class _MessageRequestsScreenState extends State<MessageRequestsScreen> with TickerProviderStateMixin {
+class _MessageRequestsScreenState extends State<MessageRequestsScreen>
+    with TickerProviderStateMixin {
   late TabController _topTabController;
   late TabController _bottomTabController;
-  
+
   int _selectedTopTabIndex = 1; // Demande tab selected
   int _selectedBottomTabIndex = 0;
   int _selectedStatusIndex = 3; // Toutes selected by default for Demande tab
@@ -34,7 +35,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
     super.initState();
     _topTabController = TabController(length: 5, vsync: this);
     _bottomTabController = TabController(length: 2, vsync: this);
-    
+
     // Load message requests by default (Demande tab)
     context.read<ChatBloc>().add(LoadMessageRequests());
     context.read<ChatBloc>().add(LoadRequestChats());
@@ -113,9 +114,9 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
                     ],
                   ),
                 ),
-                
+
                 SizedBox(height: 6.h),
-                
+
                 // Second row of tabs - only show for Demande tab
                 if (_selectedTopTabIndex == 1) ...[
                   Container(
@@ -123,33 +124,39 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildBottomTab('Demandes reçus', 0, _selectedBottomTabIndex == 0),
-                        _buildBottomTab('Demandes faites', 1, _selectedBottomTabIndex == 1),
+                        _buildBottomTab(
+                            'Demandes reçus', 0, _selectedBottomTabIndex == 0),
+                        _buildBottomTab(
+                            'Demandes faites', 1, _selectedBottomTabIndex == 1),
                       ],
                     ),
                   ),
-                  
+
                   SizedBox(height: 6.h),
-                  
+
                   // Third row of tabs - only show for Demande tab
                   Container(
                     height: 32.h,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildStatusTab('En attente', 0, _selectedStatusIndex == 0),
-                        _buildStatusTab('Acceptées', 1, _selectedStatusIndex == 1),
-                        _buildStatusTab('Refusées', 2, _selectedStatusIndex == 2),
+                        _buildStatusTab(
+                            'En attente', 0, _selectedStatusIndex == 0),
+                        _buildStatusTab(
+                            'Acceptées', 1, _selectedStatusIndex == 1),
+                        _buildStatusTab(
+                            'Refusées', 2, _selectedStatusIndex == 2),
                         _buildStatusTab('Toutes', 3, _selectedStatusIndex == 3),
                       ],
                     ),
                   ),
-                  
+
                   SizedBox(height: 8.h),
-                  
+
                   // Summary statistic
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -182,8 +189,10 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildBottomTab('Tous', 0, _selectedBottomTabIndex == 0),
-                        _buildBottomTab('Non lu', 2, _selectedBottomTabIndex == 2),
+                        _buildBottomTab(
+                            'Tous', 0, _selectedBottomTabIndex == 0),
+                        _buildBottomTab(
+                            'Non lu', 2, _selectedBottomTabIndex == 2),
                       ],
                     ),
                   ),
@@ -191,7 +200,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
               ],
             ),
           ),
-          
+
           // Content
           Expanded(
             child: _buildContent(),
@@ -204,7 +213,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
   String _getBreadcrumbText() {
     String topTab = '';
     String bottomTab = '';
-    
+
     // Get top tab name
     switch (_selectedTopTabIndex) {
       case 0:
@@ -223,7 +232,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
         topTab = 'Archiv';
         break;
     }
-    
+
     // Get bottom tab name based on top tab
     if (_selectedTopTabIndex == 1) {
       // Demande tab
@@ -235,7 +244,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
           bottomTab = 'Faites';
           break;
       }
-      
+
       // Get status tab name
       String statusTab = '';
       switch (_selectedStatusIndex) {
@@ -252,7 +261,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
           statusTab = 'Toutes';
           break;
       }
-      
+
       return 'M/D/$bottomTab/$statusTab';
     } else {
       // Other tabs
@@ -264,7 +273,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
           bottomTab = 'Non lu';
           break;
       }
-      
+
       // Return breadcrumb without count
       return 'Messagerie/$topTab/$bottomTab';
     }
@@ -284,7 +293,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
               _selectedBottomTabIndex = 0;
               _selectedStatusIndex = index == 1 ? 3 : 0;
             });
-            
+
             // Load appropriate data based on selected tab
             if (index == 0) {
               // Message tab - load chats
@@ -298,10 +307,14 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: _selectedTopTabIndex == index ? Color(0xFFF7BD8E) : AppColors.white,
+              color: _selectedTopTabIndex == index
+                  ? Color(0xFFF7BD8E)
+                  : AppColors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: _selectedTopTabIndex == index ? Color(0xFFF7BD8E) : Colors.grey.shade300,
+                color: _selectedTopTabIndex == index
+                    ? Color(0xFFF7BD8E)
+                    : Colors.grey.shade300,
                 width: 1.w,
               ),
             ),
@@ -310,7 +323,9 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
               style: TextStyle(
                 color: AppColors.black,
                 fontSize: 12.sp,
-                fontWeight: _selectedTopTabIndex == index ? FontWeight.w600 : FontWeight.w500,
+                fontWeight: _selectedTopTabIndex == index
+                    ? FontWeight.w600
+                    : FontWeight.w500,
               ),
             ),
           ),
@@ -334,10 +349,14 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: _selectedBottomTabIndex == count ? Color(0xFFF7BD8E) : AppColors.white,
+              color: _selectedBottomTabIndex == count
+                  ? Color(0xFFF7BD8E)
+                  : AppColors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: _selectedBottomTabIndex == count ? Color(0xFFF7BD8E) : Colors.grey.shade300,
+                color: _selectedBottomTabIndex == count
+                    ? Color(0xFFF7BD8E)
+                    : Colors.grey.shade300,
                 width: 1.w,
               ),
             ),
@@ -346,7 +365,9 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
               style: TextStyle(
                 color: AppColors.black,
                 fontSize: 12.sp,
-                fontWeight: _selectedBottomTabIndex == count ? FontWeight.w600 : FontWeight.w500,
+                fontWeight: _selectedBottomTabIndex == count
+                    ? FontWeight.w600
+                    : FontWeight.w500,
               ),
             ),
           ),
@@ -366,7 +387,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
             setState(() {
               _selectedStatusIndex = count;
             });
-            
+
             // Reload data when status changes
             if (_selectedTopTabIndex == 1) {
               context.read<ChatBloc>().add(LoadMessageRequests());
@@ -376,10 +397,14 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: _selectedStatusIndex == count ? Color(0xFFF7BD8E) : AppColors.white,
+              color: _selectedStatusIndex == count
+                  ? Color(0xFFF7BD8E)
+                  : AppColors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: _selectedStatusIndex == count ? Color(0xFFF7BD8E) : Colors.grey.shade300,
+                color: _selectedStatusIndex == count
+                    ? Color(0xFFF7BD8E)
+                    : Colors.grey.shade300,
                 width: 1.w,
               ),
             ),
@@ -388,7 +413,9 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
               style: TextStyle(
                 color: AppColors.black,
                 fontSize: 12.sp,
-                fontWeight: _selectedStatusIndex == count ? FontWeight.w600 : FontWeight.w500,
+                fontWeight: _selectedStatusIndex == count
+                    ? FontWeight.w600
+                    : FontWeight.w500,
               ),
             ),
           ),
@@ -397,14 +424,15 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
     );
   }
 
-  Widget _buildRequestsList(List<MessageRequestModel> requests, List<ChatModel> requestChats) {
+  Widget _buildRequestsList(
+      List<MessageRequestModel> requests, List<ChatModel> requestChats) {
     final allItems = <Widget>[];
-    
+
     // Add message requests
     for (var request in requests) {
       allItems.add(MessageRequestItem(request: request));
     }
-    
+
     // Add request chats
     for (var chat in requestChats) {
       allItems.add(RequestChatItem(chat: chat));
@@ -418,7 +446,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
             Container(
               padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
-                color: Color(0xFFF7BD8E).withOpacity(0.1),
+                color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -440,7 +468,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
             Text(
               'When someone sends you a message request, it will appear here',
               style: TextStyle(
-                color: AppColors.grey.withOpacity(0.7),
+                color: AppColors.grey.withValues(alpha: 0.7),
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
@@ -506,7 +534,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
                     Container(
                       padding: EdgeInsets.all(24.w),
                       decoration: BoxDecoration(
-                        color: Color(0xFFF7BD8E).withOpacity(0.1),
+                        color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -528,7 +556,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
                     Text(
                       'Start a conversation with someone',
                       style: TextStyle(
-                        color: AppColors.grey.withOpacity(0.7),
+                        color: AppColors.grey.withValues(alpha: 0.7),
                         fontSize: 14.sp,
                       ),
                       textAlign: TextAlign.center,
@@ -615,7 +643,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
             Container(
               padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
-                color: Color(0xFFF7BD8E).withOpacity(0.1),
+                color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -637,7 +665,7 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
             Text(
               'This feature is under development',
               style: TextStyle(
-                color: AppColors.grey.withOpacity(0.7),
+                color: AppColors.grey.withValues(alpha: 0.7),
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
@@ -647,4 +675,4 @@ class _MessageRequestsScreenState extends State<MessageRequestsScreen> with Tick
       );
     }
   }
-} 
+}

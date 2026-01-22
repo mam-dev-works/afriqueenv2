@@ -102,7 +102,8 @@ class _ChatScreenState extends State<ChatScreen> {
       if (!hasPermission) return;
 
       final directory = await getTemporaryDirectory();
-      _recordingPath = '${directory.path}/voice_message_${DateTime.now().millisecondsSinceEpoch}.m4a';
+      _recordingPath =
+          '${directory.path}/voice_message_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
       await _audioRecorder.start(
         RecordConfig(
@@ -116,7 +117,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
       setState(() {
         _isRecording = true;
-        _recordingDuration = Duration.zero; // Reset duration when starting new recording
+        _recordingDuration =
+            Duration.zero; // Reset duration when starting new recording
       });
 
       _startTimer();
@@ -157,8 +159,9 @@ class _ChatScreenState extends State<ChatScreen> {
           if (await audioFile.length() > 0) {
             if (mounted) {
               // Create a temporary message ID to track the upload
-              final tempMessageId = DateTime.now().millisecondsSinceEpoch.toString();
-              
+              final tempMessageId =
+                  DateTime.now().millisecondsSinceEpoch.toString();
+
               // Add the message to the state immediately with loading status
               _chatBloc.add(
                 SendMessage(
@@ -244,15 +247,15 @@ class _ChatScreenState extends State<ChatScreen> {
       final imageFile = File(pickedFile.path);
       if (await imageFile.exists()) {
         _chatBloc.add(
-              SendMessage(
-                chatId: widget.chatId,
-                receiverId: widget.receiverId,
-                content: '',
-                // Will be set to Cloudinary URL after upload
-                type: MessageType.image,
-                imageFile: imageFile,
-              ),
-            );
+          SendMessage(
+            chatId: widget.chatId,
+            receiverId: widget.receiverId,
+            content: '',
+            // Will be set to Cloudinary URL after upload
+            type: MessageType.image,
+            imageFile: imageFile,
+          ),
+        );
       }
     }
   }
@@ -269,16 +272,17 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _deleteMessage(MessageModel message) {
     _chatBloc.add(
-          DeleteMessage(
-            chatId: widget.chatId,
-            messageId: message.id,
-          ),
-        );
+      DeleteMessage(
+        chatId: widget.chatId,
+        messageId: message.id,
+      ),
+    );
   }
 
   Future<void> _showReportDialog() async {
     try {
-      final hasReported = await _chatRepository.hasUserReported(widget.receiverId);
+      final hasReported =
+          await _chatRepository.hasUserReported(widget.receiverId);
       if (hasReported) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -306,7 +310,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.1),
+                        color: Colors.red.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(
@@ -390,7 +394,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () async {
                         if (_reportReasonController.text.trim().isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(EnumLocale.pleaseEnterReason.name.tr)),
+                            SnackBar(
+                                content:
+                                    Text(EnumLocale.pleaseEnterReason.name.tr)),
                           );
                           return;
                         }
@@ -405,14 +411,18 @@ class _ChatScreenState extends State<ChatScreen> {
                           if (mounted) {
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(EnumLocale.userReportedSuccess.name.tr)),
+                              SnackBar(
+                                  content: Text(
+                                      EnumLocale.userReportedSuccess.name.tr)),
                             );
                             _reportReasonController.clear();
                           }
                         } catch (e) {
                           if (mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(EnumLocale.errorWithMessage.name.trParams({'msg': e.toString()}))),
+                              SnackBar(
+                                  content: Text(EnumLocale.errorWithMessage.name
+                                      .trParams({'msg': e.toString()}))),
                             );
                           }
                         }
@@ -446,7 +456,9 @@ class _ChatScreenState extends State<ChatScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(EnumLocale.errorWithMessage.name.trParams({'msg': e.toString()}))),
+          SnackBar(
+              content: Text(EnumLocale.errorWithMessage.name
+                  .trParams({'msg': e.toString()}))),
         );
       }
     }
@@ -486,12 +498,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     offset: const Offset(-1, -1),
                     blurRadius: 2.r,
                   ),
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
+                    color: Colors.black.withValues(alpha: 0.08),
                     offset: const Offset(2, 2),
                     blurRadius: 4.r,
                   ),
@@ -502,7 +514,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: InputDecoration(
                   hintText: 'Message',
                   hintStyle: TextStyle(
-                    color: AppColors.grey.withOpacity(0.8),
+                    color: AppColors.grey.withValues(alpha: 0.8),
                     fontSize: 14.sp,
                   ),
                   border: InputBorder.none,
@@ -572,12 +584,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 shape: BoxShape.circle,
               ),
               child: ClipOval(
-                child: widget.receiverPhotoUrl != null && widget.receiverPhotoUrl!.isNotEmpty
+                child: widget.receiverPhotoUrl != null &&
+                        widget.receiverPhotoUrl!.isNotEmpty
                     ? CachedNetworkImage(
                         imageUrl: widget.receiverPhotoUrl!,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Container(
-                          color: AppColors.grey.withOpacity(0.2),
+                          color: AppColors.grey.withValues(alpha: 0.2),
                           child: Icon(
                             Icons.person,
                             size: 20.sp,
@@ -585,7 +598,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                         ),
                         errorWidget: (context, url, error) => Container(
-                          color: AppColors.grey.withOpacity(0.2),
+                          color: AppColors.grey.withValues(alpha: 0.2),
                           child: Icon(
                             Icons.person,
                             size: 20.sp,
@@ -594,7 +607,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       )
                     : Container(
-                        color: AppColors.grey.withOpacity(0.2),
+                        color: AppColors.grey.withValues(alpha: 0.2),
                         child: Icon(
                           Icons.person,
                           size: 20.sp,
@@ -620,7 +633,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    EnumLocale.chatOnlineAgo.name.trParams({'time': '19 heures'}),
+                    EnumLocale.chatOnlineAgo.name
+                        .trParams({'time': '19 heures'}),
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 12.sp,
@@ -690,12 +704,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     return ListView.builder(
                       controller: _scrollController,
                       reverse: true,
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 16.h),
                       itemCount: state.messages.length,
                       itemBuilder: (context, index) {
                         final message = state.messages[index];
-                        final isMe = message.senderId == FirebaseAuth.instance.currentUser?.uid;
-                        
+                        final isMe = message.senderId ==
+                            FirebaseAuth.instance.currentUser?.uid;
+
                         return MessageBubble(
                           message: message,
                           isMe: isMe,

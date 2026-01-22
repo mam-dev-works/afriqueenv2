@@ -25,7 +25,6 @@ import 'package:afriqueen/features/event/repository/event_repository.dart';
 import 'package:afriqueen/services/distance/distance_calculator.dart';
 import 'package:afriqueen/routes/app_routes.dart';
 
-
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});
 
@@ -33,16 +32,18 @@ class ChatListScreen extends StatefulWidget {
   State<ChatListScreen> createState() => _ChatListScreenState();
 }
 
-class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStateMixin {
+class _ChatListScreenState extends State<ChatListScreen>
+    with TickerProviderStateMixin {
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
   late TabController _topTabController;
   late TabController _bottomTabController;
-  
+
   int _selectedTopTabIndex = 0;
   int _selectedBottomTabIndex = 0;
   int _selectedStatusIndex = 3; // Toutes selected by default for Demande tab
-  
-  final EventRequestRepository _eventRequestRepository = EventRequestRepository();
+
+  final EventRequestRepository _eventRequestRepository =
+      EventRequestRepository();
   final EventRepository _eventRepository = EventRepository();
 
   @override
@@ -50,10 +51,10 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
     super.initState();
     _topTabController = TabController(length: 5, vsync: this);
     _bottomTabController = TabController(length: 2, vsync: this);
-    
+
     // Set up French locale for timeago
     timeago.setLocaleMessages('fr', timeago.FrMessages());
-    
+
     // Load chats by default (Message tab)
     context.read<ChatBloc>().add(LoadChats());
   }
@@ -123,16 +124,20 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      _buildTopTab(EnumLocale.chatMessage.name.tr, 0, _selectedTopTabIndex == 0, 0),
-                      _buildTopTab(EnumLocale.chatDemande.name.tr, 1, _selectedTopTabIndex == 1, 0),
-                      _buildTopTab(EnumLocale.chatEvent.name.tr, 2, _selectedTopTabIndex == 2, 0),
-                      _buildTopTab(EnumLocale.chatArchiv.name.tr, 3, _selectedTopTabIndex == 3, 0),
+                      _buildTopTab(EnumLocale.chatMessage.name.tr, 0,
+                          _selectedTopTabIndex == 0, 0),
+                      _buildTopTab(EnumLocale.chatDemande.name.tr, 1,
+                          _selectedTopTabIndex == 1, 0),
+                      _buildTopTab(EnumLocale.chatEvent.name.tr, 2,
+                          _selectedTopTabIndex == 2, 0),
+                      _buildTopTab(EnumLocale.chatArchiv.name.tr, 3,
+                          _selectedTopTabIndex == 3, 0),
                     ],
                   ),
                 ),
-                
+
                 SizedBox(height: 6.h),
-                
+
                 // Second row of tabs - show different tabs based on selected top tab
                 if (_selectedTopTabIndex == 1) ...[
                   // Demande tab
@@ -141,28 +146,33 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildBottomTab(EnumLocale.chatDemandesRecus.name.tr, 0, _selectedBottomTabIndex == 0),
-                        _buildBottomTab(EnumLocale.chatDemandesFaites.name.tr, 1, _selectedBottomTabIndex == 1),
+                        _buildBottomTab(EnumLocale.chatDemandesRecus.name.tr, 0,
+                            _selectedBottomTabIndex == 0),
+                        _buildBottomTab(EnumLocale.chatDemandesFaites.name.tr,
+                            1, _selectedBottomTabIndex == 1),
                       ],
                     ),
                   ),
-                  
+
                   SizedBox(height: 6.h),
-                  
+
                   // Third row of tabs - only show for Demande tab
                   Container(
                     height: 32.h,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildStatusTab(EnumLocale.chatEnAttente.name.tr, 0, _selectedStatusIndex == 0),
-                        _buildStatusTab(EnumLocale.chatAcceptees.name.tr, 1, _selectedStatusIndex == 1),
-                        _buildStatusTab(EnumLocale.chatRefusees.name.tr, 2, _selectedStatusIndex == 2),
-                        _buildStatusTab(EnumLocale.chatToutes.name.tr, 3, _selectedStatusIndex == 3),
+                        _buildStatusTab(EnumLocale.chatEnAttente.name.tr, 0,
+                            _selectedStatusIndex == 0),
+                        _buildStatusTab(EnumLocale.chatAcceptees.name.tr, 1,
+                            _selectedStatusIndex == 1),
+                        _buildStatusTab(EnumLocale.chatRefusees.name.tr, 2,
+                            _selectedStatusIndex == 2),
+                        _buildStatusTab(EnumLocale.chatToutes.name.tr, 3,
+                            _selectedStatusIndex == 3),
                       ],
                     ),
                   ),
-                  
                 ] else if (_selectedTopTabIndex == 2) ...[
                   // Event tab - match the image design
                   Container(
@@ -170,26 +180,33 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildEventBottomTab(EnumLocale.eventIlsOntParticipe.name.tr, 0, _selectedBottomTabIndex == 0),
-                        _buildEventBottomTab(EnumLocale.eventJaiParticipe.name.tr, 1, _selectedBottomTabIndex == 1),
+                        _buildEventBottomTab(
+                            EnumLocale.eventIlsOntParticipe.name.tr,
+                            0,
+                            _selectedBottomTabIndex == 0),
+                        _buildEventBottomTab(
+                            EnumLocale.eventJaiParticipe.name.tr,
+                            1,
+                            _selectedBottomTabIndex == 1),
                       ],
                     ),
                   ),
-                  
+
                   SizedBox(height: 6.h),
-                  
+
                   // Second row for event tabs
                   Container(
                     height: 32.h,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildEventBottomTab(EnumLocale.eventTous.name.tr, 2, _selectedBottomTabIndex == 2),
-                        _buildEventBottomTab(EnumLocale.eventNonLu.name.tr, 3, _selectedBottomTabIndex == 3),
+                        _buildEventBottomTab(EnumLocale.eventTous.name.tr, 2,
+                            _selectedBottomTabIndex == 2),
+                        _buildEventBottomTab(EnumLocale.eventNonLu.name.tr, 3,
+                            _selectedBottomTabIndex == 3),
                       ],
                     ),
                   ),
-                  
                 ] else ...[
                   // Other tabs (Message, Notif, Archive)
                   Container(
@@ -197,8 +214,10 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildBottomTab(EnumLocale.chatTous.name.tr, 0, _selectedBottomTabIndex == 0),
-                        _buildBottomTab(EnumLocale.chatNonLu.name.tr, 2, _selectedBottomTabIndex == 2),
+                        _buildBottomTab(EnumLocale.chatTous.name.tr, 0,
+                            _selectedBottomTabIndex == 0),
+                        _buildBottomTab(EnumLocale.chatNonLu.name.tr, 2,
+                            _selectedBottomTabIndex == 2),
                       ],
                     ),
                   ),
@@ -206,7 +225,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               ],
             ),
           ),
-          
+
           // Event tab button
           if (_selectedTopTabIndex == 2) ...[
             Container(
@@ -215,31 +234,36 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    context.read<EventMessageBloc>().add(DeleteFinishedEventDiscussions());
+                    context
+                        .read<EventMessageBloc>()
+                        .add(DeleteFinishedEventDiscussions());
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFE91E63), // Pink color matching the image
+                    backgroundColor:
+                        Color(0xFFE91E63), // Pink color matching the image
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r), // More rounded corners
+                      borderRadius:
+                          BorderRadius.circular(12.r), // More rounded corners
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                     elevation: 0, // Remove shadow
                   ),
-                 child: Text(
-                   EnumLocale.eventSupprimerDiscussions.name.tr,
-                   style: TextStyle(
-                     fontSize: 15.sp,
-                     fontWeight: FontWeight.w600,
-                     color: Colors.white,
-                   ),
-                   textAlign: TextAlign.center,
-                 ),
+                  child: Text(
+                    EnumLocale.eventSupprimerDiscussions.name.tr,
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ),
           ],
-          
+
           // Archive tab button
           if (_selectedTopTabIndex == 3) ...[
             Container(
@@ -248,19 +272,25 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                 alignment: Alignment.centerLeft,
                 child: Container(
                   width: 160.w, // Even smaller width
-                  margin: EdgeInsets.only(left: 16.w), // Align with main container padding
+                  margin: EdgeInsets.only(
+                      left: 16.w), // Align with main container padding
                   child: ElevatedButton(
                     onPressed: () {
                       // TODO: Implement delete archive history
                       print('Delete archive history');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFF8BBD9), // Soft light pink background like in image
-                      foregroundColor: Color(0xFFE91E63), // Darker pink text color
+                      backgroundColor: Color(
+                          0xFFF8BBD9), // Soft light pink background like in image
+                      foregroundColor:
+                          Color(0xFFE91E63), // Darker pink text color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.r), // Very rounded corners like pill shape
+                        borderRadius: BorderRadius.circular(
+                            25.r), // Very rounded corners like pill shape
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h), // Even smaller padding
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 8.h), // Even smaller padding
                       elevation: 0, // Remove shadow
                       minimumSize: Size(160.w, 32.h), // Even smaller fixed size
                     ),
@@ -278,7 +308,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               ),
             ),
           ],
-          
+
           // Content
           Expanded(
             child: _buildContent(),
@@ -291,7 +321,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
   String _getBreadcrumbText() {
     String topTab = '';
     String bottomTab = '';
-    
+
     // Get top tab name
     switch (_selectedTopTabIndex) {
       case 0:
@@ -310,7 +340,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         topTab = EnumLocale.topTabNotif.name.tr;
         break;
     }
-    
+
     // Get bottom tab name based on top tab
     if (_selectedTopTabIndex == 1) {
       // Demande tab
@@ -322,7 +352,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
           bottomTab = EnumLocale.demandeFaites.name.tr;
           break;
       }
-      
+
       // Get status tab name
       String statusTab = '';
       switch (_selectedStatusIndex) {
@@ -339,7 +369,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
           statusTab = EnumLocale.demandeToutes.name.tr;
           break;
       }
-      
+
       return '${EnumLocale.messagerie.name.tr}/Demande/$bottomTab/$statusTab';
     } else if (_selectedTopTabIndex == 2) {
       // Event tab
@@ -357,7 +387,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
           bottomTab = EnumLocale.eventNonLu.name.tr;
           break;
       }
-      
+
       return '${EnumLocale.messagerie.name.tr}/Event/$bottomTab';
     } else {
       // Other tabs (Message, Notif, Archive)
@@ -369,7 +399,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
           bottomTab = EnumLocale.eventNonLu.name.tr;
           break;
       }
-      
+
       return '${EnumLocale.messagerie.name.tr}/$topTab/$bottomTab';
     }
   }
@@ -388,11 +418,12 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               _selectedBottomTabIndex = 0;
               _selectedStatusIndex = index == 1 ? 3 : 0;
             });
-            
-            print('DEBUG: Top tab tapped - index: $index, selectedTopTabIndex: $_selectedTopTabIndex');
+
+            print(
+                'DEBUG: Top tab tapped - index: $index, selectedTopTabIndex: $_selectedTopTabIndex');
             print('DEBUG: Bottom tab reset to: $_selectedBottomTabIndex');
             print('DEBUG: Status index reset to: $_selectedStatusIndex');
-            
+
             // Load appropriate data based on selected tab
             if (index == 0) {
               // Message tab - load chats
@@ -415,10 +446,14 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: _selectedTopTabIndex == index ? Color(0xFFF7BD8E) : AppColors.white,
+              color: _selectedTopTabIndex == index
+                  ? Color(0xFFF7BD8E)
+                  : AppColors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: _selectedTopTabIndex == index ? Color(0xFFF7BD8E) : Colors.grey.shade300,
+                color: _selectedTopTabIndex == index
+                    ? Color(0xFFF7BD8E)
+                    : Colors.grey.shade300,
                 width: 1.w,
               ),
             ),
@@ -430,13 +465,16 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                   style: TextStyle(
                     color: AppColors.black,
                     fontSize: 12.sp,
-                    fontWeight: _selectedTopTabIndex == index ? FontWeight.w600 : FontWeight.w500,
+                    fontWeight: _selectedTopTabIndex == index
+                        ? FontWeight.w600
+                        : FontWeight.w500,
                   ),
                 ),
                 if (count > 0) ...[
                   SizedBox(width: 4.w),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(10.r),
@@ -470,12 +508,14 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             setState(() {
               _selectedBottomTabIndex = count;
             });
-            
-            print('DEBUG: Bottom tab tapped - count: $count, selectedBottomTabIndex: $_selectedBottomTabIndex');
+
+            print(
+                'DEBUG: Bottom tab tapped - count: $count, selectedBottomTabIndex: $_selectedBottomTabIndex');
             print('DEBUG: Selected top tab: $_selectedTopTabIndex');
-            
+
             // Load appropriate data based on selected bottom tab
-            if (_selectedTopTabIndex == 1) { // Demande tab
+            if (_selectedTopTabIndex == 1) {
+              // Demande tab
               if (count == 0) {
                 // "Demandes reçus" tab
                 print('DEBUG: Loading received request chats');
@@ -485,7 +525,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                 print('DEBUG: Loading sent request chats');
                 context.read<ChatBloc>().add(LoadSentRequestChats());
               }
-            } else if (_selectedTopTabIndex == 2) { // Event tab
+            } else if (_selectedTopTabIndex == 2) {
+              // Event tab
               // Reload event messages with different filters
               print('DEBUG: Reloading event messages with filter: $count');
               context.read<EventMessageBloc>().add(LoadUserEventMessages());
@@ -494,10 +535,14 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: _selectedBottomTabIndex == count ? Color(0xFFF7BD8E) : AppColors.white,
+              color: _selectedBottomTabIndex == count
+                  ? Color(0xFFF7BD8E)
+                  : AppColors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: _selectedBottomTabIndex == count ? Color(0xFFF7BD8E) : Colors.grey.shade300,
+                color: _selectedBottomTabIndex == count
+                    ? Color(0xFFF7BD8E)
+                    : Colors.grey.shade300,
                 width: 1.w,
               ),
             ),
@@ -506,7 +551,9 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               style: TextStyle(
                 color: AppColors.black,
                 fontSize: 12.sp,
-                fontWeight: _selectedBottomTabIndex == count ? FontWeight.w600 : FontWeight.w500,
+                fontWeight: _selectedBottomTabIndex == count
+                    ? FontWeight.w600
+                    : FontWeight.w500,
               ),
             ),
           ),
@@ -526,19 +573,24 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             setState(() {
               _selectedBottomTabIndex = count;
             });
-            
-            print('DEBUG: Event bottom tab tapped - count: $count, selectedBottomTabIndex: $_selectedBottomTabIndex');
-            
+
+            print(
+                'DEBUG: Event bottom tab tapped - count: $count, selectedBottomTabIndex: $_selectedBottomTabIndex');
+
             // Reload event messages with different filters
             context.read<EventMessageBloc>().add(LoadUserEventMessages());
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: _selectedBottomTabIndex == count ? Color(0xFFF7BD8E) : AppColors.white,
+              color: _selectedBottomTabIndex == count
+                  ? Color(0xFFF7BD8E)
+                  : AppColors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: _selectedBottomTabIndex == count ? Color(0xFFF7BD8E) : Colors.grey.shade300,
+                color: _selectedBottomTabIndex == count
+                    ? Color(0xFFF7BD8E)
+                    : Colors.grey.shade300,
                 width: 1.w,
               ),
             ),
@@ -547,7 +599,9 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               style: TextStyle(
                 color: AppColors.black,
                 fontSize: 12.sp,
-                fontWeight: _selectedBottomTabIndex == count ? FontWeight.w600 : FontWeight.w500,
+                fontWeight: _selectedBottomTabIndex == count
+                    ? FontWeight.w600
+                    : FontWeight.w500,
               ),
             ),
           ),
@@ -558,7 +612,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
 
   Widget _buildStatusTab(String title, int count, bool isSelected) {
     return Container(
-      margin: EdgeInsets.only(right:14.w),
+      margin: EdgeInsets.only(right: 14.w),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -567,11 +621,12 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             setState(() {
               _selectedStatusIndex = count;
             });
-            
-            print('DEBUG: Status tab tapped - count: $count, selectedStatusIndex: $_selectedStatusIndex');
+
+            print(
+                'DEBUG: Status tab tapped - count: $count, selectedStatusIndex: $_selectedStatusIndex');
             print('DEBUG: Selected top tab: $_selectedTopTabIndex');
             print('DEBUG: Selected bottom tab: $_selectedBottomTabIndex');
-            
+
             // Reload data when status changes
             if (_selectedTopTabIndex == 1) {
               if (_selectedBottomTabIndex == 0) {
@@ -588,10 +643,14 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: _selectedStatusIndex == count ? Color(0xFFF7BD8E) : AppColors.white,
+              color: _selectedStatusIndex == count
+                  ? Color(0xFFF7BD8E)
+                  : AppColors.white,
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
-                color: _selectedStatusIndex == count ? Color(0xFFF7BD8E) : Colors.grey.shade300,
+                color: _selectedStatusIndex == count
+                    ? Color(0xFFF7BD8E)
+                    : Colors.grey.shade300,
                 width: 1.w,
               ),
             ),
@@ -600,7 +659,9 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               style: TextStyle(
                 color: AppColors.black,
                 fontSize: 12.sp,
-                fontWeight: _selectedStatusIndex == count ? FontWeight.w600 : FontWeight.w500,
+                fontWeight: _selectedStatusIndex == count
+                    ? FontWeight.w600
+                    : FontWeight.w500,
               ),
             ),
           ),
@@ -618,7 +679,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Container(
               padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
-                color: Color(0xFFF7BD8E).withOpacity(0.1),
+                color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -641,7 +702,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Text(
               EnumLocale.chatStartConversation.name.tr,
               style: TextStyle(
-                color: AppColors.grey.withOpacity(0.7),
+                color: AppColors.grey.withValues(alpha: 0.7),
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
@@ -664,7 +725,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
   Widget _buildRequestItem(ChatModel chat) {
     // Get participant info (the other user)
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-    
+
     if (chat.participants.isEmpty) {
       return Container(
         margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -675,7 +736,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Container(
               padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
-                color: Color(0xFFF7BD8E).withOpacity(0.1),
+                color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -697,22 +758,24 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         ),
       );
     }
-    
-    final participantInfo = chat.participants
-        .firstWhere((participant) => participant['id'] != currentUserId, 
-                   orElse: () => chat.participants.isNotEmpty ? chat.participants.first : <String, dynamic>{});
-    
+
+    final participantInfo = chat.participants.firstWhere(
+        (participant) => participant['id'] != currentUserId,
+        orElse: () => chat.participants.isNotEmpty
+            ? chat.participants.first
+            : <String, dynamic>{});
+
     // Get status text and color
     String statusText = '';
     Color statusColor = Colors.grey;
     String timeAgo = '';
-    
+
     if (chat.lastMessageTime != null) {
       timeAgo = timeago.format(chat.lastMessageTime!, locale: 'fr');
     } else {
       timeAgo = 'recently';
     }
-    
+
     switch (chat.status) {
       case 'ACCEPTED':
         statusText = 'Accepté il y a $timeAgo';
@@ -729,7 +792,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         statusColor = Colors.orange;
         break;
     }
-    
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       padding: EdgeInsets.all(16.w),
@@ -739,7 +802,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 4,
             offset: Offset(0, 2),
           ),
@@ -755,14 +818,16 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.grey.shade300,
-              image: participantInfo['photoUrl'] != null && participantInfo['photoUrl'].isNotEmpty
+              image: participantInfo['photoUrl'] != null &&
+                      participantInfo['photoUrl'].isNotEmpty
                   ? DecorationImage(
                       image: NetworkImage(participantInfo['photoUrl']!),
                       fit: BoxFit.cover,
                     )
                   : null,
             ),
-            child: participantInfo['photoUrl'] == null || participantInfo['photoUrl'].isEmpty
+            child: participantInfo['photoUrl'] == null ||
+                    participantInfo['photoUrl'].isEmpty
                 ? Icon(
                     Icons.person,
                     size: 22.sp,
@@ -770,9 +835,9 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                   )
                 : null,
           ),
-          
+
           SizedBox(width: 8.w),
-          
+
           // User Info
           Expanded(
             child: Column(
@@ -782,7 +847,11 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                 Text(
                   (participantInfo['name']?.toString().trim().isNotEmpty == true
                       ? participantInfo['name']!.toString().trim()
-                      : (participantInfo['pseudo']?.toString().trim().isNotEmpty == true
+                      : (participantInfo['pseudo']
+                                  ?.toString()
+                                  .trim()
+                                  .isNotEmpty ==
+                              true
                           ? participantInfo['pseudo']!.toString().trim()
                           : EnumLocale.unknownUser.name.tr)),
                   style: TextStyle(
@@ -792,9 +861,9 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                
+
                 SizedBox(height: 4.h),
-                
+
                 // Status and Time
                 Text(
                   statusText,
@@ -805,9 +874,9 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                
+
                 SizedBox(height: 4.h),
-                
+
                 // Age, Distance, and Marital Status
                 FutureBuilder<double?>(
                   future: DistanceCalculator.calculateDistanceToUser(
@@ -816,7 +885,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                   ),
                   builder: (context, snapshot) {
                     final distance = snapshot.data;
-                    final distanceText = DistanceCalculator.formatDistance(distance);
+                    final distanceText =
+                        DistanceCalculator.formatDistance(distance);
                     return Text(
                       '${participantInfo['age'] ?? 'N/A'} ans • $distanceText • ${participantInfo['maritalStatus'] ?? 'N/A'}',
                       style: TextStyle(
@@ -827,9 +897,9 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                     );
                   },
                 ),
-                
+
                 SizedBox(height: 6.h),
-                
+
                 // Bio snippet
                 Text(
                   participantInfo['description'] ?? 'No bio available',
@@ -837,10 +907,10 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                     fontSize: 11.sp,
                     color: Colors.grey.shade700,
                   ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                
+
                 // Bottom actions row (status + action button)
                 SizedBox(height: 8.h),
                 Row(
@@ -861,7 +931,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                             child: Text(
                               chat.status == 'ACCEPTED'
                                   ? EnumLocale.chatAccepted.name.tr
-                                  : chat.status == 'REJECTED' || chat.status == 'DECLINED'
+                                  : chat.status == 'REJECTED' ||
+                                          chat.status == 'DECLINED'
                                       ? EnumLocale.chatRejected.name.tr
                                       : EnumLocale.chatPending.name.tr,
                               style: TextStyle(
@@ -876,7 +947,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                         ],
                       ),
                     ),
-                    
+
                     // Action button on the right
                     if (chat.status == null || chat.status == 'PENDING') ...[
                       SizedBox(width: 8.w),
@@ -885,7 +956,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                         child: ElevatedButton(
                           onPressed: () {
                             final otherUserId = participantInfo['id'];
-                            context.read<ChatBloc>().add(DeclineRequestChat(chatId: chat.id, otherUserId: otherUserId));
+                            context.read<ChatBloc>().add(DeclineRequestChat(
+                                chatId: chat.id, otherUserId: otherUserId));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFE11D48),
@@ -896,7 +968,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                           ),
                           child: Text(
                             'Annuler',
-                            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 12.sp, fontWeight: FontWeight.w700),
                           ),
                         ),
                       ),
@@ -909,10 +982,13 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                             if (chat.participants.isEmpty) {
                               return;
                             }
-                            final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+                            final currentUserId =
+                                FirebaseAuth.instance.currentUser?.uid;
                             final otherUser = chat.participants.firstWhere(
                               (u) => u['id'] != currentUserId,
-                              orElse: () => chat.participants.isNotEmpty ? chat.participants.first : <String, dynamic>{},
+                              orElse: () => chat.participants.isNotEmpty
+                                  ? chat.participants.first
+                                  : <String, dynamic>{},
                             );
                             if (otherUser.isEmpty || otherUser['id'] == null) {
                               return;
@@ -922,7 +998,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                                 builder: (context) => RepositoryProvider(
                                   create: (context) => ChatRepository(),
                                   child: BlocProvider(
-                                    create: (context) => ChatBloc(ChatRepository()),
+                                    create: (context) =>
+                                        ChatBloc(ChatRepository()),
                                     child: ChatScreen(
                                       chatId: chat.id,
                                       receiverId: otherUser['id'],
@@ -949,20 +1026,25 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                               SizedBox(width: 4.w),
                               Text(
                                 EnumLocale.chatMessage.name.tr,
-                                style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w700),
+                                style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w700),
                               ),
                             ],
                           ),
                         ),
                       ),
-                    ] else if (chat.status == 'REJECTED' || chat.status == 'DECLINED') ...[
+                    ] else if (chat.status == 'REJECTED' ||
+                        chat.status == 'DECLINED') ...[
                       SizedBox(width: 8.w),
                       SizedBox(
                         height: 32.h,
                         child: ElevatedButton(
                           onPressed: () {
                             final otherUserId = participantInfo['id'];
-                            context.read<ChatBloc>().add(ArchiveRejectedProfile(otherUserId));
+                            context
+                                .read<ChatBloc>()
+                                .add(ArchiveRejectedProfile(otherUserId));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF2563EB),
@@ -975,11 +1057,14 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.delete_outline, size: 12.sp, color: Colors.white),
+                              Icon(Icons.delete_outline,
+                                  size: 12.sp, color: Colors.white),
                               SizedBox(width: 4.w),
                               Text(
                                 'Archiver profil',
-                                style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -991,9 +1076,9 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               ],
             ),
           ),
-          
+
           SizedBox(width: 4.w),
-          
+
           // Action Buttons (moved inside main column to match UI and avoid overflow)
           SizedBox.shrink(),
         ],
@@ -1004,38 +1089,47 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
   Widget _buildFilteredRequestChats(List<ChatModel> requestChats) {
     // Filter chats based on selected status
     List<ChatModel> filteredChats = [];
-    
+
     // First, ensure we only work with actual request chats
-    final validRequestChats = requestChats.where((chat) => chat.isRequest == true).toList();
-    
+    final validRequestChats =
+        requestChats.where((chat) => chat.isRequest == true).toList();
+
     // Debug: Print what we received and filtered
     print('DEBUG: Total requestChats received: ${requestChats.length}');
-    print('DEBUG: Valid request chats (isRequest: true): ${validRequestChats.length}');
+    print(
+        'DEBUG: Valid request chats (isRequest: true): ${validRequestChats.length}');
     print('DEBUG: Selected status index: $_selectedStatusIndex');
-    
+
     switch (_selectedStatusIndex) {
       case 0: // En attente
-        filteredChats = validRequestChats.where((chat) => 
-          chat.status == 'PENDING' || chat.status == null).toList();
+        filteredChats = validRequestChats
+            .where((chat) => chat.status == 'PENDING' || chat.status == null)
+            .toList();
         print('DEBUG: PENDING chats found: ${filteredChats.length}');
         for (var chat in filteredChats) {
-          print('DEBUG: PENDING chat ${chat.id} - status: ${chat.status}, isRequest: ${chat.isRequest}');
+          print(
+              'DEBUG: PENDING chat ${chat.id} - status: ${chat.status}, isRequest: ${chat.isRequest}');
         }
         break;
       case 1: // Acceptées
-        filteredChats = validRequestChats.where((chat) => 
-          chat.status == 'ACCEPTED').toList();
+        filteredChats = validRequestChats
+            .where((chat) => chat.status == 'ACCEPTED')
+            .toList();
         print('DEBUG: ACCEPTED chats found: ${filteredChats.length}');
         for (var chat in filteredChats) {
-          print('DEBUG: ACCEPTED chat ${chat.id} - status: ${chat.status}, isRequest: ${chat.isRequest}');
+          print(
+              'DEBUG: ACCEPTED chat ${chat.id} - status: ${chat.status}, isRequest: ${chat.isRequest}');
         }
         break;
       case 2: // Refusées
-        filteredChats = validRequestChats.where((chat) => 
-          chat.status == 'REJECTED' || chat.status == 'DECLINED').toList();
+        filteredChats = validRequestChats
+            .where((chat) =>
+                chat.status == 'REJECTED' || chat.status == 'DECLINED')
+            .toList();
         print('DEBUG: REJECTED chats found: ${filteredChats.length}');
         for (var chat in filteredChats) {
-          print('DEBUG: REJECTED chat ${chat.id} - status: ${chat.status}, isRequest: ${chat.isRequest}');
+          print(
+              'DEBUG: REJECTED chat ${chat.id} - status: ${chat.status}, isRequest: ${chat.isRequest}');
         }
         break;
       case 3: // Toutes
@@ -1043,7 +1137,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         filteredChats = validRequestChats;
         print('DEBUG: ALL chats found: ${filteredChats.length}');
         for (var chat in filteredChats) {
-          print('DEBUG: ALL chat ${chat.id} - status: ${chat.status}, isRequest: ${chat.isRequest}');
+          print(
+              'DEBUG: ALL chat ${chat.id} - status: ${chat.status}, isRequest: ${chat.isRequest}');
         }
         break;
     }
@@ -1051,7 +1146,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
     // Debug: Print final filtered results
     print('DEBUG: Final filtered chats: ${filteredChats.length}');
     for (var chat in filteredChats) {
-      print('DEBUG: Chat ${chat.id} - isRequest: ${chat.isRequest}, status: ${chat.status}');
+      print(
+          'DEBUG: Chat ${chat.id} - isRequest: ${chat.isRequest}, status: ${chat.status}');
     }
 
     if (filteredChats.isEmpty) {
@@ -1062,7 +1158,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Container(
               padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
-                color: Color(0xFFF7BD8E).withOpacity(0.1),
+                color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -1084,7 +1180,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Text(
               EnumLocale.chatNoRequestsMatchCriteria.name.tr,
               style: TextStyle(
-                color: AppColors.grey.withOpacity(0.7),
+                color: AppColors.grey.withValues(alpha: 0.7),
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
@@ -1104,7 +1200,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
     );
   }
 
-  Widget _buildRequestsList(List<MessageRequestModel> receivedRequests, List<ChatModel> requestChats) {
+  Widget _buildRequestsList(List<MessageRequestModel> receivedRequests,
+      List<ChatModel> requestChats) {
     if (receivedRequests.isEmpty && requestChats.isEmpty) {
       return Center(
         child: Column(
@@ -1113,7 +1210,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Container(
               padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
-                color: Color(0xFFF7BD8E).withOpacity(0.1),
+                color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -1136,7 +1233,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Text(
               'No message requests yet. Start a conversation with someone!',
               style: TextStyle(
-                color: AppColors.grey.withOpacity(0.7),
+                color: AppColors.grey.withValues(alpha: 0.7),
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
@@ -1153,7 +1250,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         if (index < receivedRequests.length) {
           return MessageRequestItem(request: receivedRequests[index]);
         } else {
-          return ChatListItem(chat: requestChats[index - receivedRequests.length]);
+          return ChatListItem(
+              chat: requestChats[index - receivedRequests.length]);
         }
       },
     );
@@ -1166,71 +1264,30 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         builder: (context, state) {
           try {
             if (state is ChatLoading) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFFF7BD8E),
-                strokeWidth: 3.w,
-              ),
-            );
-          }
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFF7BD8E),
+                  strokeWidth: 3.w,
+                ),
+              );
+            }
 
-          if (state is ChatError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64.sp,
-                    color: Color(0xFFF7BD8E),
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    state.message,
-                    style: TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 16.sp,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            );
-          }
-
-          if (state is ChatListLoaded) {
-            if (state.chats.isEmpty) {
+            if (state is ChatError) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(24.w),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF7BD8E).withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.chat_bubble_outline,
-                        size: 64.sp,
-                        color: Color(0xFFF7BD8E),
-                      ),
+                    Icon(
+                      Icons.error_outline,
+                      size: 64.sp,
+                      color: Color(0xFFF7BD8E),
                     ),
-                    SizedBox(height: 24.h),
+                    SizedBox(height: 16.h),
                     Text(
-                      'No chats yet',
+                      state.message,
                       style: TextStyle(
                         color: AppColors.grey,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      'Start a conversation with someone',
-                      style: TextStyle(
-                        color: AppColors.grey.withOpacity(0.7),
-                        fontSize: 14.sp,
+                        fontSize: 16.sp,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -1239,16 +1296,57 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               );
             }
 
-            return ListView.builder(
-              padding: EdgeInsets.only(top: 16.h, bottom: 16.h),
-              itemCount: state.chats.length,
-              itemBuilder: (context, index) {
-                return ChatListItem(chat: state.chats[index]);
-              },
-            );
-          }
+            if (state is ChatListLoaded) {
+              if (state.chats.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(24.w),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.chat_bubble_outline,
+                          size: 64.sp,
+                          color: Color(0xFFF7BD8E),
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      Text(
+                        'No chats yet',
+                        style: TextStyle(
+                          color: AppColors.grey,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        'Start a conversation with someone',
+                        style: TextStyle(
+                          color: AppColors.grey.withValues(alpha: 0.7),
+                          fontSize: 14.sp,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
+              }
 
-          return const SizedBox.shrink();
+              return ListView.builder(
+                padding: EdgeInsets.only(top: 16.h, bottom: 16.h),
+                itemCount: state.chats.length,
+                itemBuilder: (context, index) {
+                  return ChatListItem(chat: state.chats[index]);
+                },
+              );
+            }
+
+            return const SizedBox.shrink();
           } catch (e) {
             // Catch any "Bad state: No element" or other errors
             return Center(
@@ -1258,7 +1356,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                   Container(
                     padding: EdgeInsets.all(24.w),
                     decoration: BoxDecoration(
-                      color: Color(0xFFF7BD8E).withOpacity(0.1),
+                      color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -1291,7 +1389,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             print('DEBUG: Demande tab - Current state: ${state.runtimeType}');
             print('DEBUG: Selected bottom tab: $_selectedBottomTabIndex');
             print('DEBUG: Selected status tab: $_selectedStatusIndex');
-            
+
             if (state is ChatLoading) {
               return Center(
                 child: CircularProgressIndicator(
@@ -1329,35 +1427,41 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             if (_selectedBottomTabIndex == 0) {
               // "Demandes reçus" tab
               if (state is ReceivedRequestChatsLoaded) {
-                print('DEBUG: ReceivedRequestChatsLoaded with ${state.receivedRequestChats.length} chats');
+                print(
+                    'DEBUG: ReceivedRequestChatsLoaded with ${state.receivedRequestChats.length} chats');
                 return _buildFilteredRequestChats(state.receivedRequestChats);
               }
             } else if (_selectedBottomTabIndex == 1) {
               // "Demandes faites" tab
               if (state is SentRequestChatsLoaded) {
-                print('DEBUG: SentRequestChatsLoaded with ${state.sentRequestChats.length} chats');
+                print(
+                    'DEBUG: SentRequestChatsLoaded with ${state.sentRequestChats.length} chats');
                 return _buildFilteredRequestChats(state.sentRequestChats);
               }
             }
 
             // Fallback states
             if (state is MessageRequestsLoaded) {
-              print('DEBUG: MessageRequestsLoaded with ${state.requests.length} requests');
+              print(
+                  'DEBUG: MessageRequestsLoaded with ${state.requests.length} requests');
               return _buildRequestsList(state.requests, []);
             }
 
             if (state is RequestChatsLoaded) {
-              print('DEBUG: RequestChatsLoaded with ${state.requestChats.length} request chats');
+              print(
+                  'DEBUG: RequestChatsLoaded with ${state.requestChats.length} request chats');
               return _buildRequestsList([], state.requestChats);
             }
 
             if (state is RequestsAndRequestChatsLoaded) {
-              print('DEBUG: RequestsAndRequestChatsLoaded with ${state.requests.length} requests and ${state.requestChats.length} request chats');
+              print(
+                  'DEBUG: RequestsAndRequestChatsLoaded with ${state.requests.length} requests and ${state.requestChats.length} request chats');
               return _buildRequestsList(state.requests, state.requestChats);
             }
 
             if (state is ChatListWithRequestsLoaded) {
-              print('DEBUG: ChatListWithRequestsLoaded with ${state.requests.length} requests');
+              print(
+                  'DEBUG: ChatListWithRequestsLoaded with ${state.requests.length} requests');
               return _buildRequestsList(state.requests, []);
             }
 
@@ -1378,7 +1482,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                   Container(
                     padding: EdgeInsets.all(24.w),
                     decoration: BoxDecoration(
-                      color: Color(0xFFF7BD8E).withOpacity(0.1),
+                      color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -1445,7 +1549,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
           if (state is ChatListLoaded) {
             // All chats from getArchivedChatsStream are already filtered as archived
             final archivedChats = state.chats;
-            
+
             if (archivedChats.isEmpty) {
               return Center(
                 child: Column(
@@ -1454,7 +1558,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                     Container(
                       padding: EdgeInsets.all(24.w),
                       decoration: BoxDecoration(
-                        color: Color(0xFFF7BD8E).withOpacity(0.1),
+                        color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -1474,9 +1578,10 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      EnumLocale.archiveConversationsArchiveesApparaitront.name.tr,
+                      EnumLocale
+                          .archiveConversationsArchiveesApparaitront.name.tr,
                       style: TextStyle(
-                        color: AppColors.grey.withOpacity(0.7),
+                        color: AppColors.grey.withValues(alpha: 0.7),
                         fontSize: 14.sp,
                       ),
                       textAlign: TextAlign.center,
@@ -1507,7 +1612,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Container(
               padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
-                color: Color(0xFFF7BD8E).withOpacity(0.1),
+                color: Color(0xFFF7BD8E).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -1529,7 +1634,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
             Text(
               EnumLocale.archiveFeatureUnderDevelopment.name.tr,
               style: TextStyle(
-                color: AppColors.grey.withOpacity(0.7),
+                color: AppColors.grey.withValues(alpha: 0.7),
                 fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
@@ -1568,7 +1673,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
   // They participated content - shows received event requests
   Widget _buildTheyParticipatedContent() {
     return StreamBuilder<List<EventRequestModel>>(
-      stream: _eventRequestRepository.streamReceivedEventRequests(currentUserId!),
+      stream:
+          _eventRequestRepository.streamReceivedEventRequests(currentUserId!),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -1601,7 +1707,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                 SizedBox(height: 16.h),
                 Text(
                   'No event participation requests yet',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 16.sp, color: Colors.grey.shade600),
                 ),
               ],
             ),
@@ -1656,7 +1763,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                 SizedBox(height: 16.h),
                 Text(
                   'No event participation requests sent yet',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 16.sp, color: Colors.grey.shade600),
                 ),
               ],
             ),
@@ -1700,7 +1808,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
     final timeAgo = timeago.format(request.createdAt, locale: 'en');
     String statusText = '';
     Color statusColor = Colors.grey.shade600;
-    
+
     switch (request.status) {
       case EventRequestStatus.PENDING:
         statusText = '';
@@ -1714,7 +1822,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         statusColor = Color(0xFFE53935);
         break;
     }
-    
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
@@ -1734,7 +1842,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               color: Colors.grey.shade300,
               child: (request.requesterPhotoUrl?.isNotEmpty == true)
                   ? Image.network(request.requesterPhotoUrl!, fit: BoxFit.cover)
-                  : Icon(Icons.person, color: Colors.grey.shade600, size: 24.sp),
+                  : Icon(Icons.person,
+                      color: Colors.grey.shade600, size: 24.sp),
             ),
           ),
           SizedBox(width: 12.w),
@@ -1753,19 +1862,22 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                 SizedBox(height: 4.h),
                 Text(
                   '$timeAgo',
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   'Event: ${request.eventTitle ?? 'Unknown Event'}',
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   request.message,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 10.h),
                 // Show action buttons only for pending requests
@@ -1808,7 +1920,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
     final timeAgo = timeago.format(request.createdAt, locale: 'en');
     String statusText = '';
     Color statusColor = Colors.grey.shade600;
-    
+
     switch (request.status) {
       case EventRequestStatus.PENDING:
         statusText = EnumLocale.giftWaiting.name.tr;
@@ -1823,7 +1935,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         statusColor = Color(0xFFE53935);
         break;
     }
-    
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
@@ -1841,7 +1953,8 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
               width: 48.w,
               height: 48.w,
               color: Colors.grey.shade300,
-              child: Icon(Icons.event, color: Colors.grey.shade600, size: 24.sp),
+              child:
+                  Icon(Icons.event, color: Colors.grey.shade600, size: 24.sp),
             ),
           ),
           SizedBox(width: 12.w),
@@ -1860,14 +1973,16 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
                 SizedBox(height: 4.h),
                 Text(
                   '$timeAgo',
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   request.message,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+                  style:
+                      TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
                 ),
                 SizedBox(height: 10.h),
                 Row(
@@ -1900,7 +2015,10 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
   }
 
   // Pill button widget
-  Widget _buildPillButton({required String label, required Color color, required VoidCallback onTap}) {
+  Widget _buildPillButton(
+      {required String label,
+      required Color color,
+      required VoidCallback onTap}) {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
@@ -1927,7 +2045,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         requestId: request.id,
         status: EventRequestStatus.ACCEPTED,
       );
-      
+
       // Add the user to the event's participants collection
       await _eventRepository.addParticipantToEvent(
         eventId: request.eventId,
@@ -1935,7 +2053,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         userName: request.requesterName,
         userPhotoUrl: request.requesterPhotoUrl,
       );
-      
+
       Get.snackbar(
         'Success',
         'Event request accepted and user added to participants',
@@ -1960,7 +2078,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
         requestId: request.id,
         status: EventRequestStatus.REJECTED,
       );
-      
+
       Get.snackbar(
         'Success',
         'Event request rejected',
@@ -1982,7 +2100,7 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
   Future<void> _cancelEventRequest(EventRequestModel request) async {
     try {
       await _eventRequestRepository.deleteEventRequest(request.id);
-      
+
       Get.snackbar(
         'Success',
         'Event request cancelled',
@@ -2000,4 +2118,4 @@ class _ChatListScreenState extends State<ChatListScreen> with TickerProviderStat
       );
     }
   }
-} 
+}

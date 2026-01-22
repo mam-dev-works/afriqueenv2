@@ -35,12 +35,12 @@ class RequestChatItem extends StatelessWidget {
             color: AppColors.white,
             borderRadius: BorderRadius.circular(16.r),
             border: Border.all(
-              color: AppColors.primaryColor.withOpacity(0.2),
+              color: AppColors.primaryColor.withValues(alpha: 0.2),
               width: 1.w,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -57,17 +57,18 @@ class RequestChatItem extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.primaryColor.withOpacity(0.2),
+                        color: AppColors.primaryColor.withValues(alpha: 0.2),
                         width: 2.w,
                       ),
                     ),
                     child: ClipOval(
-                      child: otherUser['photoUrl'] != null && otherUser['photoUrl'].toString().isNotEmpty
+                      child: otherUser['photoUrl'] != null &&
+                              otherUser['photoUrl'].toString().isNotEmpty
                           ? CachedNetworkImage(
                               imageUrl: otherUser['photoUrl'],
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Container(
-                                color: AppColors.grey.withOpacity(0.2),
+                                color: AppColors.grey.withValues(alpha: 0.2),
                                 child: Icon(
                                   Icons.person,
                                   size: 20.sp,
@@ -75,7 +76,7 @@ class RequestChatItem extends StatelessWidget {
                                 ),
                               ),
                               errorWidget: (context, url, error) => Container(
-                                color: AppColors.grey.withOpacity(0.2),
+                                color: AppColors.grey.withValues(alpha: 0.2),
                                 child: Icon(
                                   Icons.person,
                                   size: 20.sp,
@@ -84,7 +85,7 @@ class RequestChatItem extends StatelessWidget {
                               ),
                             )
                           : Container(
-                              color: AppColors.grey.withOpacity(0.2),
+                              color: AppColors.grey.withValues(alpha: 0.2),
                               child: Icon(
                                 Icons.person,
                                 size: 20.sp,
@@ -128,10 +129,10 @@ class RequestChatItem extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.05),
+                    color: AppColors.primaryColor.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(12.r),
                     border: Border.all(
-                      color: AppColors.primaryColor.withOpacity(0.1),
+                      color: AppColors.primaryColor.withValues(alpha: 0.1),
                       width: 1.w,
                     ),
                   ),
@@ -150,10 +151,10 @@ class RequestChatItem extends StatelessWidget {
                   ? Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
-                        color: AppColors.grey.withOpacity(0.1),
+                        color: AppColors.grey.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12.r),
                         border: Border.all(
-                          color: AppColors.grey.withOpacity(0.3),
+                          color: AppColors.grey.withValues(alpha: 0.3),
                           width: 1.w,
                         ),
                       ),
@@ -211,7 +212,7 @@ class RequestChatItem extends StatelessWidget {
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.grey,
                                 side: BorderSide(
-                                  color: AppColors.grey.withOpacity(0.5),
+                                  color: AppColors.grey.withValues(alpha: 0.5),
                                   width: 1.w,
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -241,7 +242,7 @@ class RequestChatItem extends StatelessWidget {
     try {
       // Use ChatBloc to accept request
       context.read<ChatBloc>().add(AcceptRequestChat(chat.id));
-      
+
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -272,9 +273,9 @@ class RequestChatItem extends StatelessWidget {
 
       // Use ChatBloc to decline request
       context.read<ChatBloc>().add(DeclineRequestChat(
-        chatId: chat.id,
-        otherUserId: otherUserId,
-      ));
+            chatId: chat.id,
+            otherUserId: otherUserId,
+          ));
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -295,4 +296,4 @@ class RequestChatItem extends StatelessWidget {
       }
     }
   }
-} 
+}

@@ -28,7 +28,7 @@ class EventMessageItem extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 4,
               offset: Offset(0, 2),
             ),
@@ -46,7 +46,8 @@ class EventMessageItem extends StatelessWidget {
                 color: Colors.grey.shade300,
                 image: message.senderPhotoUrl.isNotEmpty
                     ? DecorationImage(
-                        image: CachedNetworkImageProvider(message.senderPhotoUrl),
+                        image:
+                            CachedNetworkImageProvider(message.senderPhotoUrl),
                         fit: BoxFit.cover,
                       )
                     : null,
@@ -59,9 +60,9 @@ class EventMessageItem extends StatelessWidget {
                     )
                   : null,
             ),
-            
+
             SizedBox(width: 12.w),
-            
+
             // Message Content
             Expanded(
               child: Column(
@@ -89,9 +90,9 @@ class EventMessageItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   SizedBox(height: 4.h),
-                  
+
                   // Event title with bold formatting
                   RichText(
                     text: TextSpan(
@@ -113,9 +114,9 @@ class EventMessageItem extends StatelessWidget {
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  
+
                   SizedBox(height: 6.h),
-                  
+
                   // Message content
                   Text(
                     message.content,
@@ -126,9 +127,9 @@ class EventMessageItem extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  
+
                   SizedBox(height: 8.h),
-                  
+
                   // Event status indicator
                   if (message.isEventFinished)
                     Text(
@@ -142,9 +143,9 @@ class EventMessageItem extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             SizedBox(width: 8.w),
-            
+
             // Event image thumbnail
             Container(
               width: 60.w,
@@ -154,7 +155,8 @@ class EventMessageItem extends StatelessWidget {
                 color: Colors.grey.shade300,
                 image: message.eventImageUrl.isNotEmpty
                     ? DecorationImage(
-                        image: CachedNetworkImageProvider(message.eventImageUrl),
+                        image:
+                            CachedNetworkImageProvider(message.eventImageUrl),
                         fit: BoxFit.cover,
                       )
                     : null,
@@ -176,7 +178,7 @@ class EventMessageItem extends StatelessWidget {
   String _formatTimeAgo(DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
-    
+
     if (difference.inDays > 0) {
       return 'Reçu il y a ${difference.inDays}j';
     } else if (difference.inHours > 0) {

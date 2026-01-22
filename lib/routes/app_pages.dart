@@ -287,7 +287,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             child: DescriptionScreen(),
           ),
         ),
-        
       );
     case AppRoutes.setting:
       return MaterialPageRoute(builder: (_) => SettingScreen());
@@ -296,14 +295,17 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
         builder: (_) => RepositoryProvider(
           create: (context) => ProfileRepository(),
           child: BlocProvider(
-            create: (context) => ProfileBloc(repo: context.read<ProfileRepository>())..add(ProfileFetch()),
+            create: (context) =>
+                ProfileBloc(repo: context.read<ProfileRepository>())
+                  ..add(ProfileFetch()),
             child: Scaffold(
               body: CustomScrollView(
                 slivers: [
                   ProfileAppBar(),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w).copyWith(top: 5.h, bottom: 80.h),
+                      padding: EdgeInsets.symmetric(horizontal: 12.w)
+                          .copyWith(top: 5.h, bottom: 80.h),
                       child: ProfileMenuSection(),
                     ),
                   ),

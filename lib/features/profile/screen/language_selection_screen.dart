@@ -9,7 +9,8 @@ class LanguageSelectionScreen extends StatefulWidget {
   const LanguageSelectionScreen({super.key});
 
   @override
-  State<LanguageSelectionScreen> createState() => _LanguageSelectionScreenState();
+  State<LanguageSelectionScreen> createState() =>
+      _LanguageSelectionScreenState();
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
@@ -46,7 +47,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
         _filteredLanguages = List.from(_languages);
       } else {
         _filteredLanguages = _languages
-            .where((lang) => lang['name']!.toLowerCase().contains(query.toLowerCase()))
+            .where((lang) =>
+                lang['name']!.toLowerCase().contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -97,12 +99,12 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             child: Text(
               EnumLocale.languageSelectionSubtitle.name.tr,
               style: TextStyle(
-                color: AppColors.black.withOpacity(0.7),
+                color: AppColors.black.withValues(alpha: 0.7),
                 fontSize: 14.sp,
               ),
             ),
           ),
-          
+
           // Search bar
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -128,14 +130,15 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     size: 20.r,
                   ),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 ),
               ),
             ),
           ),
-          
+
           SizedBox(height: 12.h),
-          
+
           // Language list
           Expanded(
             child: Container(
@@ -150,22 +153,29 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                 itemBuilder: (context, index) {
                   final language = _filteredLanguages[index];
                   final isSelected = language['code'] == _selectedLanguage;
-                  
+
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primaryColor.withOpacity(0.1) : AppColors.white,
+                      color: isSelected
+                          ? AppColors.primaryColor.withValues(alpha: 0.1)
+                          : AppColors.white,
                       borderRadius: BorderRadius.circular(8.r),
-                      border: isSelected 
-                          ? Border.all(color: AppColors.primaryColor, width: 1.5)
+                      border: isSelected
+                          ? Border.all(
+                              color: AppColors.primaryColor, width: 1.5)
                           : null,
                     ),
                     child: ListTile(
                       title: Text(
                         language['name']!,
                         style: TextStyle(
-                          color: isSelected ? AppColors.primaryColor : AppColors.black,
-                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                          color: isSelected
+                              ? AppColors.primaryColor
+                              : AppColors.black,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.normal,
                           fontSize: 16.sp,
                         ),
                       ),
@@ -183,9 +193,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               ),
             ),
           ),
-          
+
           SizedBox(height: 8.h),
-          
+
           // Bottom buttons
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -213,9 +223,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(width: 16.w),
-                
+
                 // Validate button
                 Expanded(
                   child: Container(
@@ -240,7 +250,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               ],
             ),
           ),
-          
+
           SizedBox(height: 100.h),
         ],
       ),
