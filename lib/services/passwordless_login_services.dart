@@ -46,7 +46,7 @@ class PasswordlessLoginServices {
         emailLink: link.toString(),
       );
       debugPrint("user: $user");
-      if (user != null && user.user != null) {
+      if (user.user != null) {
         print('Authenticated email:  [32m${user.user!.email} [0m');
         final querySnapshot = await _firestore
             .collection('user')
@@ -65,12 +65,12 @@ class PasswordlessLoginServices {
         }
         if (isExistingUser) {
           Get.offAllNamed('/main');
-        }
-        else {
+        } else {
           Get.offAll(() => BlocProvider(
-            create: (_) => CreateProfileBloc(repository: CreateProfileRepository()),
-            child: DobLocationScreen(),
-          ));
+                create: (_) =>
+                    CreateProfileBloc(repository: CreateProfileRepository()),
+                child: DobLocationScreen(),
+              ));
         }
       }
     } catch (e) {

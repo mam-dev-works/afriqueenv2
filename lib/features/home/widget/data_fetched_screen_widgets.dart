@@ -595,9 +595,8 @@ class ProfileCard extends StatelessWidget {
         }
 
         final isPending = existing != null &&
-            (existing!['isRequest'] == true) &&
-            ((existing!['status'] == null) ||
-                (existing!['status'] == 'PENDING'));
+            (existing['isRequest'] == true) &&
+            ((existing['status'] == null) || (existing['status'] == 'PENDING'));
 
         return Row(
           mainAxisSize: MainAxisSize.min,

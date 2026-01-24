@@ -1,9 +1,5 @@
-import 'dart:io';
-import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hugeicons/hugeicons.dart';
-import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
 class VoiceMessageWidget extends StatefulWidget {
@@ -41,17 +37,17 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget> {
   Future<void> _initAudioPlayer() async {
     try {
       if (!mounted) return;
-      
+
       // Reset player state
       await _audioPlayer.stop();
       _position = Duration.zero;
       _duration = Duration.zero;
       _isPlaying = false;
-      
+
       // Set new audio source
       await _audioPlayer.setUrl(widget.audioUrl);
       _duration = _audioPlayer.duration ?? Duration.zero;
-      
+
       _audioPlayer.playerStateStream.listen((state) {
         if (mounted) {
           setState(() {
@@ -81,7 +77,8 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget> {
   @override
   void didUpdateWidget(VoiceMessageWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.audioUrl != widget.audioUrl || oldWidget.messageId != widget.messageId) {
+    if (oldWidget.audioUrl != widget.audioUrl ||
+        oldWidget.messageId != widget.messageId) {
       _initAudioPlayer();
     }
   }
@@ -95,7 +92,7 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget> {
 
   Future<void> _playPause() async {
     if (!_isInitialized) return;
-    
+
     if (_isPlaying) {
       await _audioPlayer.pause();
     } else {
@@ -143,13 +140,19 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Slider(
-                  value: _duration.inSeconds > 0 ? _position.inSeconds.toDouble() : 0.0,
+                  value: _duration.inSeconds > 0
+                      ? _position.inSeconds.toDouble()
+                      : 0.0,
                   min: 0,
-                  max: _duration.inSeconds > 0 ? _duration.inSeconds.toDouble() : 1.0,
-                  onChanged: _isInitialized ? (value) async {
-                    final position = Duration(seconds: value.toInt());
-                    await _audioPlayer.seek(position);
-                  } : null,
+                  max: _duration.inSeconds > 0
+                      ? _duration.inSeconds.toDouble()
+                      : 1.0,
+                  onChanged: _isInitialized
+                      ? (value) async {
+                          final position = Duration(seconds: value.toInt());
+                          await _audioPlayer.seek(position);
+                        }
+                      : null,
                 ),
                 Text(
                   '${_formatDuration(_position)} / ${_formatDuration(_duration)}',
@@ -166,4 +169,4 @@ class _VoiceMessageWidgetState extends State<VoiceMessageWidget> {
       ),
     );
   }
-} 
+}

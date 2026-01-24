@@ -11,8 +11,6 @@ import 'package:afriqueen/features/home/model/home_model.dart';
 import 'package:afriqueen/features/match/bloc/match_bloc.dart';
 import 'package:afriqueen/features/match/bloc/match_event.dart';
 import 'package:afriqueen/features/match/bloc/match_state.dart';
-import 'package:afriqueen/features/match/repository/like_repository.dart';
-import 'package:afriqueen/features/match/widget/card_screen_widget.dart';
 import 'package:afriqueen/features/user_details/screen/user_details_screen.dart';
 import 'package:afriqueen/features/activity/repository/user_profile_repository.dart';
 import 'package:afriqueen/services/distance/distance_calculator.dart';

@@ -1,5 +1,4 @@
 import 'package:afriqueen/common/localization/enums/enums.dart';
-import 'package:afriqueen/features/favorite/widgets/favorite_widgets.dart';
 import 'package:afriqueen/features/home/widget/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

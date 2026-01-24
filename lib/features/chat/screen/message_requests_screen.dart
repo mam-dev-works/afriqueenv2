@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:afriqueen/common/theme/app_colors.dart';
-import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/features/chat/bloc/chat_bloc.dart';
 import 'package:afriqueen/features/chat/model/message_request_model.dart';
 import 'package:afriqueen/features/chat/model/chat_model.dart';
 import 'package:afriqueen/features/chat/widget/message_request_item.dart';
 import 'package:afriqueen/features/chat/widget/request_chat_item.dart';
 import 'package:afriqueen/features/chat/widget/chat_list_item.dart';
-import 'package:afriqueen/features/chat/repository/chat_repository.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:afriqueen/routes/app_routes.dart';
 

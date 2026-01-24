@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
       final email = _appGetStorage.getLastEmail();
       debugPrint("[GLOBAL] onLink email: $email");
 
-      if (deepLink != null && email != null && email.isNotEmpty) {
+      if (email != null && email.isNotEmpty) {
         // Extract the 'link' parameter which contains the actual Firebase Auth email link
         final String? emailLink = deepLink.queryParameters['link'];
         debugPrint("[GLOBAL] onLink extracted emailLink: $emailLink");

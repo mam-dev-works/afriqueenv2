@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/services/premium_service.dart';
 
 class PremiumInfoDialog extends StatelessWidget {
@@ -28,7 +26,7 @@ class PremiumInfoDialog extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16.h),
-            
+
             // Message
             Text(
               'Vous êtes limité à un évènement avec un compte classique, vous devez supprimer votre évènement si vous souhaitez en publier un nouveau. Vous pouvez passer en compte premium et publier jusqu\'à 5 évènement simultanément.',
@@ -40,7 +38,7 @@ class PremiumInfoDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
-            
+
             // Buttons
             Row(
               children: [
@@ -66,7 +64,7 @@ class PremiumInfoDialog extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 12.w),
-                
+
                 // Passer premium button
                 Expanded(
                   child: ElevatedButton(
@@ -74,18 +72,21 @@ class PremiumInfoDialog extends StatelessWidget {
                       Navigator.of(context).pop();
                       // For testing: Set user as premium
                       final premiumService = PremiumService();
-                      final success = await premiumService.setPremiumStatus(true);
+                      final success =
+                          await premiumService.setPremiumStatus(true);
                       if (success) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Compte premium activé! Vous pouvez maintenant créer jusqu\'à 5 événements.'),
+                            content: Text(
+                                'Compte premium activé! Vous pouvez maintenant créer jusqu\'à 5 événements.'),
                             duration: Duration(seconds: 3),
                           ),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Erreur lors de l\'activation du compte premium'),
+                            content: Text(
+                                'Erreur lors de l\'activation du compte premium'),
                             duration: Duration(seconds: 2),
                           ),
                         );

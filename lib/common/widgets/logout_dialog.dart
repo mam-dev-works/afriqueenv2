@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
-import 'package:afriqueen/common/theme/app_colors.dart';
 
 class LogoutDialog extends StatelessWidget {
   final VoidCallback onConfirm;

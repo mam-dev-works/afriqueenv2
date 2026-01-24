@@ -1,4 +1,3 @@
-import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/features/event/model/event_model.dart';
 import 'package:afriqueen/features/event/repository/event_request_repository.dart';
@@ -11,19 +10,22 @@ import 'package:get/get.dart';
 
 class EventParticipationScreen extends StatefulWidget {
   final EventModel event;
-  
+
   const EventParticipationScreen({
     super.key,
     required this.event,
   });
 
   @override
-  State<EventParticipationScreen> createState() => _EventParticipationScreenState();
+  State<EventParticipationScreen> createState() =>
+      _EventParticipationScreenState();
 }
 
 class _EventParticipationScreenState extends State<EventParticipationScreen> {
-  final TextEditingController _participationMessageController = TextEditingController();
-  final EventRequestRepository _eventRequestRepository = EventRequestRepository();
+  final TextEditingController _participationMessageController =
+      TextEditingController();
+  final EventRequestRepository _eventRequestRepository =
+      EventRequestRepository();
   bool _isSubmitting = false;
 
   @override
@@ -56,13 +58,21 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
         future: ProfileRepository().fetchUserDataById(widget.event.creatorId),
         builder: (context, snapshot) {
           final profile = snapshot.data;
-          final String displayName = profile != null && (profile.toMap().containsKey('name') || profile.toMap().containsKey('surname'))
-              ? '${(profile.toMap()['name'] ?? '').toString().trim()} ${(profile.toMap()['surname'] ?? '').toString().trim()}'.trim()
+          final String displayName = profile != null &&
+                  (profile.toMap().containsKey('name') ||
+                      profile.toMap().containsKey('surname'))
+              ? '${(profile.toMap()['name'] ?? '').toString().trim()} ${(profile.toMap()['surname'] ?? '').toString().trim()}'
+                  .trim()
               : (profile?.pseudo ?? '');
-          final String nameAge = (displayName.isNotEmpty ? displayName : EnumLocale.utilisateur.name.tr) + (profile != null && profile.age > 0 ? ', ${profile.age}' : '');
-          final ImageProvider<Object> avatar = (profile != null && profile.imgURL.isNotEmpty)
-              ? (NetworkImage(profile.imgURL) as ImageProvider<Object>)
-              : (const AssetImage('assets/images/couple.png') as ImageProvider<Object>);
+          final String nameAge = (displayName.isNotEmpty
+                  ? displayName
+                  : EnumLocale.utilisateur.name.tr) +
+              (profile != null && profile.age > 0 ? ', ${profile.age}' : '');
+          final ImageProvider<Object> avatar =
+              (profile != null && profile.imgURL.isNotEmpty)
+                  ? (NetworkImage(profile.imgURL) as ImageProvider<Object>)
+                  : (const AssetImage('assets/images/couple.png')
+                      as ImageProvider<Object>);
 
           return SingleChildScrollView(
             padding: EdgeInsets.all(16.w),
@@ -123,9 +133,9 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                     ),
                   ],
                 ),
-                
+
                 SizedBox(height: 20.h),
-                
+
                 // Event Organizer Statistics
                 Text(
                   '${EnumLocale.eventOrganizedPrefix.name.tr} 20',
@@ -144,9 +154,9 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                
+
                 SizedBox(height: 24.h),
-                
+
                 // Event Details Section
                 Center(
                   child: Text(
@@ -160,7 +170,7 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -211,9 +221,9 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                     ),
                   ],
                 ),
-                
+
                 SizedBox(height: 12.h),
-                
+
                 Text(
                   '${EnumLocale.eventFeesLabel.name.tr} ${widget.event.costCovered ? EnumLocale.eventCostCoveredYes.name.tr : EnumLocale.eventCostCoveredNo.name.tr}',
                   style: TextStyle(
@@ -222,7 +232,7 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                     color: Colors.black,
                   ),
                 ),
-                
+
                 if (widget.event.maxParticipants != null) ...[
                   SizedBox(height: 8.h),
                   Text(
@@ -234,9 +244,9 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                     ),
                   ),
                 ],
-                
+
                 SizedBox(height: 32.h),
-                
+
                 // Participation Request Section
                 Text(
                   EnumLocale.eventParticipationParticipationRequest.name.tr,
@@ -247,7 +257,7 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                   ),
                 ),
                 SizedBox(height: 12.h),
-                
+
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey.shade300),
@@ -257,7 +267,8 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                     controller: _participationMessageController,
                     maxLines: 4,
                     decoration: InputDecoration(
-                      hintText: EnumLocale.eventParticipationMessageHint.name.tr,
+                      hintText:
+                          EnumLocale.eventParticipationMessageHint.name.tr,
                       hintStyle: TextStyle(
                         fontSize: 14.sp,
                         color: Colors.grey.shade500,
@@ -271,9 +282,9 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: 40.h),
-                
+
                 // Bottom Action Buttons
                 Row(
                   children: [
@@ -314,7 +325,8 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
                                 width: 20.w,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white),
                                 ),
                               )
                             : Text(
@@ -339,7 +351,7 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
 
   void _submitParticipation() async {
     final message = _participationMessageController.text.trim();
-    
+
     // Validate message is not empty (mandatory field)
     if (message.isEmpty) {
       Get.snackbar(
@@ -364,11 +376,12 @@ class _EventParticipationScreenState extends State<EventParticipationScreen> {
 
       // Get current user's profile information
       final profileRepo = ProfileRepository();
-      final currentUserProfile = await profileRepo.fetchUserDataById(currentUser.uid);
-      
+      final currentUserProfile =
+          await profileRepo.fetchUserDataById(currentUser.uid);
+
       String requesterName = '';
       String? requesterPhotoUrl;
-      
+
       if (currentUserProfile != null) {
         final profileData = currentUserProfile.toMap();
         final name = profileData['name']?.toString().trim() ?? '';

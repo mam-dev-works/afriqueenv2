@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hugeicons/hugeicons.dart';
 
 import '../bloc/blocked_bloc.dart';
 import '../bloc/blocked_event.dart';
@@ -33,15 +32,15 @@ class ErrorScreen extends StatelessWidget {
             Text(
               EnumLocale.defaultError.name.tr,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Colors.red,
-              ),
+                    color: Colors.red,
+                  ),
             ),
             SizedBox(height: 10.h),
             Text(
               EnumLocale.defaultError.name.tr,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.grey,
-              ),
+                    color: AppColors.grey,
+                  ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.h),
@@ -56,4 +55,4 @@ class ErrorScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}

@@ -758,9 +758,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
               ),
               itemBuilder: (BuildContext context, index) {
                 final user = state.users[index];
-                if (user == null) {
-                  return SizedBox.shrink();
-                }
                 return _buildProfileCardFromModel(user);
               },
             ),

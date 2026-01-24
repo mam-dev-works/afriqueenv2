@@ -3,7 +3,6 @@ import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/features/chat/bloc/chat_bloc.dart';
 import 'package:afriqueen/features/chat/repository/chat_repository.dart';
 import 'package:afriqueen/features/chat/screen/chat_list_screen.dart';
-import 'package:afriqueen/features/reels/screen/reels_screen.dart';
 import 'package:afriqueen/features/meeting/screen/meeting_screen.dart';
 import 'package:afriqueen/features/stories/screen/stories_screen.dart';
 import 'package:afriqueen/features/activity/screen/activity_screen.dart';
@@ -18,7 +17,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:hugeicons/hugeicons.dart';
 
 import '../../add/screen/add_screen.dart';
 

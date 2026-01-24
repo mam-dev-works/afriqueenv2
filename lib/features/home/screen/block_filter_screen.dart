@@ -582,7 +582,7 @@ class _BlockFilterScreenState extends State<BlockFilterScreen> {
               _certifiedOnly = value;
             });
           },
-          activeColor: AppColors.primaryColor,
+          activeThumbColor: AppColors.primaryColor,
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Colors.grey.shade300,
         ),

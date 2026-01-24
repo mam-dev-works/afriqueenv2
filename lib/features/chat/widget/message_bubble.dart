@@ -188,8 +188,6 @@ class _MessageBubbleState extends State<MessageBubble> {
     final now = DateTime.now();
     final messageTime = widget.message.timestamp;
 
-    if (messageTime == null) return '';
-
     final difference = now.difference(messageTime);
 
     if (difference.inDays == 0) {

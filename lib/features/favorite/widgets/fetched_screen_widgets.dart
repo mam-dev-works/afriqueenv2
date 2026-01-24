@@ -17,9 +17,6 @@ import 'package:afriqueen/features/chat/bloc/chat_bloc.dart';
 import 'package:afriqueen/features/chat/repository/chat_repository.dart';
 import 'package:afriqueen/features/chat/screen/chat_screen.dart';
 
-import '../../archive/bloc/archive_bloc.dart';
-import '../../archive/bloc/archive_event.dart';
-
 //-------------------- user Image--------------------
 class UserImage extends StatelessWidget {
   const UserImage({super.key, required this.Homedata});

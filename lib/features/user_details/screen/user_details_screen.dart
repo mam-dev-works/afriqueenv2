@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
-import 'package:afriqueen/routes/app_routes.dart';
 import 'package:afriqueen/features/gifts/screen/send_gifts_screen.dart';
 import 'package:afriqueen/features/activity/repository/user_profile_repository.dart';
 
@@ -44,7 +43,8 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       await _userProfileRepository.markUserAsViewed(widget.data.id);
       print('UserDetailsScreen: Marked user ${widget.data.id} as viewed');
     } catch (e) {
-      print('UserDetailsScreen: Error marking user ${widget.data.id} as viewed: $e');
+      print(
+          'UserDetailsScreen: Error marking user ${widget.data.id} as viewed: $e');
     }
   }
 
@@ -82,7 +82,8 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 children: [
                   // Header with back button and title
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                     child: Row(
                       children: [
                         IconButton(
@@ -104,7 +105,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                       ],
                     ),
                   ),
-                  
+
                   // Main content
                   Expanded(
                     child: SingleChildScrollView(
@@ -113,38 +114,42 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Profile Images Section
-                          ProfileImageGallery(widget: widget, hasValidUrl: hasValidUrl),
+                          ProfileImageGallery(
+                              widget: widget, hasValidUrl: hasValidUrl),
                           SizedBox(height: 16.h),
-                          
+
                           // Action Buttons
                           ActionButtonsRow(model: widget.data),
                           SizedBox(height: 16.h),
-                          
+
                           // Basic Info Section
-                          BasicInfoSection(userDetailsScreen: widget, date: date),
+                          BasicInfoSection(
+                              userDetailsScreen: widget, date: date),
                           SizedBox(height: 16.h),
-                          
+
                           // Send Gift Button
                           Center(
                             child: GestureDetector(
                               onTap: () {
-                                print('UserDetailsScreen: Navigating to Send Gifts with data: ${widget.data.name} (ID: ${widget.data.id})');
-                                Get.to(() => const SendGiftsScreen(), arguments: widget.data);
+                                print(
+                                    'UserDetailsScreen: Navigating to Send Gifts with data: ${widget.data.name} (ID: ${widget.data.id})');
+                                Get.to(() => const SendGiftsScreen(),
+                                    arguments: widget.data);
                               },
-                            child: Container(
-                              width: double.infinity,
-                              height: 48.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.red,
-                                borderRadius: BorderRadius.circular(24.r),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  EnumLocale.userDetailsSendGifts.name.tr,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
+                              child: Container(
+                                width: double.infinity,
+                                height: 48.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.red,
+                                  borderRadius: BorderRadius.circular(24.r),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    EnumLocale.userDetailsSendGifts.name.tr,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
@@ -152,7 +157,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                             ),
                           ),
                           SizedBox(height: 24.h),
-                          
+
                           // Information Categories
                           Text(
                             EnumLocale.userDetailsInformation.name.tr,
@@ -165,23 +170,23 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                           SizedBox(height: 12.h),
                           InformationCategories(),
                           SizedBox(height: 24.h),
-                          
+
                           // Description Section
                           DescriptionSection(widget: widget),
                           SizedBox(height: 24.h),
-                          
+
                           // What Looking For Section
                           WhatLookingForSection(widget: widget),
                           SizedBox(height: 24.h),
-                          
+
                           // What Not Want Section
                           WhatNotWantSection(widget: widget),
                           SizedBox(height: 24.h),
-                          
+
                           // Story Section
                           StorySection(),
                           SizedBox(height: 24.h),
-                          
+
                           // Events Section
                           EventsSection(),
                           SizedBox(height: 24.h),
@@ -189,7 +194,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                       ),
                     ),
                   ),
-                  
+
                   // Bottom Back Button
                   Container(
                     padding: EdgeInsets.all(16.w),

@@ -1,4 +1,3 @@
-import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:afriqueen/features/event/model/event_model.dart';
 import 'package:afriqueen/features/event/repository/event_repository.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +21,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _locationCtrl = TextEditingController();
   final TextEditingController _descriptionCtrl = TextEditingController();
-  
+
   // Date controllers for separate day/month/year fields
   final TextEditingController _dayCtrl = TextEditingController();
   final TextEditingController _monthCtrl = TextEditingController();
   final TextEditingController _yearCtrl = TextEditingController();
-  
+
   String _eventWith = ''; // Will be initialized with localized string
   String _eventFor = ''; // Will be initialized with localized string
   String _costCovered = ''; // Will be initialized with localized string
@@ -53,7 +52,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     _dayCtrl.text = now.day.toString().padLeft(2, '0');
     _monthCtrl.text = now.month.toString().padLeft(2, '0');
     _yearCtrl.text = now.year.toString();
-    
+
     // Initialize localized strings
     _eventWith = EnumLocale.createEventWithOption1.name.tr;
     _eventFor = EnumLocale.createEventForOption1.name.tr;
@@ -62,59 +61,74 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     // Validate required fields
     if (_titleCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(EnumLocale.createEventValidationTitleRequired.name.tr)),
+        SnackBar(
+            content:
+                Text(EnumLocale.createEventValidationTitleRequired.name.tr)),
       );
       return;
     }
-    
+
     if (_locationCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(EnumLocale.createEventValidationLocationRequired.name.tr)),
+        SnackBar(
+            content:
+                Text(EnumLocale.createEventValidationLocationRequired.name.tr)),
       );
       return;
     }
-    
+
     // Validate date fields
     final day = int.tryParse(_dayCtrl.text);
     final month = int.tryParse(_monthCtrl.text);
     final year = int.tryParse(_yearCtrl.text);
-    
-    if (day == null || month == null || year == null || 
-        day < 1 || day > 31 || month < 1 || month > 12 || year < 2024) {
+
+    if (day == null ||
+        month == null ||
+        year == null ||
+        day < 1 ||
+        day > 31 ||
+        month < 1 ||
+        month > 12 ||
+        year < 2024) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(EnumLocale.createEventValidationDateRequired.name.tr)),
+        SnackBar(
+            content:
+                Text(EnumLocale.createEventValidationDateRequired.name.tr)),
       );
       return;
     }
-    
+
     setState(() => _saving = true);
-    
+
     try {
       final eventDate = DateTime(year, month, day);
-    final model = EventModel(
-      id: '',
-      title: _titleCtrl.text.trim(),
+      final model = EventModel(
+        id: '',
+        title: _titleCtrl.text.trim(),
         date: eventDate,
-      location: _locationCtrl.text.trim(),
-      description: _descriptionCtrl.text.trim(),
-        status: _eventWith == EnumLocale.createEventWithOption1.name.tr ? EventStatus.DUO : EventStatus.GROUP,
-      creatorId: FirebaseAuth.instance.currentUser?.uid ?? '',
-      imageUrl: _imageUrl,
+        location: _locationCtrl.text.trim(),
+        description: _descriptionCtrl.text.trim(),
+        status: _eventWith == EnumLocale.createEventWithOption1.name.tr
+            ? EventStatus.DUO
+            : EventStatus.GROUP,
+        creatorId: FirebaseAuth.instance.currentUser?.uid ?? '',
+        imageUrl: _imageUrl,
         costCovered: _costCovered == EnumLocale.createEventCostOption1.name.tr,
         maxParticipants: null,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-      
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+
       await EventRepository().createEvent(model);
       if (mounted) Navigator.of(context).pop(true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${EnumLocale.createEventErrorCreate.name.tr} $e')),
+        SnackBar(
+            content: Text('${EnumLocale.createEventErrorCreate.name.tr} $e')),
       );
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -124,9 +138,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   Future<void> _pickAndUploadImage() async {
     try {
       final picker = ImagePicker();
-      final picked = await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
+      final picked =
+          await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
       if (picked == null) return;
-      final cloudinary = CloudinaryPublic(AppStrings.cloudName, AppStrings.uploadPreset);
+      final cloudinary =
+          CloudinaryPublic(AppStrings.cloudName, AppStrings.uploadPreset);
       final res = await cloudinary.uploadFile(
         CloudinaryFile.fromFile(
           picked.path,
@@ -139,7 +155,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${EnumLocale.createEventErrorImageUpload.name.tr} $e')),
+        SnackBar(
+            content:
+                Text('${EnumLocale.createEventErrorImageUpload.name.tr} $e')),
       );
     }
   }
@@ -201,7 +219,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             color: Colors.grey[600],
           ),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
         ),
         style: TextStyle(
           fontSize: 14.sp,
@@ -293,8 +312,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 label: EnumLocale.createEventWithLabel.name.tr,
                 child: _buildDropdown(
                   value: _eventWith,
-                  items: [EnumLocale.createEventWithOption1.name.tr, EnumLocale.createEventWithOption2.name.tr],
-                  onChanged: (value) => setState(() => _eventWith = value ?? EnumLocale.createEventWithOption1.name.tr),
+                  items: [
+                    EnumLocale.createEventWithOption1.name.tr,
+                    EnumLocale.createEventWithOption2.name.tr
+                  ],
+                  onChanged: (value) => setState(() => _eventWith =
+                      value ?? EnumLocale.createEventWithOption1.name.tr),
                 ),
               ),
 
@@ -304,11 +327,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 child: _buildDropdown(
                   value: _eventFor,
                   items: [
-                    EnumLocale.createEventForOption1.name.tr, 
-                    EnumLocale.createEventForOption2.name.tr, 
+                    EnumLocale.createEventForOption1.name.tr,
+                    EnumLocale.createEventForOption2.name.tr,
                     EnumLocale.createEventForOption3.name.tr
                   ],
-                  onChanged: (value) => setState(() => _eventFor = value ?? EnumLocale.createEventForOption1.name.tr),
+                  onChanged: (value) => setState(() => _eventFor =
+                      value ?? EnumLocale.createEventForOption1.name.tr),
                 ),
               ),
 
@@ -349,7 +373,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 label: EnumLocale.createEventLocationLabel.name.tr,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+                  children: [
                     _buildInputField(
                       controller: _locationCtrl,
                     ),
@@ -366,8 +390,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               ),
 
               // Image Upload
-            GestureDetector(
-              onTap: _saving ? null : _pickAndUploadImage,
+              GestureDetector(
+                onTap: _saving ? null : _pickAndUploadImage,
                 child: Container(
                   height: 120.h,
                   width: double.infinity,
@@ -431,18 +455,22 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 label: EnumLocale.createEventCostLabel.name.tr,
                 child: _buildDropdown(
                   value: _costCovered,
-                  items: [EnumLocale.createEventCostOption1.name.tr, EnumLocale.createEventCostOption2.name.tr],
-                  onChanged: (value) => setState(() => _costCovered = value ?? EnumLocale.createEventCostOption1.name.tr),
+                  items: [
+                    EnumLocale.createEventCostOption1.name.tr,
+                    EnumLocale.createEventCostOption2.name.tr
+                  ],
+                  onChanged: (value) => setState(() => _costCovered =
+                      value ?? EnumLocale.createEventCostOption1.name.tr),
                 ),
               ),
 
               SizedBox(height: 40.h),
 
               // Retour Button
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
                       onPressed: () => Navigator.of(context).pop(),
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: Colors.grey[400]!),
@@ -463,8 +491,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   SizedBox(width: 16.w),
                   Expanded(
-              child: ElevatedButton(
-                onPressed: _saving ? null : _submit,
+                    child: ElevatedButton(
+                      onPressed: _saving ? null : _submit,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF6B6FB2),
                         shape: RoundedRectangleBorder(
@@ -473,13 +501,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                         elevation: 0,
                       ),
-                child: _saving
+                      child: _saving
                           ? SizedBox(
                               height: 18.h,
                               width: 18.w,
                               child: const CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
                           : Text(
@@ -490,9 +519,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-              ),
-            ),
-          ],
+                    ),
+                  ),
+                ],
               ),
 
               SizedBox(height: 20.h),
@@ -503,5 +532,3 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     );
   }
 }
-
-

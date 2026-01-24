@@ -22,51 +22,54 @@ class EventRepository {
     final bool isFiltered = status != null;
     if (isFiltered) {
       // Avoid composite index by not combining where + orderBy server-side
-      query = query.where('status', whereIn: [status!.name, 'EventStatus.${status.name}']);
+      query = query.where('status',
+          whereIn: [status.name, 'EventStatus.${status.name}']);
     } else {
       query = query.orderBy('date');
     }
     return query.snapshots().asyncMap((snapshot) async {
       final List<EventModel> visibleEvents = [];
-      
+
       for (final doc in snapshot.docs) {
         final event = EventModel.fromDoc(doc);
         final creatorId = event.creatorId;
-        
+
         // Skip current user's own events
         if (currentUserId != null && creatorId == currentUserId) {
           visibleEvents.add(event);
           continue;
         }
-        
+
         // Check if event creator is invisible and we haven't interacted
-        final isInvisible = await _invisibleModeService.isUserInvisible(creatorId);
+        final isInvisible =
+            await _invisibleModeService.isUserInvisible(creatorId);
         if (!isInvisible) {
           visibleEvents.add(event);
         } else {
-          final hasInteracted = await _invisibleModeService.hasInteractedWith(creatorId);
+          final hasInteracted =
+              await _invisibleModeService.hasInteractedWith(creatorId);
           if (hasInteracted) {
             visibleEvents.add(event);
           }
         }
       }
-      
+
       if (isFiltered) {
         visibleEvents.sort((a, b) => a.date.compareTo(b.date));
       }
-      
+
       return visibleEvents;
     });
   }
 
   /// Stream events created by a specific user
   Stream<List<EventModel>> streamEventsByCreator(String creatorId) {
-    final query = _db
-        .collection(_collection)
-        .where('creatorId', isEqualTo: creatorId);
+    final query =
+        _db.collection(_collection).where('creatorId', isEqualTo: creatorId);
     return query.snapshots().map(
-      (snapshot) => snapshot.docs.map((d) => EventModel.fromDoc(d)).toList(),
-    );
+          (snapshot) =>
+              snapshot.docs.map((d) => EventModel.fromDoc(d)).toList(),
+        );
   }
 
   /// Add a participant to an event
@@ -76,7 +79,12 @@ class EventRepository {
     String? userName,
     String? userPhotoUrl,
   }) async {
-    await _db.collection(_collection).doc(eventId).collection('participants').doc(userId).set({
+    await _db
+        .collection(_collection)
+        .doc(eventId)
+        .collection('participants')
+        .doc(userId)
+        .set({
       'userId': userId,
       'userName': userName,
       'userPhotoUrl': userPhotoUrl,
@@ -89,7 +97,12 @@ class EventRepository {
     required String eventId,
     required String userId,
   }) async {
-    await _db.collection(_collection).doc(eventId).collection('participants').doc(userId).delete();
+    await _db
+        .collection(_collection)
+        .doc(eventId)
+        .collection('participants')
+        .doc(userId)
+        .delete();
   }
 
   /// Get participants for an event
@@ -121,5 +134,3 @@ class EventRepository {
     return doc.exists;
   }
 }
-
-

@@ -34,7 +34,7 @@ class OtherUserStories extends StatelessWidget {
       width: 90,
       height: 110,
       child: Stack(
-      children: [
+        children: [
           // Avatar positioned at top
           Positioned(
             top: 0,
@@ -42,41 +42,41 @@ class OtherUserStories extends StatelessWidget {
             right: 0,
             child: Center(
               child: AdvancedAvatar(
-          foregroundDecoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: AppColors.primaryColor,
-              width: 2.5,
-            ),
-          ),
-          decoration: const BoxDecoration(
-            color: AppColors.floralWhite,
-            shape: BoxShape.circle,
-          ),
-          image: hasValidOtherUserImage
-              ? CachedNetworkImageProvider(story.userImg)
-              : null,
+                foregroundDecoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.primaryColor,
+                    width: 2.5,
+                  ),
+                ),
+                decoration: const BoxDecoration(
+                  color: AppColors.floralWhite,
+                  shape: BoxShape.circle,
+                ),
+                image: hasValidOtherUserImage
+                    ? CachedNetworkImageProvider(story.userImg)
+                    : null,
                 size: 70,
               ),
             ),
-        ),
+          ),
           // Text positioned at bottom with better alignment
           Positioned(
             bottom: 8,
             left: 0,
             right: 0,
             child: Text(
-          story.userName,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall!
+              story.userName,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall!
                   .copyWith(color: AppColors.black, fontSize: 12.sp),
-          overflow: TextOverflow.ellipsis,
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               maxLines: 1,
             ),
           ),
-      ],
+        ],
       ),
     );
   }
@@ -104,16 +104,18 @@ class OwnStories extends StatelessWidget {
         maxHeight: 1080,
         imageQuality: 85,
       );
-      
+
       if (image != null) {
         final File imageFile = File(image.path);
         blocContext.read<StoriesBloc>().add(
-          StoriesImage(
-            name: (profile.pseudo.isNotEmpty ? profile.pseudo : EnumLocale.unknownUser.name.tr),
-            img: profile.imgURL,
-            imageFile: imageFile,
-          ),
-        );
+              StoriesImage(
+                name: (profile.pseudo.isNotEmpty
+                    ? profile.pseudo
+                    : EnumLocale.unknownUser.name.tr),
+                img: profile.imgURL,
+                imageFile: imageFile,
+              ),
+            );
       }
     } catch (e) {
       Get.snackbar(
@@ -129,14 +131,14 @@ class OwnStories extends StatelessWidget {
     debugPrint("OwnStories - Profile data: ${profile.toJson()}");
     debugPrint("OwnStories - Has valid URL: $hasValidUrl");
     debugPrint("OwnStories - Profile image URL: ${profile.imgURL}");
-    
+
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
         width: 90,
         height: 110,
         child: Stack(
-        children: [
+          children: [
             // Avatar positioned at top
             Positioned(
               top: 0,
@@ -144,120 +146,128 @@ class OwnStories extends StatelessWidget {
               right: 0,
               child: Center(
                 child: AdvancedAvatar(
-            foregroundDecoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: profile.isElite ? Colors.amber : AppColors.primaryColor,
-                width: profile.isElite ? 3.0 : 2.5,
-              ),
-            ),
-            decoration: const BoxDecoration(
-              color: AppColors.floralWhite,
-              shape: BoxShape.circle,
-            ),
-            image: hasValidUrl && profile.imgURL != null
-                ? CachedNetworkImageProvider(profile.imgURL)
-                : null,
+                  foregroundDecoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: profile.isElite
+                          ? Colors.amber
+                          : AppColors.primaryColor,
+                      width: profile.isElite ? 3.0 : 2.5,
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    color: AppColors.floralWhite,
+                    shape: BoxShape.circle,
+                  ),
+                  image: hasValidUrl
+                      ? CachedNetworkImageProvider(profile.imgURL)
+                      : null,
                   size: 70,
-            children: [
-              Positioned(
-                right: -0.4,
-                bottom: -0.4,
-                child: SizedBox(
-                  width: 25,
-                  height: 25,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    iconSize: 25.r,
-                    onPressed: () => showModalBottomSheet(
-                      constraints: BoxConstraints(
-                        minWidth: double.maxFinite,
-                      ),
-                      backgroundColor: AppColors.floralWhite,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(8.r),
-                        ),
-                      ),
-                      context: context,
-                      builder: (bottomSheetContext) => RepositoryProvider(
-                        create: (_) => StoriesRepository(),
-                        child: BlocProvider<StoriesBloc>(
-                          create: (blocContext) => StoriesBloc(
-                            repo: blocContext.read<StoriesRepository>(),
-                          ),
-                          child: Builder(
-                            builder: (blocContext) {
+                  children: [
+                    Positioned(
+                      right: -0.4,
+                      bottom: -0.4,
+                      child: SizedBox(
+                        width: 25,
+                        height: 25,
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          iconSize: 25.r,
+                          onPressed: () => showModalBottomSheet(
+                            constraints: BoxConstraints(
+                              minWidth: double.maxFinite,
+                            ),
+                            backgroundColor: AppColors.floralWhite,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(8.r),
+                              ),
+                            ),
+                            context: context,
+                            builder: (bottomSheetContext) => RepositoryProvider(
+                              create: (_) => StoriesRepository(),
+                              child: BlocProvider<StoriesBloc>(
+                                create: (blocContext) => StoriesBloc(
+                                  repo: blocContext.read<StoriesRepository>(),
+                                ),
+                                child: Builder(
+                                  builder: (blocContext) {
                                     return SafeArea(
                                       child: SingleChildScrollView(
                                         child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 10.h,
-                                    ),
-                                    child: Text(
-                                      EnumLocale.addStory.name.tr,
-                                      style: Theme.of(blocContext)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 25.sp,
-                                          ),
-                                    ),
-                                  ),
-                                  const CustomDivider(),
-                                  SizedBox(height: 25.h),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      InkWell(
-                                        onTap: () => _pickImageAndAddStory(blocContext),
-                                        child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Icon(
-                                              Icons.add_a_photo_outlined,
-                                              size: 50.r,
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 10.h,
+                                              ),
+                                              child: Text(
+                                                EnumLocale.addStory.name.tr,
+                                                style: Theme.of(blocContext)
+                                                    .textTheme
+                                                    .bodyLarge!
+                                                    .copyWith(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      fontSize: 25.sp,
+                                                    ),
+                                              ),
                                             ),
-                                            SizedBox(
-                                              height: 10.h,
+                                            const CustomDivider(),
+                                            SizedBox(height: 25.h),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () =>
+                                                      _pickImageAndAddStory(
+                                                          blocContext),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .add_a_photo_outlined,
+                                                        size: 50.r,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10.h,
+                                                      ),
+                                                      Text(EnumLocale
+                                                          .addPhoto.name.tr),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            Text(EnumLocale.addPhoto.name.tr),
+                                            SizedBox(height: 25.h),
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 25.h),
-                                ],
-                                        ),
-                                      ),
-                              );
-                            },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          icon: Container(
+                            decoration: const BoxDecoration(
+                              color: AppColors.primaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: AppColors.floralWhite,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    icon: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.primaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        color: AppColors.floralWhite,
-                      ),
-                    ),
-                  ),
+                  ],
                 ),
-              ),
-            ],
-          ),
               ),
             ),
             // Text positioned at bottom with better alignment
@@ -266,17 +276,19 @@ class OwnStories extends StatelessWidget {
               left: 0,
               right: 0,
               child: Text(
-            (profile.pseudo.isNotEmpty ? profile.pseudo : EnumLocale.unknownUser.name.tr),
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall!
+                (profile.pseudo.isNotEmpty
+                    ? profile.pseudo
+                    : EnumLocale.unknownUser.name.tr),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
                     .copyWith(color: AppColors.black, fontSize: 12.sp),
-            overflow: TextOverflow.ellipsis,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 maxLines: 1,
               ),
             ),
-        ],
+          ],
         ),
       ),
     );

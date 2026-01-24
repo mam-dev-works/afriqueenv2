@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/common/theme/app_colors.dart';
-import 'package:afriqueen/routes/app_routes.dart';
 import 'package:afriqueen/services/account_management_service.dart';
 import 'package:afriqueen/common/widgets/confirmation_dialog.dart';
 import 'package:afriqueen/common/widgets/success_screen.dart';
@@ -26,7 +25,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
 
     try {
       final success = await _accountService.deleteAccount();
-      
+
       if (success) {
         Get.back(); // Close the delete screen first
         SuccessScreen.showAccountDeletedSuccess();
@@ -155,11 +154,13 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: TextButton(
-                      onPressed: _isLoading ? null : () {
-                        ConfirmationDialogs.showDeleteAccountConfirmation(
-                          onConfirm: _deleteAccount,
-                        );
-                      },
+                      onPressed: _isLoading
+                          ? null
+                          : () {
+                              ConfirmationDialogs.showDeleteAccountConfirmation(
+                                onConfirm: _deleteAccount,
+                              );
+                            },
                       child: _isLoading
                           ? SizedBox(
                               width: 20.w,

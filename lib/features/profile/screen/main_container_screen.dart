@@ -1,4 +1,3 @@
-import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/features/profile/bloc/profile_bloc.dart';
 import 'package:afriqueen/features/profile/bloc/profile_state.dart';
@@ -33,7 +32,7 @@ class MainContainer extends StatelessWidget {
                     //---------------User Profile Image--------------------
                     ProfileImage(),
                     SizedBox(height: 16.h),
-                    
+
                     //---------------User Profile Details--------------------
                     UserDetails(),
                     SizedBox(height: 24.h),

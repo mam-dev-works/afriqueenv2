@@ -2,7 +2,6 @@ import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:afriqueen/common/constant/constant_colors.dart';
-import 'package:afriqueen/common/widgets/common_button.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';

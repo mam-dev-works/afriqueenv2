@@ -78,7 +78,8 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _header(EnumLocale.dfHeightTitle.name.tr, trailing: EnumLocale.dfHeightTrailing.name.tr),
+                        _header(EnumLocale.dfHeightTitle.name.tr,
+                            trailing: EnumLocale.dfHeightTrailing.name.tr),
                         RangeSlider(
                           values: _heightRange,
                           min: 140,
@@ -130,7 +131,11 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
                   _card(
                     child: _chipRow(
                       title: EnumLocale.dfAlcoholTitle.name.tr,
-                      options: [EnumLocale.yes.name.tr, EnumLocale.no.name.tr, EnumLocale.dfOptionSometimes.name.tr],
+                      options: [
+                        EnumLocale.yes.name.tr,
+                        EnumLocale.no.name.tr,
+                        EnumLocale.dfOptionSometimes.name.tr
+                      ],
                       selected: alcohol,
                       onSelect: (v) => setState(() => alcohol = v),
                     ),
@@ -138,7 +143,11 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
                   _card(
                     child: _chipRow(
                       title: EnumLocale.dfSmokingTitle.name.tr,
-                      options: [EnumLocale.yes.name.tr, EnumLocale.no.name.tr, EnumLocale.dfOptionSometimes.name.tr],
+                      options: [
+                        EnumLocale.yes.name.tr,
+                        EnumLocale.no.name.tr,
+                        EnumLocale.dfOptionSometimes.name.tr
+                      ],
                       selected: smoking,
                       onSelect: (v) => setState(() => smoking = v),
                     ),
@@ -158,32 +167,49 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
                   ),
 
                   // Switch rows
-                  _tileSwitch(EnumLocale.dfStoryOnlyTitle.name.tr, storyOnly, (v) => setState(() => storyOnly = v)),
-                  _tileSwitch(EnumLocale.dfAtLeast3PhotosTitle.name.tr, atLeast3Photos, (v) => setState(() => atLeast3Photos = v)),
+                  _tileSwitch(EnumLocale.dfStoryOnlyTitle.name.tr, storyOnly,
+                      (v) => setState(() => storyOnly = v)),
+                  _tileSwitch(
+                      EnumLocale.dfAtLeast3PhotosTitle.name.tr,
+                      atLeast3Photos,
+                      (v) => setState(() => atLeast3Photos = v)),
 
                   // Simple pickers (as list tiles with trailing text and chevron)
-                  _pickerTile(EnumLocale.dfCreatedMoreThanTitle.name.tr, createdMoreThan),
-                  _pickerTile(EnumLocale.dfCreatedLessThanTitle.name.tr, createdLessThan),
-                  _pickerTile(EnumLocale.dfEthnicOriginTitle.name.tr, ethnicOrigin),
+                  _pickerTile(EnumLocale.dfCreatedMoreThanTitle.name.tr,
+                      createdMoreThan),
+                  _pickerTile(EnumLocale.dfCreatedLessThanTitle.name.tr,
+                      createdLessThan),
+                  _pickerTile(
+                      EnumLocale.dfEthnicOriginTitle.name.tr, ethnicOrigin),
                   _pickerTile(EnumLocale.dfAstroSignTitle.name.tr, astroSign),
                   _pickerTile(EnumLocale.dfReligionTitle.name.tr, religion),
-                  _pickerTile(EnumLocale.dfQualitiesTitle.name.tr, qualities.isEmpty ? 'Tous' : qualities),
-                  _pickerTile(EnumLocale.dfDefectsTitle.name.tr, defects.isEmpty ? 'Tous' : defects),
-                  _pickerTile(EnumLocale.dfOwnedAnimalsTitle.name.tr, ownedAnimals.isEmpty ? 'Tous' : ownedAnimals),
-                  _pickerTile(EnumLocale.dfSecondaryInterestTitle.name.tr, secondaryInterest.isEmpty ? 'Tous' : secondaryInterest),
-                  _pickerTile(EnumLocale.dfPassionsTitle.name.tr, passions.isEmpty ? 'Tous' : passions),
+                  _pickerTile(EnumLocale.dfQualitiesTitle.name.tr,
+                      qualities.isEmpty ? 'Tous' : qualities),
+                  _pickerTile(EnumLocale.dfDefectsTitle.name.tr,
+                      defects.isEmpty ? 'Tous' : defects),
+                  _pickerTile(EnumLocale.dfOwnedAnimalsTitle.name.tr,
+                      ownedAnimals.isEmpty ? 'Tous' : ownedAnimals),
+                  _pickerTile(EnumLocale.dfSecondaryInterestTitle.name.tr,
+                      secondaryInterest.isEmpty ? 'Tous' : secondaryInterest),
+                  _pickerTile(EnumLocale.dfPassionsTitle.name.tr,
+                      passions.isEmpty ? 'Tous' : passions),
                   _pickerTile(EnumLocale.dfHobbiesTitle.name.tr, hobbies),
-                  _pickerTile(EnumLocale.dfProfessionsTitle.name.tr, professions),
+                  _pickerTile(
+                      EnumLocale.dfProfessionsTitle.name.tr, professions),
                   _pickerTile(EnumLocale.dfEducationTitle.name.tr, education),
                   _pickerTile(EnumLocale.dfLanguagesTitle.name.tr, languages),
-                  _pickerTile(EnumLocale.dfIncomeTitle.name.tr, income.isEmpty ? 'Tous' : income),
-                  _pickerTile(EnumLocale.dfCityTitle.name.tr, city.isEmpty ? 'Tous' : city),
+                  _pickerTile(EnumLocale.dfIncomeTitle.name.tr,
+                      income.isEmpty ? 'Tous' : income),
+                  _pickerTile(EnumLocale.dfCityTitle.name.tr,
+                      city.isEmpty ? 'Tous' : city),
 
                   _card(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _header(EnumLocale.dfCityDistanceTitle.name.tr, trailing: EnumLocale.dfCityDistanceTrailing.name.tr),
+                        _header(EnumLocale.dfCityDistanceTitle.name.tr,
+                            trailing:
+                                EnumLocale.dfCityDistanceTrailing.name.tr),
                         RangeSlider(
                           values: _cityDistanceRange,
                           min: 0,
@@ -191,7 +217,8 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
                           divisions: 50,
                           activeColor: AppColors.red,
                           inactiveColor: Colors.grey.shade300,
-                          onChanged: (v) => setState(() => _cityDistanceRange = v),
+                          onChanged: (v) =>
+                              setState(() => _cityDistanceRange = v),
                         ),
                       ],
                     ),
@@ -200,14 +227,18 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
                   SizedBox(height: 12.h),
                   Center(
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
                       decoration: BoxDecoration(
                         color: const Color(0xFFF7BD8E),
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Text(
                         EnumLocale.filterBasicOnly.name.tr,
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13.sp),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13.sp),
                       ),
                     ),
                   ),
@@ -224,12 +255,16 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
                     onPressed: () => Get.back(),
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: AppColors.primaryColor),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r)),
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                     ),
                     child: Text(
                       EnumLocale.retour.name.tr,
-                      style: TextStyle(color: AppColors.primaryColor, fontSize: 14.sp, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -240,11 +275,14 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFF7BD8E),
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r)),
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                       elevation: 0,
                     ),
-                    child: Text(EnumLocale.filterApply.name.tr, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                    child: Text(EnumLocale.filterApply.name.tr,
+                        style: TextStyle(
+                            fontSize: 14.sp, fontWeight: FontWeight.w600)),
                   ),
                 ),
               ],
@@ -273,23 +311,41 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: TextStyle(color: AppColors.black, fontSize: 12.sp, fontWeight: FontWeight.w600)),
+        Text(title,
+            style: TextStyle(
+                color: AppColors.black,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600)),
         if (trailing != null)
-          Text(trailing, style: TextStyle(color: AppColors.black, fontSize: 11.sp, fontWeight: FontWeight.w500)),
+          Text(trailing,
+              style: TextStyle(
+                  color: AppColors.black,
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w500)),
       ],
     );
   }
 
-  Widget _chipRow({required String title, required List<String> options, required String selected, required Function(String) onSelect}) {
+  Widget _chipRow(
+      {required String title,
+      required List<String> options,
+      required String selected,
+      required Function(String) onSelect}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: TextStyle(color: AppColors.black, fontSize: 12.sp, fontWeight: FontWeight.w600)),
+        Text(title,
+            style: TextStyle(
+                color: AppColors.black,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600)),
         SizedBox(height: 8.h),
         Wrap(
           spacing: 12.w,
           runSpacing: 8.h,
-          children: options.map((o) => _chip(o, selected == o, () => onSelect(o))).toList(),
+          children: options
+              .map((o) => _chip(o, selected == o, () => onSelect(o)))
+              .toList(),
         )
       ],
     );
@@ -303,11 +359,16 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFFF7BD8E) : Colors.white,
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: isSelected ? const Color(0xFFF7BD8E) : Colors.grey.shade300),
+          border: Border.all(
+              color:
+                  isSelected ? const Color(0xFFF7BD8E) : Colors.grey.shade300),
         ),
         child: Text(
           label,
-          style: TextStyle(color: const Color(0xFF181A1F), fontSize: 10.sp, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              color: const Color(0xFF181A1F),
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -322,11 +383,12 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
         color: Colors.white,
       ),
       child: ListTile(
-        title: Text(title, style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500)),
+        title: Text(title,
+            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500)),
         trailing: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: AppColors.primaryColor,
+          activeThumbColor: AppColors.primaryColor,
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Colors.grey.shade300,
         ),
@@ -343,11 +405,13 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
         color: Colors.white,
       ),
       child: ListTile(
-        title: Text(title, style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500)),
+        title: Text(title,
+            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500)),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(value, style: TextStyle(color: Colors.grey[700], fontSize: 12.sp)),
+            Text(value,
+                style: TextStyle(color: Colors.grey[700], fontSize: 12.sp)),
             SizedBox(width: 8.w),
             Icon(Icons.arrow_forward_ios, size: 16.r, color: AppColors.black),
           ],
@@ -357,5 +421,3 @@ class _DetailedFilterScreenState extends State<DetailedFilterScreen> {
     );
   }
 }
-
-

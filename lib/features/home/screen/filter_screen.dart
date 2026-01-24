@@ -1516,7 +1516,7 @@ class _FilterScreenState extends State<FilterScreen> {
               _certifiedOnly = value;
             });
           },
-          activeColor: AppColors.primaryColor,
+          activeThumbColor: AppColors.primaryColor,
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Colors.grey.shade300,
         ),
@@ -1648,7 +1648,7 @@ class _FilterScreenState extends State<FilterScreen> {
         trailing: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: AppColors.primaryColor,
+          activeThumbColor: AppColors.primaryColor,
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Colors.grey.shade300,
         ),

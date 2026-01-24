@@ -1,18 +1,14 @@
 //----------------AppBar -----------------------
-import 'package:afriqueen/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
-import 'package:afriqueen/features/home/screen/filter_screen.dart';
-
-import 'package:line_icons/line_icons.dart';
 
 //-------------------App Bar-------------------------------
 class HomeAppBar extends StatelessWidget {
   final int selectedTabIndex;
-  
+
   const HomeAppBar({super.key, required this.selectedTabIndex});
 
   String _getTitle() {
@@ -51,20 +47,20 @@ class HomeAppBar extends StatelessWidget {
 class NavigationTabs extends StatelessWidget {
   final Function(int) onTabChanged;
   final int selectedIndex;
-  
+
   const NavigationTabs({
-    super.key, 
+    super.key,
     required this.onTabChanged,
     required this.selectedIndex,
   });
 
   List<String> get tabs => [
-    EnumLocale.newTab.name.tr,
-    EnumLocale.likedTab.name.tr,
-    EnumLocale.favoritesTab.name.tr,
-    EnumLocale.archiveTab.name.tr,
-    EnumLocale.allTab.name.tr,
-  ];
+        EnumLocale.newTab.name.tr,
+        EnumLocale.likedTab.name.tr,
+        EnumLocale.favoritesTab.name.tr,
+        EnumLocale.archiveTab.name.tr,
+        EnumLocale.allTab.name.tr,
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -78,19 +74,23 @@ class NavigationTabs extends StatelessWidget {
           final index = entry.key;
           final tab = entry.value;
           final isSelected = selectedIndex == index;
-          
+
           return GestureDetector(
             onTap: () {
               onTabChanged(index);
             },
             child: Container(
-              width: (MediaQuery.of(context).size.width - 36.w - 40.w) / 5, // Ekrana tam sığacak şekilde hesapla
+              width: (MediaQuery.of(context).size.width - 36.w - 40.w) /
+                  5, // Ekrana tam sığacak şekilde hesapla
               height: 25.h, // Further reduced height to match container
               margin: EdgeInsets.symmetric(horizontal: 4.w), // gap: 8px total
               padding: EdgeInsets.all(4.w), // Further reduced padding
               decoration: BoxDecoration(
-                color: isSelected ? Color(0xFFF7BD8E) : Colors.transparent, // background: #F7BD8E
-                borderRadius: BorderRadius.circular(13.r), // border-radius: 13px
+                color: isSelected
+                    ? Color(0xFFF7BD8E)
+                    : Colors.transparent, // background: #F7BD8E
+                borderRadius:
+                    BorderRadius.circular(13.r), // border-radius: 13px
                 border: Border.all(
                   color: isSelected ? Color(0xFFF7BD8E) : Colors.grey.shade300,
                   width: 1,

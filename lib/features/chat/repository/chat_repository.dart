@@ -4,7 +4,6 @@ import 'package:afriqueen/features/chat/model/message_model.dart';
 import 'package:afriqueen/features/chat/model/message_request_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter/foundation.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:uuid/uuid.dart';
@@ -60,16 +59,16 @@ class ChatRepository {
       return snapshot.docs.where((doc) {
         final data = doc.data();
         final isRequest = data['isRequest'] as bool? ?? false;
-        
+
         // If it's not a request chat, include it
         if (!isRequest) return true;
-        
+
         // If it's a request chat, check if current user sent the last message
         final lastMessageSenderId = data['lastMessageSenderId'] as String?;
         if (lastMessageSenderId == currentUserId) {
           return true; // Include in regular chats if current user sent last message
         }
-        
+
         return false; // Exclude from regular chats
       }).map((doc) {
         final data = doc.data();
@@ -214,7 +213,8 @@ class ChatRepository {
       // Check if the sender is blocked by the receiver
       final isBlocked = await isUserBlocked(user.uid, receiverId);
       if (isBlocked) {
-        throw Exception('You cannot send messages to this user. You have been blocked.');
+        throw Exception(
+            'You cannot send messages to this user. You have been blocked.');
       }
 
       String? imageUrl;
@@ -417,13 +417,13 @@ class ChatRepository {
           .where('id', isEqualTo: currentUserId)
           .limit(1)
           .get();
-      
+
       Map<String, dynamic> currentUserInfo = {
         'id': currentUserId,
         'name': '',
         'photoUrl': '',
       };
-      
+
       if (querySnapshot.docs.isNotEmpty) {
         final currentUserData = querySnapshot.docs.first.data();
         currentUserInfo = {
@@ -462,12 +462,15 @@ class ChatRepository {
       }
 
       // Check if the recipient (otherUserId) has liked the sender (currentUserId)
-      final recipientHasLikedSender = await _checkIfUserLiked(currentUserId, otherUserId);
+      final recipientHasLikedSender =
+          await _checkIfUserLiked(currentUserId, otherUserId);
       // Check if the recipient (otherUserId) has sent a message to the sender (currentUserId)
-      final recipientHasSentMessage = await _hasSentMessage(otherUserId, currentUserId);
+      final recipientHasSentMessage =
+          await _hasSentMessage(otherUserId, currentUserId);
 
       // Determine if this chat should be a request
-      debugPrint('recipientHasLikedSender: $recipientHasLikedSender'+ ' recipientHasSentMessage: $recipientHasSentMessage');
+      debugPrint('recipientHasLikedSender: $recipientHasLikedSender' +
+          ' recipientHasSentMessage: $recipientHasSentMessage');
       final isRequest = !(recipientHasLikedSender || recipientHasSentMessage);
 
       // Create new chat
@@ -750,29 +753,31 @@ class ChatRepository {
         .snapshots()
         .asyncMap((archiveDoc) async {
       if (!archiveDoc.exists) return <ChatModel>[];
-      
+
       final archiveData = archiveDoc.data();
-      final archivedUserIds = List<String>.from(archiveData?['archiveId'] ?? []);
-      
+      final archivedUserIds =
+          List<String>.from(archiveData?['archiveId'] ?? []);
+
       if (archivedUserIds.isEmpty) return <ChatModel>[];
-      
+
       // Get chats where current user is participant
       final chatsQuery = await _firestore
           .collection('chats')
           .where('participants', arrayContains: currentUserId)
           .orderBy('lastMessageTime', descending: true)
           .get();
-      
+
       // Filter chats that have archived users as participants
       final archivedChats = chatsQuery.docs.where((doc) {
         final data = doc.data();
         final participants = List<String>.from(data['participants'] ?? []);
-        
+
         // Check if any participant is in archived list
-        return participants.any((participantId) => 
-            participantId != currentUserId && archivedUserIds.contains(participantId));
+        return participants.any((participantId) =>
+            participantId != currentUserId &&
+            archivedUserIds.contains(participantId));
       }).toList();
-      
+
       return archivedChats.map((doc) {
         final data = doc.data();
         final unreadCounts =
@@ -846,7 +851,9 @@ class ChatRepository {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => MessageRequestModel.fromFirestore(doc)).toList();
+      return snapshot.docs
+          .map((doc) => MessageRequestModel.fromFirestore(doc))
+          .toList();
     });
   }
 
@@ -861,18 +868,18 @@ class ChatRepository {
       if (currentUserId == null) throw Exception('User not authenticated');
 
       // Get current user's profile information from Firestore
-      final currentUserDoc = await _firestore
-          .collection('users')
-          .doc(currentUserId)
-          .get();
-      
+      final currentUserDoc =
+          await _firestore.collection('users').doc(currentUserId).get();
+
       String senderName = '';
       String? senderPhotoUrl;
-      
+
       if (currentUserDoc.exists) {
         final currentUserData = currentUserDoc.data()!;
-        senderName = currentUserData['name'] ?? _auth.currentUser?.displayName ?? '';
-        senderPhotoUrl = currentUserData['imgURL'] ?? _auth.currentUser?.photoURL;
+        senderName =
+            currentUserData['name'] ?? _auth.currentUser?.displayName ?? '';
+        senderPhotoUrl =
+            currentUserData['imgURL'] ?? _auth.currentUser?.photoURL;
       } else {
         // Fallback to Firebase Auth data if user document doesn't exist
         senderName = _auth.currentUser?.displayName ?? '';
@@ -882,7 +889,7 @@ class ChatRepository {
       // Check if the receiver has liked the sender
       final hasLiked = await _checkIfUserLiked(receiverId, currentUserId);
       debugPrint('Has liked result: $hasLiked');
-      
+
       if (hasLiked) {
         debugPrint('Creating direct chat because user has liked');
         // If receiver has liked sender, create a regular chat instead
@@ -894,7 +901,7 @@ class ChatRepository {
             'photoUrl': receiverPhotoUrl,
           },
         );
-        
+
         // Send message directly to chat
         await sendMessage(
           chatId: chatId,
@@ -933,28 +940,26 @@ class ChatRepository {
       if (currentUserId == null) throw Exception('User not authenticated');
 
       // Get the request
-      final requestDoc = await _firestore
-          .collection('messageRequests')
-          .doc(requestId)
-          .get();
+      final requestDoc =
+          await _firestore.collection('messageRequests').doc(requestId).get();
 
       if (!requestDoc.exists) throw Exception('Request not found');
 
       final request = MessageRequestModel.fromFirestore(requestDoc);
 
       // Get current user's profile information from Firestore
-      final currentUserDoc = await _firestore
-          .collection('users')
-          .doc(currentUserId)
-          .get();
-      
+      final currentUserDoc =
+          await _firestore.collection('users').doc(currentUserId).get();
+
       String currentUserName = '';
       String? currentUserPhotoUrl;
-      
+
       if (currentUserDoc.exists) {
         final currentUserData = currentUserDoc.data()!;
-        currentUserName = currentUserData['name'] ?? _auth.currentUser?.displayName ?? '';
-        currentUserPhotoUrl = currentUserData['imgURL'] ?? _auth.currentUser?.photoURL;
+        currentUserName =
+            currentUserData['name'] ?? _auth.currentUser?.displayName ?? '';
+        currentUserPhotoUrl =
+            currentUserData['imgURL'] ?? _auth.currentUser?.photoURL;
       } else {
         // Fallback to Firebase Auth data if user document doesn't exist
         currentUserName = _auth.currentUser?.displayName ?? '';
@@ -980,10 +985,7 @@ class ChatRepository {
       );
 
       // Mark request as accepted
-      await _firestore
-          .collection('messageRequests')
-          .doc(requestId)
-          .update({
+      await _firestore.collection('messageRequests').doc(requestId).update({
         'isAccepted': true,
         'acceptedAt': FieldValue.serverTimestamp(),
       });
@@ -998,7 +1000,7 @@ class ChatRepository {
       // For now, always return false to test message requests
       // TODO: Implement proper like checking when like system is ready
       debugPrint('Checking if user $otherUserId liked user $userId');
-      
+
       final likeQuery = await _firestore
           .collection('likes')
           .where('likerId', isEqualTo: otherUserId)
@@ -1017,10 +1019,10 @@ class ChatRepository {
 
   Future<void> updateChatRequestStatus(String chatId, bool isRequest) async {
     try {
-      await _firestore.collection('chats').doc(chatId).update({
-        'isRequest': isRequest,
-        'isDeclined': true
-      });
+      await _firestore
+          .collection('chats')
+          .doc(chatId)
+          .update({'isRequest': isRequest, 'isDeclined': true});
     } catch (e) {
       debugPrint('Error updating chat request status: $e');
       rethrow;
@@ -1040,7 +1042,8 @@ class ChatRepository {
     }
   }
 
-  Future<void> addToBlockCollection(String blockerId, String blockedUserId) async {
+  Future<void> addToBlockCollection(
+      String blockerId, String blockedUserId) async {
     try {
       await _firestore.collection('blocks').add({
         'blockerId': blockerId,

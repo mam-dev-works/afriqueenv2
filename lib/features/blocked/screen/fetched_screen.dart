@@ -1,10 +1,8 @@
-import 'package:afriqueen/common/constant/constant_colors.dart';
 import 'package:afriqueen/features/blocked/widgets/fetched_screen_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../home/model/home_model.dart';
 import '../bloc/blocked_bloc.dart';
 import '../bloc/blocked_event.dart';
 import '../bloc/blocked_state.dart';
@@ -18,7 +16,7 @@ class FetchedScreen extends StatelessWidget {
     return BlocBuilder<BlockedBloc, BlockedState>(
       builder: (context, state) {
         final blockedData = state.blockedUserList;
-        
+
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(55.h),
@@ -52,4 +50,4 @@ class FetchedScreen extends StatelessWidget {
       },
     );
   }
-} 
+}

@@ -460,7 +460,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
                       children: [
                         Text(
                           userData != null
-                              ? '${(userData!.pseudo.isNotEmpty ? userData!.pseudo : EnumLocale.unknownUser.name.tr)}${userData!.age > 0 ? ', ${userData!.age}' : ''}'
+                              ? '${(userData.pseudo.isNotEmpty ? userData.pseudo : EnumLocale.unknownUser.name.tr)}${userData.age > 0 ? ', ${userData.age}' : ''}'
                               : (story?.userName.isNotEmpty == true
                                   ? story!.userName
                                   : EnumLocale.utilisateur.name.tr),

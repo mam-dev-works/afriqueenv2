@@ -4,7 +4,6 @@ import 'package:afriqueen/common/widgets/premium_info_dialog.dart';
 import 'package:afriqueen/features/event/model/event_model.dart';
 import 'package:afriqueen/features/event/repository/event_repository.dart';
 import 'package:afriqueen/features/event/screen/create_event_screen.dart';
-import 'package:afriqueen/features/event/widget/event_card.dart';
 import 'package:afriqueen/services/premium_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

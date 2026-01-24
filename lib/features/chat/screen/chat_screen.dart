@@ -584,10 +584,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 shape: BoxShape.circle,
               ),
               child: ClipOval(
-                child: widget.receiverPhotoUrl != null &&
-                        widget.receiverPhotoUrl!.isNotEmpty
+                child: widget.receiverPhotoUrl.isNotEmpty
                     ? CachedNetworkImage(
-                        imageUrl: widget.receiverPhotoUrl!,
+                        imageUrl: widget.receiverPhotoUrl,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Container(
                           color: AppColors.grey.withValues(alpha: 0.2),

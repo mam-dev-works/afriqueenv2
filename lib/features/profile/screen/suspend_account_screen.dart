@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/common/theme/app_colors.dart';
-import 'package:afriqueen/routes/app_routes.dart';
 import 'package:afriqueen/services/account_management_service.dart';
 import 'package:afriqueen/common/widgets/confirmation_dialog.dart';
 import 'package:afriqueen/common/widgets/success_screen.dart';
@@ -26,7 +25,7 @@ class _SuspendAccountScreenState extends State<SuspendAccountScreen> {
 
     try {
       final success = await _accountService.suspendAccount();
-      
+
       if (success) {
         Get.back(); // Close the suspend screen first
         SuccessScreen.showAccountSuspendedSuccess();
@@ -140,11 +139,14 @@ class _SuspendAccountScreenState extends State<SuspendAccountScreen> {
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: TextButton(
-                      onPressed: _isLoading ? null : () {
-                        ConfirmationDialogs.showSuspendAccountConfirmation(
-                          onConfirm: _suspendAccount,
-                        );
-                      },
+                      onPressed: _isLoading
+                          ? null
+                          : () {
+                              ConfirmationDialogs
+                                  .showSuspendAccountConfirmation(
+                                onConfirm: _suspendAccount,
+                              );
+                            },
                       child: _isLoading
                           ? SizedBox(
                               width: 20.w,

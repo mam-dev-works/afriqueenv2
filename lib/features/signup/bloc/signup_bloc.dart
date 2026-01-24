@@ -1,11 +1,9 @@
-import 'package:afriqueen/features/login/bloc/login_state.dart';
 import 'package:afriqueen/features/signup/bloc/signup_event.dart';
 import 'package:afriqueen/features/signup/bloc/signup_state.dart';
 import 'package:afriqueen/features/signup/models/signup_model.dart';
 import 'package:afriqueen/features/signup/repository/signup_repository.dart';
 import 'package:afriqueen/services/storage/get_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -18,8 +16,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignUpModel _signUpModel = SignUpModel(email: '', password: '');
 
   SignupBloc({required SignupRepository signupRepository})
-    : _repository = signupRepository,
-      super(SignupInitial()) {
+      : _repository = signupRepository,
+        super(SignupInitial()) {
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
     on<Submit>(_onSubmit);

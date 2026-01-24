@@ -47,7 +47,8 @@ class SendMessage extends ChatEvent {
   });
 
   @override
-  List<Object?> get props => [chatId, receiverId, content, type, imageFile, tempMessageId];
+  List<Object?> get props =>
+      [chatId, receiverId, content, type, imageFile, tempMessageId];
 }
 
 class MarkMessagesAsRead extends ChatEvent {
@@ -109,7 +110,8 @@ class SendMessageRequest extends ChatEvent {
   });
 
   @override
-  List<Object?> get props => [receiverId, content, receiverName, receiverPhotoUrl];
+  List<Object?> get props =>
+      [receiverId, content, receiverName, receiverPhotoUrl];
 }
 
 class AcceptMessageRequest extends ChatEvent {
@@ -335,7 +337,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> _onLoadChats(LoadChats event, Emitter<ChatState> emit) async {
     try {
       emit(ChatLoading());
-      
+
       // Get the stream and await the first emission
       final stream = _chatRepository.getRegularChatsStream();
       await for (final chats in stream) {
@@ -351,13 +353,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onLoadMessages(LoadMessages event, Emitter<ChatState> emit) async {
+  Future<void> _onLoadMessages(
+      LoadMessages event, Emitter<ChatState> emit) async {
     try {
       emit(ChatLoading());
       await _messagesSubscription?.cancel();
-      _messagesSubscription = _chatRepository
-          .getMessagesStream(event.chatId)
-          .listen((messages) {
+      _messagesSubscription =
+          _chatRepository.getMessagesStream(event.chatId).listen((messages) {
         add(_MessagesUpdated(messages));
       });
     } catch (e) {
@@ -366,34 +368,31 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _onChatsUpdated(_ChatsUpdated event, Emitter<ChatState> emit) {
-    if (event.chats != null) {
-      // If we have message requests loaded, emit combined state
-      if (state is MessageRequestsLoaded) {
-        final requestsState = state as MessageRequestsLoaded;
-        emit(ChatListWithRequestsLoaded(
-          chats: event.chats!,
-          requests: requestsState.requests,
-        ));
-      } else {
-        emit(ChatListLoaded(event.chats!));
-      }
+    // If we have message requests loaded, emit combined state
+    if (state is MessageRequestsLoaded) {
+      final requestsState = state as MessageRequestsLoaded;
+      emit(ChatListWithRequestsLoaded(
+        chats: event.chats!,
+        requests: requestsState.requests,
+      ));
+    } else {
+      emit(ChatListLoaded(event.chats!));
     }
   }
 
   void _onMessagesUpdated(_MessagesUpdated event, Emitter<ChatState> emit) {
-    if (event.messages != null) {
-      emit(MessagesLoaded(event.messages!));
-    }
+    emit(MessagesLoaded(event.messages!));
   }
 
   void _onChatError(_ChatError event, Emitter<ChatState> emit) {
     emit(ChatError(event.message));
   }
 
-  Future<void> _onLoadMessageRequests(LoadMessageRequests event, Emitter<ChatState> emit) async {
+  Future<void> _onLoadMessageRequests(
+      LoadMessageRequests event, Emitter<ChatState> emit) async {
     try {
       emit(ChatLoading());
-      
+
       // Get the stream and await the first emission
       final stream = _chatRepository.getMessageRequestsStream();
       await for (final requests in stream) {
@@ -409,10 +408,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onLoadRequestChats(LoadRequestChats event, Emitter<ChatState> emit) async {
+  Future<void> _onLoadRequestChats(
+      LoadRequestChats event, Emitter<ChatState> emit) async {
     try {
       emit(ChatLoading());
-      
+
       // Get the stream and await the first emission
       final stream = _chatRepository.getRequestChatsStream();
       await for (final requestChats in stream) {
@@ -434,10 +434,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onLoadReceivedRequestChats(LoadReceivedRequestChats event, Emitter<ChatState> emit) async {
+  Future<void> _onLoadReceivedRequestChats(
+      LoadReceivedRequestChats event, Emitter<ChatState> emit) async {
     try {
       emit(ChatLoading());
-      
+
       // Get the stream and await the first emission
       final stream = _chatRepository.getReceivedRequestChatsStream();
       await for (final receivedRequestChats in stream) {
@@ -453,10 +454,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onLoadSentRequestChats(LoadSentRequestChats event, Emitter<ChatState> emit) async {
+  Future<void> _onLoadSentRequestChats(
+      LoadSentRequestChats event, Emitter<ChatState> emit) async {
     try {
       emit(ChatLoading());
-      
+
       // Get the stream and await the first emission
       final stream = _chatRepository.getSentRequestChatsStream();
       await for (final sentRequestChats in stream) {
@@ -472,16 +474,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  void _onRequestChatsUpdated(_RequestChatsUpdated event, Emitter<ChatState> emit) {
-    if (event.requestChats != null) {
-      emit(RequestsAndRequestChatsLoaded(
-        requests: event.requests,
-        requestChats: event.requestChats!,
-      ));
-    }
+  void _onRequestChatsUpdated(
+      _RequestChatsUpdated event, Emitter<ChatState> emit) {
+    emit(RequestsAndRequestChatsLoaded(
+      requests: event.requests,
+      requestChats: event.requestChats!,
+    ));
   }
 
-  Future<void> _onSendMessageRequest(SendMessageRequest event, Emitter<ChatState> emit) async {
+  Future<void> _onSendMessageRequest(
+      SendMessageRequest event, Emitter<ChatState> emit) async {
     try {
       await _chatRepository.sendMessageRequest(
         receiverId: event.receiverId,
@@ -494,7 +496,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onAcceptMessageRequest(AcceptMessageRequest event, Emitter<ChatState> emit) async {
+  Future<void> _onAcceptMessageRequest(
+      AcceptMessageRequest event, Emitter<ChatState> emit) async {
     try {
       await _chatRepository.acceptMessageRequest(event.requestId);
     } catch (e) {
@@ -502,7 +505,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onAcceptRequestChat(AcceptRequestChat event, Emitter<ChatState> emit) async {
+  Future<void> _onAcceptRequestChat(
+      AcceptRequestChat event, Emitter<ChatState> emit) async {
     try {
       await _chatRepository.updateChatStatus(event.chatId, status: 'ACCEPTED');
       // Refresh request lists so UI moves item out of Pending immediately
@@ -513,7 +517,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onDeclineRequestChat(DeclineRequestChat event, Emitter<ChatState> emit) async {
+  Future<void> _onDeclineRequestChat(
+      DeclineRequestChat event, Emitter<ChatState> emit) async {
     try {
       await _chatRepository.updateChatStatus(event.chatId, status: 'REJECTED');
       // Refresh request lists so UI moves item out of Pending immediately
@@ -524,7 +529,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onArchiveRejectedProfile(ArchiveRejectedProfile event, Emitter<ChatState> emit) async {
+  Future<void> _onArchiveRejectedProfile(
+      ArchiveRejectedProfile event, Emitter<ChatState> emit) async {
     try {
       await _chatRepository.archiveRejectedProfile(event.otherUserId);
     } catch (e) {
@@ -532,10 +538,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onLoadArchivedChats(LoadArchivedChats event, Emitter<ChatState> emit) async {
+  Future<void> _onLoadArchivedChats(
+      LoadArchivedChats event, Emitter<ChatState> emit) async {
     try {
       emit(ChatLoading());
-      
+
       // Get the stream and await the first emission
       final stream = _chatRepository.getArchivedChatsStream();
       await for (final chats in stream) {
@@ -551,22 +558,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  void _onMessageRequestsUpdated(_MessageRequestsUpdated event, Emitter<ChatState> emit) {
-    if (event.requests != null) {
-      // If we have chats loaded, emit combined state
-      if (state is ChatListLoaded) {
-        final chatsState = state as ChatListLoaded;
-        emit(ChatListWithRequestsLoaded(
-          chats: chatsState.chats,
-          requests: event.requests!,
-        ));
-      } else {
-        emit(MessageRequestsLoaded(event.requests!));
-      }
+  void _onMessageRequestsUpdated(
+      _MessageRequestsUpdated event, Emitter<ChatState> emit) {
+    // If we have chats loaded, emit combined state
+    if (state is ChatListLoaded) {
+      final chatsState = state as ChatListLoaded;
+      emit(ChatListWithRequestsLoaded(
+        chats: chatsState.chats,
+        requests: event.requests!,
+      ));
+    } else {
+      emit(MessageRequestsLoaded(event.requests!));
     }
   }
 
-  Future<void> _onSendMessage(SendMessage event, Emitter<ChatState> emit) async {
+  Future<void> _onSendMessage(
+      SendMessage event, Emitter<ChatState> emit) async {
     try {
       if (event.type == MessageType.voice && event.imageFile != null) {
         // Handle voice message
@@ -582,28 +589,29 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(MessagesLoaded(messages));
       } else {
         // Handle other message types
-      await _chatRepository.sendMessage(
-        chatId: event.chatId,
-        receiverId: event.receiverId,
-        content: event.content,
-        type: event.type,
-        imageFile: event.imageFile,
-      );
+        await _chatRepository.sendMessage(
+          chatId: event.chatId,
+          receiverId: event.receiverId,
+          content: event.content,
+          type: event.type,
+          imageFile: event.imageFile,
+        );
 
         // Reload messages to get the updated state
-      final messages = await _chatRepository.getMessages(event.chatId);
-      emit(MessagesLoaded(messages));
+        final messages = await _chatRepository.getMessages(event.chatId);
+        emit(MessagesLoaded(messages));
       }
     } catch (e) {
       emit(ChatError(e.toString()));
     }
   }
 
-  Future<void> _onMarkMessagesAsRead(MarkMessagesAsRead event, Emitter<ChatState> emit) async {
+  Future<void> _onMarkMessagesAsRead(
+      MarkMessagesAsRead event, Emitter<ChatState> emit) async {
     try {
       await _chatRepository.markMessagesAsRead(event.chatId);
     } catch (e) {
-        emit(ChatError(e.toString()));
+      emit(ChatError(e.toString()));
     }
   }
 
@@ -619,17 +627,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onUpdateMessageStatus(UpdateMessageStatus event, Emitter<ChatState> emit) async {
+  Future<void> _onUpdateMessageStatus(
+      UpdateMessageStatus event, Emitter<ChatState> emit) async {
     try {
       if (state is MessagesLoaded) {
         final currentState = state as MessagesLoaded;
-      final updatedMessages = currentState.messages.map((message) {
-        if (message.id == event.messageId) {
-          return message.copyWith(isUploaded: event.isUploaded);
-        }
-        return message;
-      }).toList();
-      emit(MessagesLoaded(updatedMessages));
+        final updatedMessages = currentState.messages.map((message) {
+          if (message.id == event.messageId) {
+            return message.copyWith(isUploaded: event.isUploaded);
+          }
+          return message;
+        }).toList();
+        emit(MessagesLoaded(updatedMessages));
       }
     } catch (e) {
       emit(ChatError(e.toString()));
@@ -641,4 +650,4 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _messagesSubscription?.cancel();
     return super.close();
   }
-} 
+}

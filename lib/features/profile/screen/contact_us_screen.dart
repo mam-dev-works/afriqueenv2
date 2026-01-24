@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:afriqueen/common/localization/enums/enums.dart';
 import 'package:afriqueen/common/theme/app_colors.dart';
-import 'package:afriqueen/routes/app_routes.dart';
 
 class ContactUsScreen extends StatefulWidget {
   const ContactUsScreen({super.key});
@@ -115,7 +114,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   child: Container(
                     height: 44.h,
                     decoration: BoxDecoration(
-                      color: Color(0xFFF7BD8E), // Orange/peach color as specified
+                      color:
+                          Color(0xFFF7BD8E), // Orange/peach color as specified
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: TextButton(

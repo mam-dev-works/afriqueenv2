@@ -2109,16 +2109,6 @@ class _UnifiedProfileSetupScreenState extends State<UnifiedProfileSetupScreen> {
                             );
                             return;
                           }
-                          if (_selectedSilhouette == null) {
-                            if (Navigator.canPop(context))
-                              Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(EnumLocale
-                                      .profileSilhouetteRequired.name.tr)),
-                            );
-                            return;
-                          }
                           if (_selectedEthnicOrigins.isEmpty) {
                             if (Navigator.canPop(context))
                               Navigator.pop(context);

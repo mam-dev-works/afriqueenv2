@@ -3,10 +3,7 @@ import 'package:afriqueen/features/create_profile/bloc/create_profile_state.dart
 import 'package:afriqueen/features/create_profile/model/create_profile_model.dart';
 import 'package:afriqueen/features/create_profile/repository/create_profile_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
-import '../../../common/localization/enums/enums.dart';
 
 //------------------ Create Profile Bloc-------------------------------------
 class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
@@ -15,8 +12,8 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
   Set<String> _interests = {};
 
   CreateProfileBloc({required CreateProfileRepository repository})
-    : _profileRepository = repository,
-      super(CreateProfileInitial()) {
+      : _profileRepository = repository,
+        super(CreateProfileInitial()) {
     //-------------For Pseudo-----------------------
     on<PseudoChanged>((PseudoChanged event, Emitter<CreateProfileState> emit) {
       _box.write('pseudo', event.pseudo);
@@ -28,13 +25,15 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
     });
 
     //-------------------------- For Orientation-----------------------------
-    on<OrientationChanged>((OrientationChanged event, Emitter<CreateProfileState> emit) {
+    on<OrientationChanged>(
+        (OrientationChanged event, Emitter<CreateProfileState> emit) {
       emit(state.copyWith(orientation: event.orientation));
       _box.write('orientation', event.orientation);
     });
 
     //-------------------------- For Relationship Status-----------------------------
-    on<RelationshipStatusChanged>((RelationshipStatusChanged event, Emitter<CreateProfileState> emit) {
+    on<RelationshipStatusChanged>(
+        (RelationshipStatusChanged event, Emitter<CreateProfileState> emit) {
       emit(state.copyWith(relationshipStatus: event.status));
       _box.write('relationshipStatus', event.status);
     });
@@ -114,7 +113,8 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
       _box.write('description', event.description);
     });
     //------------------------user submit data -------------------------------------
-    on<SubmitButtonClicked>((SubmitButtonClicked event, Emitter<CreateProfileState> emit) async {
+    on<SubmitButtonClicked>(
+        (SubmitButtonClicked event, Emitter<CreateProfileState> emit) async {
       try {
         emit(Loading.fromState(state));
         final secureUrl = await _profileRepository.uploadToCloudinary(
@@ -177,16 +177,18 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
     });
 
     //------------------------Create complete user profile -------------------------------------
-    on<CreateCompleteProfile>((CreateCompleteProfile event, Emitter<CreateProfileState> emit) async {
+    on<CreateCompleteProfile>(
+        (CreateCompleteProfile event, Emitter<CreateProfileState> emit) async {
       try {
         emit(Loading.fromState(state));
-        
+
         // Upload photos to Cloudinary if they exist
         List<String> uploadedPhotoUrls = [];
         if (event.photos.isNotEmpty) {
-          uploadedPhotoUrls = await _profileRepository.uploadMultiplePhotosToCloudinary(event.photos);
+          uploadedPhotoUrls = await _profileRepository
+              .uploadMultiplePhotosToCloudinary(event.photos);
         }
-        
+
         final CreateProfileModel createProfileModel = CreateProfileModel(
           description: event.description,
           pseudo: event.name,
@@ -194,7 +196,11 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
           age: DateTime.now().year - event.dob.year,
           country: event.country,
           city: event.city,
-          interests: [...event.mainInterests, ...event.secondaryInterests, ...event.passions],
+          interests: [
+            ...event.mainInterests,
+            ...event.secondaryInterests,
+            ...event.passions
+          ],
           imgURL: uploadedPhotoUrls.isNotEmpty ? uploadedPhotoUrls.first : '',
           createdDate: DateTime.now(),
           // New fields
@@ -226,7 +232,7 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
           whatLookingFor: event.whatLookingFor,
           whatNotWant: event.whatNotWant,
         );
-        
+
         await _profileRepository.createCompleteUserProfile(createProfileModel);
         emit(Success.fromState(state));
         add(ResetCreateProfileEvent());
@@ -236,7 +242,8 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
     });
 
     //------------------------Reset create profile event -------------------------------------
-    on<ResetCreateProfileEvent>((ResetCreateProfileEvent event, Emitter<CreateProfileState> emit) {
+    on<ResetCreateProfileEvent>(
+        (ResetCreateProfileEvent event, Emitter<CreateProfileState> emit) {
       _interests.clear();
       _box.remove('pseudo');
       _box.remove('sex');

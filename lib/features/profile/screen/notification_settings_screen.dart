@@ -9,10 +9,12 @@ class NotificationSettingsScreen extends StatefulWidget {
   const NotificationSettingsScreen({super.key});
 
   @override
-  State<NotificationSettingsScreen> createState() => _NotificationSettingsScreenState();
+  State<NotificationSettingsScreen> createState() =>
+      _NotificationSettingsScreenState();
 }
 
-class _NotificationSettingsScreenState extends State<NotificationSettingsScreen> {
+class _NotificationSettingsScreenState
+    extends State<NotificationSettingsScreen> {
   // Messaging notifications
   bool messageNotification = false;
   bool messageRequestNotification = false;
@@ -67,7 +69,8 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Messaging Section
-                    _buildSectionHeader(EnumLocale.notificationMessaging.name.tr),
+                    _buildSectionHeader(
+                        EnumLocale.notificationMessaging.name.tr),
                     SizedBox(height: 16.h),
                     _buildNotificationItem(
                       EnumLocale.notificationMessage.name.tr,
@@ -77,38 +80,45 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                     _buildNotificationItem(
                       EnumLocale.notificationMessageRequest.name.tr,
                       messageRequestNotification,
-                      (value) => setState(() => messageRequestNotification = value),
+                      (value) =>
+                          setState(() => messageRequestNotification = value),
                     ),
                     _buildNotificationItem(
                       EnumLocale.notificationNotificationMessage.name.tr,
                       notificationMessageNotification,
-                      (value) => setState(() => notificationMessageNotification = value),
+                      (value) => setState(
+                          () => notificationMessageNotification = value),
                     ),
                     _buildNotificationItem(
                       EnumLocale.notificationAdminMessage.name.tr,
                       adminMessageNotification,
-                      (value) => setState(() => adminMessageNotification = value),
+                      (value) =>
+                          setState(() => adminMessageNotification = value),
                     ),
                     _buildNotificationItem(
                       EnumLocale.notificationEventMessage.name.tr,
                       eventMessageNotification,
-                      (value) => setState(() => eventMessageNotification = value),
+                      (value) =>
+                          setState(() => eventMessageNotification = value),
                     ),
                     _buildNotificationItem(
                       EnumLocale.notificationArchiveMessage.name.tr,
                       archiveMessageNotification,
-                      (value) => setState(() => archiveMessageNotification = value),
+                      (value) =>
+                          setState(() => archiveMessageNotification = value),
                     ),
-                    
+
                     SizedBox(height: 32.h),
-                    
+
                     // Activity Section
-                    _buildSectionHeader(EnumLocale.notificationActivity.name.tr),
+                    _buildSectionHeader(
+                        EnumLocale.notificationActivity.name.tr),
                     SizedBox(height: 16.h),
                     _buildNotificationItem(
                       EnumLocale.notificationProfileView.name.tr,
                       profileViewNotification,
-                      (value) => setState(() => profileViewNotification = value),
+                      (value) =>
+                          setState(() => profileViewNotification = value),
                     ),
                     _buildNotificationItem(
                       EnumLocale.notificationLike.name.tr,
@@ -123,7 +133,8 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                     _buildNotificationItem(
                       EnumLocale.notificationGiftsReceived.name.tr,
                       giftsReceivedNotification,
-                      (value) => setState(() => giftsReceivedNotification = value),
+                      (value) =>
+                          setState(() => giftsReceivedNotification = value),
                     ),
                     _buildNotificationItem(
                       EnumLocale.notificationStoryView.name.tr,
@@ -138,14 +149,16 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                     _buildNotificationItem(
                       EnumLocale.notificationEventParticipation.name.tr,
                       eventParticipationNotification,
-                      (value) => setState(() => eventParticipationNotification = value),
+                      (value) => setState(
+                          () => eventParticipationNotification = value),
                     ),
                     _buildNotificationItem(
                       EnumLocale.notificationMyEventParticipations.name.tr,
                       myEventParticipationsNotification,
-                      (value) => setState(() => myEventParticipationsNotification = value),
+                      (value) => setState(
+                          () => myEventParticipationsNotification = value),
                     ),
-                    
+
                     SizedBox(height: 40.h),
                   ],
                 ),
@@ -195,7 +208,8 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     );
   }
 
-  Widget _buildNotificationItem(String title, bool value, Function(bool) onChanged) {
+  Widget _buildNotificationItem(
+      String title, bool value, Function(bool) onChanged) {
     return Padding(
       padding: EdgeInsets.only(bottom: 16.h),
       child: Row(
@@ -214,7 +228,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AppColors.primaryColor,
+            activeThumbColor: AppColors.primaryColor,
             inactiveThumbColor: Colors.grey[300],
             inactiveTrackColor: Colors.grey[200],
           ),
