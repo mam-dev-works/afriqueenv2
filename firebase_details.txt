@@ -269,10 +269,31 @@ updatedAt: December 8, 2025 at 11:00:06 PM UTC+5:45 (timestamp)
  trophea
  vetement 
 
-
+Collection Relationships
+user → stories (uid reference)
+user → likes (likerId/likedUserId reference)
+user → chats (participants array)
+chats → messages (subcollection)
+events → participants (subcollection)
+events → event_requests (eventId reference)
 
  The Firebase Authentication methods are 
  Enabled Providers: 
  1. Email/Password 
  2. Google  
  
+
+ cloudinary.com storage
+   - Cloud name: "tbistaxmok1" (from code)
+   - Upload preset: "q8cbytay" (from code)
+   - Folders used:
+     * afriqueen/images (profile photos)
+     * afriqueen/stories (story images)
+     * afriqueen/events (event images)
+
+
+Firestore Security Rules
+Basic rules structure:
+- Public read access to user profiles
+- Authenticated users can write their own data
+- Private collections (chats, likes, favorites) restricted to participants
