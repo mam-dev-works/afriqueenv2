@@ -39,12 +39,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             if (item == null) return false;
             final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
             if (isCurrentUser) {
-              print('HomeBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
+              print(
+                  'HomeBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
             }
             return !isCurrentUser;
           }).toList();
         }
-        
+
         if (finalData.isEmpty) {
           emit(HomeDataIsEmpty.fromState(state));
         } else {
@@ -79,19 +80,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           }
           rethrow;
         }
-            
+
         if (data.isEmpty) {
           emit(HomeDataIsEmpty.fromState(state));
           return; // Return early if no data
         }
-        
+
         final FavoriteModel? favData =
             await _favoriteRepository.fetchFavorites();
 
         final ArchiveModel? archiveData =
             await _archiveRepository.fetchArchives();
 
-        final BlockedModel? blockedData = await _blockedRepository.fetchBlockedUsers();
+        final BlockedModel? blockedData =
+            await _blockedRepository.fetchBlockedUsers();
 
         List<HomeModel?> filterData = data;
         if (favData != null) {
@@ -110,26 +112,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (blockedData != null) {
           filterData = filterData
               .where((item) =>
-          item!.id.isNotEmpty &&
-              !blockedData.blockedUserId.contains(item.id))
+                  item!.id.isNotEmpty &&
+                  !blockedData.blockedUserId.contains(item.id))
               .toList();
         }
-        
+
         // Additional safety check: Filter out current user to ensure it's never shown
         final currentUserId = FirebaseAuth.instance.currentUser?.uid;
         if (currentUserId != null && currentUserId.isNotEmpty) {
-          filterData = filterData
-              .where((item) {
-                if (item == null) return false;
-                final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
-                if (isCurrentUser) {
-                  print('HomeBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
-                }
-                return !isCurrentUser;
-              })
-              .toList();
+          filterData = filterData.where((item) {
+            if (item == null) return false;
+            final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
+            if (isCurrentUser) {
+              print(
+                  'HomeBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
+            }
+            return !isCurrentUser;
+          }).toList();
         }
-        
+
         // Set selectedTabIndex to 0 for New tab
         emit(state.copyWith(profileList: filterData, selectedTabIndex: 0));
       } catch (e) {
@@ -147,7 +148,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       print('HomeBloc: FetchLikedUsers event triggered');
       try {
         emit(Loading.fromState(state));
-        
+
         // Fetch liked users from Firestore
         final likedUserIds = await _likeRepository.getLikedUserIds();
         if (likedUserIds.isNotEmpty) {
@@ -181,7 +182,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchFavoriteUsers>((event, emit) async {
       try {
         emit(Loading.fromState(state));
-        
+
         // Fetch favorite users from Firestore
         final favoriteUsers = await _favoriteRepository.fetchFavorites();
         if (favoriteUsers != null && favoriteUsers.favId.isNotEmpty) {
@@ -202,7 +203,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               print('Error fetching user $userId: $e');
             }
           }
-          emit(state.copyWith(profileList: favoriteProfiles, selectedTabIndex: 2));
+          emit(state.copyWith(
+              profileList: favoriteProfiles, selectedTabIndex: 2));
         } else {
           emit(state.copyWith(profileList: [], selectedTabIndex: 2));
         }
@@ -215,7 +217,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchArchiveUsers>((event, emit) async {
       try {
         emit(Loading.fromState(state));
-        
+
         // Fetch archive users from Firestore
         final archiveUsers = await _archiveRepository.fetchArchives();
         if (archiveUsers != null && archiveUsers.archiveId.isNotEmpty) {
@@ -236,7 +238,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               print('Error fetching user $userId: $e');
             }
           }
-          emit(state.copyWith(profileList: archiveProfiles, selectedTabIndex: 3));
+          emit(state.copyWith(
+              profileList: archiveProfiles, selectedTabIndex: 3));
         } else {
           emit(state.copyWith(profileList: [], selectedTabIndex: 3));
         }
@@ -249,48 +252,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchAllUsers>((event, emit) async {
       try {
         emit(Loading.fromState(state));
-        
+
         // Fetch all users except current user
-        final List<HomeModel?> allUsers = await __repository.fetchAllExceptCurrentUser();
-        
-        // Fetch favorite and archive data to filter them out
-        final FavoriteModel? favData = await _favoriteRepository.fetchFavorites();
-        final ArchiveModel? archiveData = await _archiveRepository.fetchArchives();
-        
+        final List<HomeModel?> allUsers =
+            await __repository.fetchAllExceptCurrentUser();
+
+        // For "All" tab, show ALL users (only filter out current user and blocked users)
+        // Do NOT filter out favorites or archives - they should be included
+        final BlockedModel? blockedData =
+            await _blockedRepository.fetchBlockedUsers();
+
         List<HomeModel?> filterData = allUsers;
-        
-        // Filter out profiles that are in favorites
-        if (favData != null) {
-          filterData = filterData
-              .where((item) =>
-                  item!.id.isNotEmpty && !favData.favId.contains(item.id))
-              .toList();
-        }
-        
-        // Filter out profiles that are in archive
-        if (archiveData != null) {
+
+        // Filter out blocked users
+        if (blockedData != null) {
           filterData = filterData
               .where((item) =>
                   item!.id.isNotEmpty &&
-                  !archiveData.archiveId.contains(item.id))
+                  !blockedData.blockedUserId.contains(item.id))
               .toList();
         }
-        
+
         // Additional safety check: Filter out current user to ensure it's never shown
         final currentUserId = FirebaseAuth.instance.currentUser?.uid;
         if (currentUserId != null && currentUserId.isNotEmpty) {
-          filterData = filterData
-              .where((item) {
-                if (item == null) return false;
-                final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
-                if (isCurrentUser) {
-                  print('HomeBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
-                }
-                return !isCurrentUser;
-              })
-              .toList();
+          filterData = filterData.where((item) {
+            if (item == null) return false;
+            final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
+            if (isCurrentUser) {
+              print(
+                  'HomeBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
+            }
+            return !isCurrentUser;
+          }).toList();
         }
-        
+
         if (filterData.isEmpty) {
           emit(HomeDataIsEmpty.fromState(state));
         } else {
