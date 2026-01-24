@@ -24,59 +24,87 @@ class MatchBloc extends HydratedBloc<MatchEvent, MatchState> {
   MatchBloc() : super(MatchInitial()) {
     on<MatchUsersFetched>((event, emit) async {
       // Always fetch fresh data to ensure archive/favorite filtering is up to date
+      print('MatchBloc: MatchUsersFetched event triggered');
 
       try {
         emit(Loading.fromState(state));
-        final List<HomeModel?> data = await _homeRepository.fetchAllExceptCurrentUser();
-        
+        final List<HomeModel?> data =
+            await _homeRepository.fetchAllExceptCurrentUser();
+        print('MatchBloc: Fetched ${data.length} users from Firebase');
+
         // Filter out profiles that are in favorites or archives
-        final FavoriteModel? favData = await _favoriteRepository.fetchFavorites();
-        final ArchiveModel? archiveData = await _archiveRepository.fetchArchives();
-        final BlockedModel? blockedData = await _blockedRepository.fetchBlockedUsers();
-        
+        final FavoriteModel? favData =
+            await _favoriteRepository.fetchFavorites();
+        final ArchiveModel? archiveData =
+            await _archiveRepository.fetchArchives();
+        final BlockedModel? blockedData =
+            await _blockedRepository.fetchBlockedUsers();
+
+        print('MatchBloc: Favorites count: ${favData?.favId.length ?? 0}');
+        print(
+            'MatchBloc: Archives count: ${archiveData?.archiveId.length ?? 0}');
+        print(
+            'MatchBloc: Blocked count: ${blockedData?.blockedUserId.length ?? 0}');
+
         List<HomeModel?> filteredData = data;
-        
+
         if (favData != null) {
           filteredData = filteredData
-              .where((item) => item!.id.isNotEmpty && !favData.favId.contains(item.id))
+              .where((item) =>
+                  item!.id.isNotEmpty && !favData.favId.contains(item.id))
               .toList();
+          print(
+              'MatchBloc: After favorite filter: ${filteredData.length} users');
         }
-        
+
         if (archiveData != null) {
           filteredData = filteredData
-              .where((item) => item!.id.isNotEmpty && !archiveData.archiveId.contains(item.id))
+              .where((item) =>
+                  item!.id.isNotEmpty &&
+                  !archiveData.archiveId.contains(item.id))
               .toList();
+          print(
+              'MatchBloc: After archive filter: ${filteredData.length} users');
         }
 
         if (blockedData != null) {
           filteredData = filteredData
               .where((item) =>
-          item!.id.isNotEmpty &&
-              !blockedData.blockedUserId.contains(item.id))
+                  item!.id.isNotEmpty &&
+                  !blockedData.blockedUserId.contains(item.id))
               .toList();
+          print(
+              'MatchBloc: After blocked filter: ${filteredData.length} users');
         }
 
         // Additional safety check: Filter out current user to ensure it's never shown
         final currentUserId = FirebaseAuth.instance.currentUser?.uid;
         if (currentUserId != null && currentUserId.isNotEmpty) {
-          filteredData = filteredData
-              .where((item) {
-                if (item == null) return false;
-                final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
-                if (isCurrentUser) {
-                  print('MatchBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
-                }
-                return !isCurrentUser;
-              })
-              .toList();
+          filteredData = filteredData.where((item) {
+            if (item == null) return false;
+            final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
+            if (isCurrentUser) {
+              print(
+                  'MatchBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
+            }
+            return !isCurrentUser;
+          }).toList();
+          print(
+              'MatchBloc: After current user filter: ${filteredData.length} users');
         }
 
+        print('MatchBloc: Final filtered data count: ${filteredData.length}');
+
         if (filteredData.isEmpty) {
+          print('MatchBloc: Emitting MatchDataEmpty state');
           emit(MatchDataEmpty.fromState(state));
         } else {
+          print(
+              'MatchBloc: Emitting success state with ${filteredData.length} users');
           emit(state.copyWith(data: filteredData));
         }
       } catch (e) {
+        print('MatchBloc ERROR: $e');
         // Handle "Bad state: No element" errors gracefully
         if (e.toString().contains('Bad state: No element')) {
           emit(MatchDataEmpty.fromState(state));
@@ -92,7 +120,10 @@ class MatchBloc extends HydratedBloc<MatchEvent, MatchState> {
         // Update the liked status in state
         final updatedLikedUsers = Map<String, bool>.from(state.likedUsers);
         updatedLikedUsers[event.userId] = true;
-        emit(state.copyWith(likedUsers: updatedLikedUsers));
+        // Remove user from match list to move to next profile
+        final updatedData =
+            state.data.where((item) => item?.id != event.userId).toList();
+        emit(state.copyWith(likedUsers: updatedLikedUsers, data: updatedData));
       } catch (e) {
         // Handle error if needed
         debugPrint('Error liking user: $e');
@@ -125,7 +156,8 @@ class MatchBloc extends HydratedBloc<MatchEvent, MatchState> {
     on<RemoveUserFromMatch>((event, emit) async {
       try {
         // Remove user from match list
-        final updatedData = state.data.where((item) => item?.id != event.userId).toList();
+        final updatedData =
+            state.data.where((item) => item?.id != event.userId).toList();
         emit(state.copyWith(data: updatedData));
       } catch (e) {
         debugPrint('Error removing user from match: $e');
@@ -141,7 +173,8 @@ class MatchBloc extends HydratedBloc<MatchEvent, MatchState> {
           .toList();
 
       final likedUsersMap = (json['likedUsers'] as Map<String, dynamic>?)
-          ?.map((key, value) => MapEntry(key, value as bool)) ?? {};
+              ?.map((key, value) => MapEntry(key, value as bool)) ??
+          {};
 
       return MatchState(data: dataList, likedUsers: likedUsersMap);
     } catch (e) {
@@ -160,4 +193,4 @@ class MatchBloc extends HydratedBloc<MatchEvent, MatchState> {
       return null;
     }
   }
-} 
+}

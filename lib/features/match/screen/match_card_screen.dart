@@ -21,14 +21,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class CardScreen extends StatefulWidget {
-  const CardScreen({super.key});
+class MatchCardScreen extends StatefulWidget {
+  const MatchCardScreen({super.key});
 
   @override
-  State<CardScreen> createState() => _CardScreenState();
+  State<MatchCardScreen> createState() => _MatchCardScreenState();
 }
 
-class _CardScreenState extends State<CardScreen> {
+class _MatchCardScreenState extends State<MatchCardScreen> {
   int currentCardIndex = 0;
   bool hasCheckedInitialLike = false;
   bool hasInitialized = false;

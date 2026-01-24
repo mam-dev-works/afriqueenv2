@@ -15,11 +15,11 @@
 Firebase (1 call) → Cache (state.data) → Local Filtering → All Lists
                       ↓
                   ┌────────────────────────┐
-                  │  newUserList          │ ← Filtered locally
-                  │  likedUserList        │ ← Filtered locally
-                  │  favoritesUserList    │ ← Filtered locally
-                  │  archiveUserList      │ ← Filtered locally
-                  │  allUserList          │ ← Filtered locally
+                  │  newProfileList          │ ← Filtered locally
+                  │  likedProfileList        │ ← Filtered locally
+                  │  favoritesProfileList    │ ← Filtered locally
+                  │  archiveProfileList      │ ← Filtered locally
+                  │  allProfileList          │ ← Filtered locally
                   └────────────────────────┘
 ```
 
@@ -28,35 +28,35 @@ The `HomeState` now provides dedicated lists for different user categories that 
 
 ## Available Lists
 
-### 1. `newUserList` - New Users
+### 1. `newProfileList` - New Users
 - **Contains**: Users who are NOT in favorites, archives, or blocked
 - **Filtering**: LOCAL filtering from cached data
 - **Firebase Calls**: 0 (uses cache)
 - **Tab Index**: 0
 - **Label**: "New" / "Nouveau"
 
-### 2. `likedUserList` - Liked Users
+### 2. `likedProfileList` - Liked Users
 - **Contains**: Users that the current user has liked
 - **Filtering**: Fetches like IDs, then filters from cache locally
 - **Firebase Calls**: 1 (only for like IDs, not user data)
 - **Tab Index**: 1
 - **Label**: "Liked" / "Liké"
 
-### 3. `favoritesUserList` - Favorite Users
+### 3. `favoritesProfileList` - Favorite Users
 - **Contains**: Users marked as favorites
 - **Filtering**: Fetches favorite IDs, then filters from cache locally
 - **Firebase Calls**: 1 (only for favorite IDs, not user data)
 - **Tab Index**: 2
 - **Label**: "Favorite" / "Favori"
 
-### 4. `archiveUserList` - Archived Users
+### 4. `archiveProfileList` - Archived Users
 - **Contains**: Users in archive
 - **Filtering**: Fetches archive IDs, then filters from cache locally
 - **Firebase Calls**: 1 (only for archive IDs, not user data)
 - **Tab Index**: 3
 - **Label**: "Archive"
 
-### 5. `allUserList` - All Users
+### 5. `allProfileList` - All Users
 - **Contains**: ALL users (except current user and blocked users)
 - **Filtering**: LOCAL filtering from cached data
 - **Firebase Calls**: 0 (uses cache)
@@ -70,11 +70,11 @@ The `HomeState` now provides dedicated lists for different user categories that 
 BlocBuilder<HomeBloc, HomeState>(
   builder: (context, state) {
     // Access any specific list
-    final newUsers = state.newUserList;
-    final likedUsers = state.likedUserList;
-    final favorites = state.favoritesUserList;
-    final archived = state.archiveUserList;
-    final allUsers = state.allUserList;
+    final newUsers = state.newProfileList;
+    final likedUsers = state.likedProfileList;
+    final favorites = state.favoritesProfileList;
+    final archived = state.archiveProfileList;
+    final allUsers = state.allProfileList;
     
     // Use the lists as needed
     return ListView.builder(
@@ -92,7 +92,7 @@ BlocBuilder<HomeBloc, HomeState>(
 ```dart
 // Select only the list you need - prevents unnecessary rebuilds
 BlocSelector<HomeBloc, HomeState, List<HomeModel?>>(
-  selector: (state) => state.favoritesUserList,
+  selector: (state) => state.favoritesProfileList,
   builder: (context, favorites) {
     return ListView.builder(
       itemCount: favorites.length,
@@ -109,8 +109,8 @@ BlocSelector<HomeBloc, HomeState, List<HomeModel?>>(
 ```dart
 // In a function or event handler
 final homeState = context.read<HomeBloc>().state;
-final allUsers = homeState.allUserList;
-final likedCount = homeState.likedUserList.length;
+final allUsers = homeState.allProfileList;
+final likedCount = homeState.likedProfileList.length;
 ```
 
 ## Triggering List Updates
@@ -162,11 +162,11 @@ class UserStatsWidget extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            Text('New Users: ${state.newUserList.length}'),
-            Text('Liked: ${state.likedUserList.length}'),
-            Text('Favorites: ${state.favoritesUserList.length}'),
-            Text('Archived: ${state.archiveUserList.length}'),
-            Text('Total Users: ${state.allUserList.length}'),
+            Text('New Users: ${state.newProfileList.length}'),
+            Text('Liked: ${state.likedProfileList.length}'),
+            Text('Favorites: ${state.favoritesProfileList.length}'),
+            Text('Archived: ${state.archiveProfileList.length}'),
+            Text('Total Users: ${state.allProfileList.length}'),
           ],
         );
       },
@@ -181,7 +181,7 @@ class UserStatsWidget extends StatelessWidget {
 BlocBuilder<HomeBloc, HomeState>(
   builder: (context, state) {
     // Filter the list by name
-    final filteredUsers = state.allUserList.where((user) {
+    final filteredUsers = state.allProfileList.where((user) {
       if (user == null) return false;
       final searchTerm = 'John';
       return user.name.toLowerCase().contains(searchTerm.toLowerCase()) ||
@@ -227,19 +227,19 @@ BlocBuilder<HomeBloc, HomeState>(
 
 | Tab Index | List Name | Label (EN) | Label (FR) |
 |-----------|-----------|------------|------------|
-| 0 | newUserList | New | Nouveau |
-| 1 | likedUserList | Liked | Liké |
-| 2 | favoritesUserList | Favorite | Favori |
-| 3 | archiveUserList | Archive | Archive |
-| 4 | allUserList | All | Tous |
+| 0 | newProfileList | New | Nouveau |
+| 1 | likedProfileList | Liked | Liké |
+| 2 | favoritesProfileList | Favorite | Favori |
+| 3 | archiveProfileList | Archive | Archive |
+| 4 | allProfileList | All | Tous |
 
 ## State Properties
 
 - `data`: Raw data from Firestore (rarely used directly)
 - `profileList`: Currently displayed list based on selectedTabIndex
 - `selectedTabIndex`: Current tab (0-4)
-- `newUserList`: New users list
-- `likedUserList`: Liked users list
-- `favoritesUserList`: Favorites list
-- `archiveUserList`: Archive list
-- `allUserList`: All users list
+- `newProfileList`: New users list
+- `likedProfileList`: Liked users list
+- `favoritesProfileList`: Favorites list
+- `archiveProfileList`: Archive list
+- `allProfileList`: All users list

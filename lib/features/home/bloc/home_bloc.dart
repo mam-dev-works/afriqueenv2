@@ -104,37 +104,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             await _blockedRepository.fetchBlockedUsers();
 
         // Filter locally from cached data
-        List<HomeModel?> newUserList = cachedData;
+        List<HomeModel?> newProfileList = cachedData;
 
         if (favData != null) {
-          newUserList = newUserList
+          newProfileList = newProfileList
               .where((item) =>
                   item!.id.isNotEmpty && !favData.favId.contains(item.id))
               .toList();
         }
         if (archiveData != null) {
-          newUserList = newUserList
+          newProfileList = newProfileList
               .where((item) =>
                   item!.id.isNotEmpty &&
                   !archiveData.archiveId.contains(item.id))
               .toList();
         }
         if (blockedData != null) {
-          newUserList = newUserList
+          newProfileList = newProfileList
               .where((item) =>
                   item!.id.isNotEmpty &&
                   !blockedData.blockedUserId.contains(item.id))
               .toList();
         }
 
-        print('HomeBloc: Filtered ${newUserList.length} new users from cache');
+        print(
+            'HomeBloc: Filtered ${newProfileList.length} new users from cache');
 
         // Set selectedTabIndex to 0 for New tab
         emit(state.copyWith(
           data: cachedData, // Update cache if it was fetched
-          profileList: newUserList,
+          profileList: newProfileList,
           selectedTabIndex: 0,
-          newUserList: newUserList, // Store in dedicated newUserList
+          newProfileList: newProfileList, // Store in dedicated newProfileList
         ));
       } catch (e) {
         print('HomeBloc Error: $e');
@@ -175,27 +176,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (likedUserIds.isNotEmpty) {
           // Filter liked users from cached data (local filtering)
           final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-          final List<HomeModel?> likedProfiles = cachedData.where((user) {
+          final List<HomeModel?> likedProfileList = cachedData.where((user) {
             if (user == null) return false;
             if (currentUserId != null && user.id == currentUserId) return false;
             return likedUserIds.contains(user.id);
           }).toList();
 
           print(
-              'HomeBloc: Filtered ${likedProfiles.length} liked users from cache');
+              'HomeBloc: Filtered ${likedProfileList.length} liked users from cache');
 
           emit(state.copyWith(
             data: cachedData, // Update cache if it was fetched
-            profileList: likedProfiles,
+            profileList: likedProfileList,
             selectedTabIndex: 1,
-            likedUserList: likedProfiles,
+            likedProfileList: likedProfileList,
           ));
         } else {
           emit(state.copyWith(
             data: cachedData,
             profileList: [],
             selectedTabIndex: 1,
-            likedUserList: [],
+            likedProfileList: [],
           ));
         }
       } catch (e) {
@@ -232,27 +233,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (favoriteUsers != null && favoriteUsers.favId.isNotEmpty) {
           // Filter favorite users from cached data (local filtering)
           final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-          final List<HomeModel?> favoriteProfiles = cachedData.where((user) {
+          final List<HomeModel?> favoritesProfileList =
+              cachedData.where((user) {
             if (user == null) return false;
             if (currentUserId != null && user.id == currentUserId) return false;
             return favoriteUsers.favId.contains(user.id);
           }).toList();
 
           print(
-              'HomeBloc: Filtered ${favoriteProfiles.length} favorite users from cache');
+              'HomeBloc: Filtered ${favoritesProfileList.length} favorite users from cache');
 
           emit(state.copyWith(
             data: cachedData, // Update cache if it was fetched
-            profileList: favoriteProfiles,
+            profileList: favoritesProfileList,
             selectedTabIndex: 2,
-            favoritesUserList: favoriteProfiles,
+            favoritesProfileList: favoritesProfileList,
           ));
         } else {
           emit(state.copyWith(
             data: cachedData,
             profileList: [],
             selectedTabIndex: 2,
-            favoritesUserList: [],
+            favoritesProfileList: [],
           ));
         }
       } catch (e) {
@@ -289,27 +291,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (archiveUsers != null && archiveUsers.archiveId.isNotEmpty) {
           // Filter archive users from cached data (local filtering)
           final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-          final List<HomeModel?> archiveProfiles = cachedData.where((user) {
+          final List<HomeModel?> archiveProfileList = cachedData.where((user) {
             if (user == null) return false;
             if (currentUserId != null && user.id == currentUserId) return false;
             return archiveUsers.archiveId.contains(user.id);
           }).toList();
 
           print(
-              'HomeBloc: Filtered ${archiveProfiles.length} archive users from cache');
+              'HomeBloc: Filtered ${archiveProfileList.length} archive users from cache');
 
           emit(state.copyWith(
             data: cachedData, // Update cache if it was fetched
-            profileList: archiveProfiles,
+            profileList: archiveProfileList,
             selectedTabIndex: 3,
-            archiveUserList: archiveProfiles,
+            archiveProfileList: archiveProfileList,
           ));
         } else {
           emit(state.copyWith(
             data: cachedData,
             profileList: [],
             selectedTabIndex: 3,
-            archiveUserList: [],
+            archiveProfileList: [],
           ));
         }
       } catch (e) {
@@ -344,11 +346,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final BlockedModel? blockedData =
             await _blockedRepository.fetchBlockedUsers();
 
-        List<HomeModel?> allUserList = cachedData;
+        List<HomeModel?> allProfileList = cachedData;
 
         // Filter out blocked users locally
         if (blockedData != null) {
-          allUserList = allUserList
+          allProfileList = allProfileList
               .where((item) =>
                   item!.id.isNotEmpty &&
                   !blockedData.blockedUserId.contains(item.id))
@@ -356,16 +358,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
 
         print(
-            'HomeBloc: Filtered ${allUserList.length} total users from cache');
+            'HomeBloc: Filtered ${allProfileList.length} total users from cache');
 
-        if (allUserList.isEmpty) {
+        if (allProfileList.isEmpty) {
           emit(HomeDataIsEmpty.fromState(state));
         } else {
           emit(state.copyWith(
             data: cachedData, // Update cache if it was fetched
-            profileList: allUserList,
+            profileList: allProfileList,
             selectedTabIndex: 4,
-            allUserList: allUserList,
+            allProfileList: allProfileList,
           ));
         }
       } catch (e) {

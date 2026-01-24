@@ -11,11 +11,11 @@ import 'package:equatable/equatable.dart';
 /// - This dramatically reduces Firebase reads and improves performance
 ///
 /// **Dedicated Lists:**
-/// - `newUserList`: New users (not in favorites, archives, or blocked) - FILTERED LOCALLY
-/// - `likedUserList`: Users that the current user has liked - FILTERED LOCALLY
-/// - `favoritesUserList`: Users in favorites - FILTERED LOCALLY
-/// - `archiveUserList`: Users in archive - FILTERED LOCALLY
-/// - `allUserList`: All users (except current user and blocked users) - FILTERED LOCALLY
+/// - `newProfileList`: New users (not in favorites, archives, or blocked) - FILTERED LOCALLY
+/// - `likedProfileList`: Users that the current user has liked - FILTERED LOCALLY
+/// - `favoritesProfileList`: Users in favorites - FILTERED LOCALLY
+/// - `archiveProfileList`: Users in archive - FILTERED LOCALLY
+/// - `allProfileList`: All users (except current user and blocked users) - FILTERED LOCALLY
 ///
 /// **How it works:**
 /// 1. `HomeUsersFetched` - Fetches ALL users from Firebase and caches in `state.data`
@@ -30,22 +30,22 @@ import 'package:equatable/equatable.dart';
 /// // Access a specific list from anywhere with HomeBloc
 /// BlocBuilder<HomeBloc, HomeState>(
 ///   builder: (context, state) {
-///     final newUsers = state.newUserList;
-///     final likedUsers = state.likedUserList;
-///     final favorites = state.favoritesUserList;
-///     final archived = state.archiveUserList;
-///     final allUsers = state.allUserList;
+///     final newUsers = state.newProfileList;
+///     final likedUsers = state.likedProfileList;
+///     final favorites = state.favoritesProfileList;
+///     final archived = state.archiveProfileList;
+///     final allUsers = state.allProfileList;
 ///     // Use the lists as needed - all filtered locally!
 ///   }
 /// )
 /// ```
 ///
 /// **The `profileList` property** contains the currently displayed list based on `selectedTabIndex`:
-/// - Tab 0 (New): profileList = newUserList
-/// - Tab 1 (Liked): profileList = likedUserList
-/// - Tab 2 (Favorites): profileList = favoritesUserList
-/// - Tab 3 (Archive): profileList = archiveUserList
-/// - Tab 4 (All): profileList = allUserList
+/// - Tab 0 (New): profileList = newProfileList
+/// - Tab 1 (Liked): profileList = likedProfileList
+/// - Tab 2 (Favorites): profileList = favoritesProfileList
+/// - Tab 3 (Archive): profileList = archiveProfileList
+/// - Tab 4 (All): profileList = allProfileList
 ///
 /// **Performance Benefits:**
 /// - ✅ Firebase is queried only ONCE for all users
@@ -58,42 +58,42 @@ class HomeState extends Equatable {
   final int selectedTabIndex;
 
   // Dedicated lists for each category - ALL FILTERED LOCALLY from cache
-  final List<HomeModel?> newUserList;
-  final List<HomeModel?> likedUserList;
-  final List<HomeModel?> favoritesUserList;
-  final List<HomeModel?> archiveUserList;
-  final List<HomeModel?> allUserList;
+  final List<HomeModel?> newProfileList;
+  final List<HomeModel?> likedProfileList;
+  final List<HomeModel?> favoritesProfileList;
+  final List<HomeModel?> archiveProfileList;
+  final List<HomeModel?> allProfileList;
 
   const HomeState({
     required this.data,
     required this.profileList,
     required this.selectedTabIndex,
-    this.newUserList = const [],
-    this.likedUserList = const [],
-    this.favoritesUserList = const [],
-    this.archiveUserList = const [],
-    this.allUserList = const [],
+    this.newProfileList = const [],
+    this.likedProfileList = const [],
+    this.favoritesProfileList = const [],
+    this.archiveProfileList = const [],
+    this.allProfileList = const [],
   });
 
   HomeState copyWith({
     List<HomeModel?>? data,
     List<HomeModel?>? profileList,
     int? selectedTabIndex,
-    List<HomeModel?>? newUserList,
-    List<HomeModel?>? likedUserList,
-    List<HomeModel?>? favoritesUserList,
-    List<HomeModel?>? archiveUserList,
-    List<HomeModel?>? allUserList,
+    List<HomeModel?>? newProfileList,
+    List<HomeModel?>? likedProfileList,
+    List<HomeModel?>? favoritesProfileList,
+    List<HomeModel?>? archiveProfileList,
+    List<HomeModel?>? allProfileList,
   }) =>
       HomeState(
         data: data ?? this.data,
         profileList: profileList ?? this.profileList,
         selectedTabIndex: selectedTabIndex ?? this.selectedTabIndex,
-        newUserList: newUserList ?? this.newUserList,
-        likedUserList: likedUserList ?? this.likedUserList,
-        favoritesUserList: favoritesUserList ?? this.favoritesUserList,
-        archiveUserList: archiveUserList ?? this.archiveUserList,
-        allUserList: allUserList ?? this.allUserList,
+        newProfileList: newProfileList ?? this.newProfileList,
+        likedProfileList: likedProfileList ?? this.likedProfileList,
+        favoritesProfileList: favoritesProfileList ?? this.favoritesProfileList,
+        archiveProfileList: archiveProfileList ?? this.archiveProfileList,
+        allProfileList: allProfileList ?? this.allProfileList,
       );
 
   factory HomeState.initial() {
@@ -101,11 +101,11 @@ class HomeState extends Equatable {
       data: [],
       profileList: [],
       selectedTabIndex: 0,
-      newUserList: [],
-      likedUserList: [],
-      favoritesUserList: [],
-      archiveUserList: [],
-      allUserList: [],
+      newProfileList: [],
+      likedProfileList: [],
+      favoritesProfileList: [],
+      archiveProfileList: [],
+      allProfileList: [],
     );
   }
 
@@ -114,11 +114,11 @@ class HomeState extends Equatable {
         data,
         profileList,
         selectedTabIndex,
-        newUserList,
-        likedUserList,
-        favoritesUserList,
-        archiveUserList,
-        allUserList
+        newProfileList,
+        likedProfileList,
+        favoritesProfileList,
+        archiveProfileList,
+        allProfileList
       ];
 }
 
@@ -128,11 +128,11 @@ final class HomeInitial extends HomeState {
           data: [],
           profileList: [],
           selectedTabIndex: 0,
-          newUserList: [],
-          likedUserList: [],
-          favoritesUserList: [],
-          archiveUserList: [],
-          allUserList: [],
+          newProfileList: [],
+          likedProfileList: [],
+          favoritesProfileList: [],
+          archiveProfileList: [],
+          allProfileList: [],
         );
 }
 
@@ -142,11 +142,11 @@ final class Loading extends HomeState {
           data: state.data,
           profileList: state.profileList,
           selectedTabIndex: state.selectedTabIndex,
-          newUserList: state.newUserList,
-          likedUserList: state.likedUserList,
-          favoritesUserList: state.favoritesUserList,
-          archiveUserList: state.archiveUserList,
-          allUserList: state.allUserList,
+          newProfileList: state.newProfileList,
+          likedProfileList: state.likedProfileList,
+          favoritesProfileList: state.favoritesProfileList,
+          archiveProfileList: state.archiveProfileList,
+          allProfileList: state.allProfileList,
         );
 }
 
@@ -157,11 +157,11 @@ final class Error extends HomeState {
           data: state.data,
           profileList: state.profileList,
           selectedTabIndex: state.selectedTabIndex,
-          newUserList: state.newUserList,
-          likedUserList: state.likedUserList,
-          favoritesUserList: state.favoritesUserList,
-          archiveUserList: state.archiveUserList,
-          allUserList: state.allUserList,
+          newProfileList: state.newProfileList,
+          likedProfileList: state.likedProfileList,
+          favoritesProfileList: state.favoritesProfileList,
+          archiveProfileList: state.archiveProfileList,
+          allProfileList: state.allProfileList,
         );
   @override
   List<Object> get props => [error];
@@ -173,10 +173,10 @@ final class HomeDataIsEmpty extends HomeState {
           data: state.data,
           profileList: state.profileList,
           selectedTabIndex: state.selectedTabIndex,
-          newUserList: state.newUserList,
-          likedUserList: state.likedUserList,
-          favoritesUserList: state.favoritesUserList,
-          archiveUserList: state.archiveUserList,
-          allUserList: state.allUserList,
+          newProfileList: state.newProfileList,
+          likedProfileList: state.likedProfileList,
+          favoritesProfileList: state.favoritesProfileList,
+          archiveProfileList: state.archiveProfileList,
+          allProfileList: state.allProfileList,
         );
 }
