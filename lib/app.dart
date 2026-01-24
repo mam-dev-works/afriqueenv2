@@ -4,9 +4,13 @@ import 'package:afriqueen/routes/app_pages.dart';
 import 'package:afriqueen/routes/app_routes.dart';
 import 'package:afriqueen/services/storage/get_storage.dart';
 import 'package:afriqueen/services/passwordless_login_services.dart';
+import 'package:afriqueen/core/connectivity/bloc/connectivity_bloc.dart';
+import 'package:afriqueen/core/connectivity/bloc/connectivity_event.dart';
+import 'package:afriqueen/core/connectivity/widgets/no_internet_banner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' as getx;
 import 'package:app_links/app_links.dart';
@@ -146,43 +150,55 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_, __) => getx.GetMaterialApp(
-        title: 'Afriqueen',
-        debugShowCheckedModeBanner: false,
-        translations: AppTranslations(),
-        locale: Locale(_appGetStorage.getLanguageCode()),
-        theme: lightTheme,
-        defaultTransition: getx.Transition.fade,
-        onGenerateRoute: onGenerateRoute,
-        home: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator(); // or splash screen
-            }
-
-            final String initialRoute = snapshot.hasData
-                ? routeNameFromPageNumber()!
-                : (_appGetStorage.hasOpenedApp()
-                    ? AppRoutes.login
-                    : AppRoutes.wellcome);
-
-            // Navigate after build
-            Future.microtask(() => Get.offAllNamed(initialRoute));
-
-            return const Scaffold(); // placeholder while redirecting
+    return BlocProvider(
+      create: (context) =>
+          ConnectivityBloc()..add(const ConnectivityStartMonitoring()),
+      child: ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, __) => getx.GetMaterialApp(
+          title: 'Afriqueen',
+          debugShowCheckedModeBanner: false,
+          translations: AppTranslations(),
+          locale: Locale(_appGetStorage.getLanguageCode()),
+          theme: lightTheme,
+          defaultTransition: getx.Transition.fade,
+          onGenerateRoute: onGenerateRoute,
+          builder: (context, child) {
+            return Column(
+              children: [
+                const NoInternetBanner(),
+                Expanded(child: child ?? const SizedBox()),
+              ],
+            );
           },
+          home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator(); // or splash screen
+              }
+
+              final String initialRoute = snapshot.hasData
+                  ? routeNameFromPageNumber()!
+                  : (_appGetStorage.hasOpenedApp()
+                      ? AppRoutes.login
+                      : AppRoutes.wellcome);
+
+              // Navigate after build
+              Future.microtask(() => Get.offAllNamed(initialRoute));
+
+              return const Scaffold(); // placeholder while redirecting
+            },
+          ),
+          // home: BlocProvider(
+          //   create: (_) => CreateProfileBloc(
+          //     repository: CreateProfileRepository(),
+          //   ),
+          //   child: DobLocationScreen(),
+          // ),
         ),
-        // home: BlocProvider(
-        //   create: (_) => CreateProfileBloc(
-        //     repository: CreateProfileRepository(),
-        //   ),
-        //   child: DobLocationScreen(),
-        // ),
       ),
     );
   }

@@ -81,6 +81,7 @@ dependencies:
   firebase_storage: ^12.3.6
   just_audio: ^0.9.36
   app_links: ^3.5.0
+  connectivity_plus: ^6.1.0
 
 dev_dependencies:
   flutter_test:

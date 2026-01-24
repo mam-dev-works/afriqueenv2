@@ -42,7 +42,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDKVPiM6zR54n_IKXKeST5OaM3_6d3fvlQ',
-    appId: '1:729178992675:web:dfe1f974df98c2b7a60196',
+    appId: '1:426919301496:web:dfe1f974df98c2b7a60196',
     messagingSenderId: '426919301496',
     projectId: 'afriqeen-bcd27',
     authDomain: 'afriqeen-bcd27.firebaseapp.com',
@@ -68,18 +68,18 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAJj0uAA-sV7ejbS13EK92WCE2wnRiLSD4',
-    appId: '1:729178992675:ios:972b382d4935c8c6a60196',
-    messagingSenderId: '729178992675',
+    apiKey: 'AIzaSyCltPWIfGs2673Uz45RSW6rtNubmYb8dGA',
+    appId: '1:426919301496:ios:972b382d4935c8c6a60196',
+    messagingSenderId: '426919301496',
     projectId: 'afriqeen-bcd27',
     storageBucket: 'afriqeen-bcd27.firebasestorage.app',
-    iosBundleId: 'com.example.afriqueen',
+    iosBundleId: 'com.company.afriqueen',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyDKVPiM6zR54n_IKXKeST5OaM3_6d3fvlQ',
-    appId: '1:729178992675:web:76b5511ef01aa5aba60196',
-    messagingSenderId: '729178992675',
+    appId: '1:426919301496:web:76b5511ef01aa5aba60196',
+    messagingSenderId: '426919301496',
     projectId: 'afriqeen-bcd27',
     authDomain: 'afriqeen-bcd27.firebaseapp.com',
     storageBucket: 'afriqeen-bcd27.firebasestorage.app',

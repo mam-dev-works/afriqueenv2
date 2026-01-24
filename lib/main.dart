@@ -12,7 +12,20 @@ import 'package:afriqueen/features/gifts/service/gift_recharge_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Initialize Firebase with error handling
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    debugPrint('✅ Firebase initialized successfully');
+    debugPrint(
+        'Project ID: ${DefaultFirebaseOptions.currentPlatform.projectId}');
+    debugPrint('App ID: ${DefaultFirebaseOptions.currentPlatform.appId}');
+  } catch (e, stackTrace) {
+    debugPrint('❌ Firebase initialization error: $e');
+    debugPrint('Stack trace: $stackTrace');
+  }
 
   // Get stroage
   await GetStorage.init();
