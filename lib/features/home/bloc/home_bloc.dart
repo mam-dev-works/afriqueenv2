@@ -24,18 +24,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       : __repository = repo,
         super(HomeInitial()) {
     on<HomeUsersFetched>((event, emit) async {
-      // Always fetch fresh data for now to avoid cache issues
-      print('HomeBloc: Fetching fresh data for HomeUsersFetched...');
+      // Fetch ALL users from Firebase ONCE and cache in state.data
+      print('HomeBloc: Fetching ALL users from Firebase (CACHED)...');
 
       try {
         emit(Loading.fromState(state));
-        final List<HomeModel?> data =
+
+        // Fetch all users from Firebase only once
+        final List<HomeModel?> allUsersFromFirebase =
             await __repository.fetchAllExceptCurrentUser();
-        // Additional safety check: Filter out current user to ensure it's never shown
+
+        // Additional safety check: Filter out current user
         final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-        List<HomeModel?> finalData = data;
+        List<HomeModel?> cachedData = allUsersFromFirebase;
         if (currentUserId != null && currentUserId.isNotEmpty) {
-          finalData = data.where((item) {
+          cachedData = allUsersFromFirebase.where((item) {
             if (item == null) return false;
             final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
             if (isCurrentUser) {
@@ -46,10 +49,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           }).toList();
         }
 
-        if (finalData.isEmpty) {
+        if (cachedData.isEmpty) {
           emit(HomeDataIsEmpty.fromState(state));
         } else {
-          emit(state.copyWith(data: finalData));
+          // Store all users in state.data for local filtering
+          print('HomeBloc: Cached ${cachedData.length} users locally');
+          emit(state.copyWith(data: cachedData));
         }
       } catch (e) {
         // Handle "Bad state: No element" errors gracefully
@@ -61,78 +66,76 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     });
     on<HomeUsersProfileList>((event, emit) async {
-      // Always fetch fresh data for now to avoid cache issues
-      print('HomeBloc: HomeUsersProfileList event triggered');
+      // Filter NEW users from cached data (local filtering - no Firebase call)
+      print('HomeBloc: Filtering NEW users from cached data...');
 
       try {
         emit(Loading.fromState(state));
 
-        List<HomeModel?> data;
-        try {
-          data = state.data.isNotEmpty
-              ? state.data
-              : await __repository.fetchAllExceptCurrentUser();
-        } catch (e) {
-          // Handle "Bad state: No element" errors gracefully
-          if (e.toString().contains('Bad state: No element')) {
-            emit(HomeDataIsEmpty.fromState(state));
-            return;
+        // Use cached data from state.data (already fetched from Firebase)
+        List<HomeModel?> cachedData = state.data;
+
+        // If cache is empty, fetch from Firebase first
+        if (cachedData.isEmpty) {
+          print('HomeBloc: Cache empty, fetching from Firebase...');
+          cachedData = await __repository.fetchAllExceptCurrentUser();
+
+          // Filter out current user
+          final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+          if (currentUserId != null && currentUserId.isNotEmpty) {
+            cachedData = cachedData.where((item) {
+              if (item == null) return false;
+              return item.id != currentUserId && item.id.isNotEmpty;
+            }).toList();
           }
-          rethrow;
         }
 
-        if (data.isEmpty) {
+        if (cachedData.isEmpty) {
           emit(HomeDataIsEmpty.fromState(state));
-          return; // Return early if no data
+          return;
         }
 
+        // Fetch favorite, archive, and blocked IDs for local filtering
         final FavoriteModel? favData =
             await _favoriteRepository.fetchFavorites();
-
         final ArchiveModel? archiveData =
             await _archiveRepository.fetchArchives();
-
         final BlockedModel? blockedData =
             await _blockedRepository.fetchBlockedUsers();
 
-        List<HomeModel?> filterData = data;
+        // Filter locally from cached data
+        List<HomeModel?> newUserList = cachedData;
+
         if (favData != null) {
-          filterData = filterData
+          newUserList = newUserList
               .where((item) =>
                   item!.id.isNotEmpty && !favData.favId.contains(item.id))
               .toList();
         }
         if (archiveData != null) {
-          filterData = filterData
+          newUserList = newUserList
               .where((item) =>
                   item!.id.isNotEmpty &&
                   !archiveData.archiveId.contains(item.id))
               .toList();
         }
         if (blockedData != null) {
-          filterData = filterData
+          newUserList = newUserList
               .where((item) =>
                   item!.id.isNotEmpty &&
                   !blockedData.blockedUserId.contains(item.id))
               .toList();
         }
 
-        // Additional safety check: Filter out current user to ensure it's never shown
-        final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-        if (currentUserId != null && currentUserId.isNotEmpty) {
-          filterData = filterData.where((item) {
-            if (item == null) return false;
-            final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
-            if (isCurrentUser) {
-              print(
-                  'HomeBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
-            }
-            return !isCurrentUser;
-          }).toList();
-        }
+        print('HomeBloc: Filtered ${newUserList.length} new users from cache');
 
         // Set selectedTabIndex to 0 for New tab
-        emit(state.copyWith(profileList: filterData, selectedTabIndex: 0));
+        emit(state.copyWith(
+          data: cachedData, // Update cache if it was fetched
+          profileList: newUserList,
+          selectedTabIndex: 0,
+          newUserList: newUserList, // Store in dedicated newUserList
+        ));
       } catch (e) {
         print('HomeBloc Error: $e');
         // Handle "Bad state: No element" errors gracefully
@@ -145,33 +148,55 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
 
     on<FetchLikedUsers>((event, emit) async {
-      print('HomeBloc: FetchLikedUsers event triggered');
+      print('HomeBloc: Filtering LIKED users from cached data...');
       try {
         emit(Loading.fromState(state));
 
-        // Fetch liked users from Firestore
-        final likedUserIds = await _likeRepository.getLikedUserIds();
-        if (likedUserIds.isNotEmpty) {
-          // Fetch user details for each liked user ID
-          final List<HomeModel?> likedProfiles = [];
+        // Use cached data from state.data
+        List<HomeModel?> cachedData = state.data;
+
+        // If cache is empty, fetch from Firebase first
+        if (cachedData.isEmpty) {
+          print('HomeBloc: Cache empty, fetching from Firebase...');
+          cachedData = await __repository.fetchAllExceptCurrentUser();
+
           final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-          for (String userId in likedUserIds) {
-            // Skip current user
-            if (currentUserId != null && userId == currentUserId) {
-              continue;
-            }
-            try {
-              final user = await __repository.fetchUserById(userId);
-              if (user != null && user.id != currentUserId) {
-                likedProfiles.add(user);
-              }
-            } catch (e) {
-              print('Error fetching user $userId: $e');
-            }
+          if (currentUserId != null && currentUserId.isNotEmpty) {
+            cachedData = cachedData.where((item) {
+              if (item == null) return false;
+              return item.id != currentUserId && item.id.isNotEmpty;
+            }).toList();
           }
-          emit(state.copyWith(profileList: likedProfiles, selectedTabIndex: 1));
+        }
+
+        // Fetch liked user IDs (only IDs, not full user data)
+        final likedUserIds = await _likeRepository.getLikedUserIds();
+
+        if (likedUserIds.isNotEmpty) {
+          // Filter liked users from cached data (local filtering)
+          final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+          final List<HomeModel?> likedProfiles = cachedData.where((user) {
+            if (user == null) return false;
+            if (currentUserId != null && user.id == currentUserId) return false;
+            return likedUserIds.contains(user.id);
+          }).toList();
+
+          print(
+              'HomeBloc: Filtered ${likedProfiles.length} liked users from cache');
+
+          emit(state.copyWith(
+            data: cachedData, // Update cache if it was fetched
+            profileList: likedProfiles,
+            selectedTabIndex: 1,
+            likedUserList: likedProfiles,
+          ));
         } else {
-          emit(state.copyWith(profileList: [], selectedTabIndex: 1));
+          emit(state.copyWith(
+            data: cachedData,
+            profileList: [],
+            selectedTabIndex: 1,
+            likedUserList: [],
+          ));
         }
       } catch (e) {
         print('HomeBloc Error fetching liked users: $e');
@@ -180,33 +205,55 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
 
     on<FetchFavoriteUsers>((event, emit) async {
+      print('HomeBloc: Filtering FAVORITE users from cached data...');
       try {
         emit(Loading.fromState(state));
 
-        // Fetch favorite users from Firestore
-        final favoriteUsers = await _favoriteRepository.fetchFavorites();
-        if (favoriteUsers != null && favoriteUsers.favId.isNotEmpty) {
-          // Fetch user details for each favorite user ID
-          final List<HomeModel?> favoriteProfiles = [];
+        // Use cached data from state.data
+        List<HomeModel?> cachedData = state.data;
+
+        // If cache is empty, fetch from Firebase first
+        if (cachedData.isEmpty) {
+          print('HomeBloc: Cache empty, fetching from Firebase...');
+          cachedData = await __repository.fetchAllExceptCurrentUser();
+
           final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-          for (String userId in favoriteUsers.favId) {
-            // Skip current user
-            if (currentUserId != null && userId == currentUserId) {
-              continue;
-            }
-            try {
-              final user = await __repository.fetchUserById(userId);
-              if (user != null && user.id != currentUserId) {
-                favoriteProfiles.add(user);
-              }
-            } catch (e) {
-              print('Error fetching user $userId: $e');
-            }
+          if (currentUserId != null && currentUserId.isNotEmpty) {
+            cachedData = cachedData.where((item) {
+              if (item == null) return false;
+              return item.id != currentUserId && item.id.isNotEmpty;
+            }).toList();
           }
+        }
+
+        // Fetch favorite user IDs (only IDs, not full user data)
+        final favoriteUsers = await _favoriteRepository.fetchFavorites();
+
+        if (favoriteUsers != null && favoriteUsers.favId.isNotEmpty) {
+          // Filter favorite users from cached data (local filtering)
+          final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+          final List<HomeModel?> favoriteProfiles = cachedData.where((user) {
+            if (user == null) return false;
+            if (currentUserId != null && user.id == currentUserId) return false;
+            return favoriteUsers.favId.contains(user.id);
+          }).toList();
+
+          print(
+              'HomeBloc: Filtered ${favoriteProfiles.length} favorite users from cache');
+
           emit(state.copyWith(
-              profileList: favoriteProfiles, selectedTabIndex: 2));
+            data: cachedData, // Update cache if it was fetched
+            profileList: favoriteProfiles,
+            selectedTabIndex: 2,
+            favoritesUserList: favoriteProfiles,
+          ));
         } else {
-          emit(state.copyWith(profileList: [], selectedTabIndex: 2));
+          emit(state.copyWith(
+            data: cachedData,
+            profileList: [],
+            selectedTabIndex: 2,
+            favoritesUserList: [],
+          ));
         }
       } catch (e) {
         print('HomeBloc Error fetching favorite users: $e');
@@ -215,33 +262,55 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
 
     on<FetchArchiveUsers>((event, emit) async {
+      print('HomeBloc: Filtering ARCHIVE users from cached data...');
       try {
         emit(Loading.fromState(state));
 
-        // Fetch archive users from Firestore
-        final archiveUsers = await _archiveRepository.fetchArchives();
-        if (archiveUsers != null && archiveUsers.archiveId.isNotEmpty) {
-          // Fetch user details for each archive user ID
-          final List<HomeModel?> archiveProfiles = [];
+        // Use cached data from state.data
+        List<HomeModel?> cachedData = state.data;
+
+        // If cache is empty, fetch from Firebase first
+        if (cachedData.isEmpty) {
+          print('HomeBloc: Cache empty, fetching from Firebase...');
+          cachedData = await __repository.fetchAllExceptCurrentUser();
+
           final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-          for (String userId in archiveUsers.archiveId) {
-            // Skip current user
-            if (currentUserId != null && userId == currentUserId) {
-              continue;
-            }
-            try {
-              final user = await __repository.fetchUserById(userId);
-              if (user != null && user.id != currentUserId) {
-                archiveProfiles.add(user);
-              }
-            } catch (e) {
-              print('Error fetching user $userId: $e');
-            }
+          if (currentUserId != null && currentUserId.isNotEmpty) {
+            cachedData = cachedData.where((item) {
+              if (item == null) return false;
+              return item.id != currentUserId && item.id.isNotEmpty;
+            }).toList();
           }
+        }
+
+        // Fetch archive user IDs (only IDs, not full user data)
+        final archiveUsers = await _archiveRepository.fetchArchives();
+
+        if (archiveUsers != null && archiveUsers.archiveId.isNotEmpty) {
+          // Filter archive users from cached data (local filtering)
+          final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+          final List<HomeModel?> archiveProfiles = cachedData.where((user) {
+            if (user == null) return false;
+            if (currentUserId != null && user.id == currentUserId) return false;
+            return archiveUsers.archiveId.contains(user.id);
+          }).toList();
+
+          print(
+              'HomeBloc: Filtered ${archiveProfiles.length} archive users from cache');
+
           emit(state.copyWith(
-              profileList: archiveProfiles, selectedTabIndex: 3));
+            data: cachedData, // Update cache if it was fetched
+            profileList: archiveProfiles,
+            selectedTabIndex: 3,
+            archiveUserList: archiveProfiles,
+          ));
         } else {
-          emit(state.copyWith(profileList: [], selectedTabIndex: 3));
+          emit(state.copyWith(
+            data: cachedData,
+            profileList: [],
+            selectedTabIndex: 3,
+            archiveUserList: [],
+          ));
         }
       } catch (e) {
         print('HomeBloc Error fetching archive users: $e');
@@ -250,47 +319,54 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     });
 
     on<FetchAllUsers>((event, emit) async {
+      print('HomeBloc: Filtering ALL users from cached data...');
       try {
         emit(Loading.fromState(state));
 
-        // Fetch all users except current user
-        final List<HomeModel?> allUsers =
-            await __repository.fetchAllExceptCurrentUser();
+        // Use cached data from state.data
+        List<HomeModel?> cachedData = state.data;
 
-        // For "All" tab, show ALL users (only filter out current user and blocked users)
-        // Do NOT filter out favorites or archives - they should be included
+        // If cache is empty, fetch from Firebase first
+        if (cachedData.isEmpty) {
+          print('HomeBloc: Cache empty, fetching from Firebase...');
+          cachedData = await __repository.fetchAllExceptCurrentUser();
+
+          final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+          if (currentUserId != null && currentUserId.isNotEmpty) {
+            cachedData = cachedData.where((item) {
+              if (item == null) return false;
+              return item.id != currentUserId && item.id.isNotEmpty;
+            }).toList();
+          }
+        }
+
+        // For "All" tab, show ALL users (only filter out blocked users locally)
         final BlockedModel? blockedData =
             await _blockedRepository.fetchBlockedUsers();
 
-        List<HomeModel?> filterData = allUsers;
+        List<HomeModel?> allUserList = cachedData;
 
-        // Filter out blocked users
+        // Filter out blocked users locally
         if (blockedData != null) {
-          filterData = filterData
+          allUserList = allUserList
               .where((item) =>
                   item!.id.isNotEmpty &&
                   !blockedData.blockedUserId.contains(item.id))
               .toList();
         }
 
-        // Additional safety check: Filter out current user to ensure it's never shown
-        final currentUserId = FirebaseAuth.instance.currentUser?.uid;
-        if (currentUserId != null && currentUserId.isNotEmpty) {
-          filterData = filterData.where((item) {
-            if (item == null) return false;
-            final isCurrentUser = item.id == currentUserId || item.id.isEmpty;
-            if (isCurrentUser) {
-              print(
-                  'HomeBloc: Excluding current user - User ID: ${item.id}, Current UID: $currentUserId');
-            }
-            return !isCurrentUser;
-          }).toList();
-        }
+        print(
+            'HomeBloc: Filtered ${allUserList.length} total users from cache');
 
-        if (filterData.isEmpty) {
+        if (allUserList.isEmpty) {
           emit(HomeDataIsEmpty.fromState(state));
         } else {
-          emit(state.copyWith(profileList: filterData, selectedTabIndex: 4));
+          emit(state.copyWith(
+            data: cachedData, // Update cache if it was fetched
+            profileList: allUserList,
+            selectedTabIndex: 4,
+            allUserList: allUserList,
+          ));
         }
       } catch (e) {
         print('HomeBloc Error fetching all users: $e');
