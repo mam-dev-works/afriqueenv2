@@ -18,12 +18,12 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    debugPrint('✅ Firebase initialized successfully');
+    debugPrint('Firebase initialized successfully');
     debugPrint(
         'Project ID: ${DefaultFirebaseOptions.currentPlatform.projectId}');
     debugPrint('App ID: ${DefaultFirebaseOptions.currentPlatform.appId}');
   } catch (e, stackTrace) {
-    debugPrint('❌ Firebase initialization error: $e');
+    debugPrint('Firebase initialization error: $e');
     debugPrint('Stack trace: $stackTrace');
   }
 
