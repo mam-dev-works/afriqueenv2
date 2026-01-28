@@ -9,6 +9,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:afriqueen/features/gifts/service/gift_recharge_service.dart';
+import 'package:bloc/bloc.dart';
+import 'package:afriqueen/core/bloc/app_bloc_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +31,10 @@ void main() async {
 
   // Get stroage
   await GetStorage.init();
+
+  // Set global BLoC observer for debugging events, state changes and errors
+  Bloc.observer = AppBlocObserver();
+
   // Initialize HydratedStorage
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
